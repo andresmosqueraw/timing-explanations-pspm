@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "total_timesteps": 300000,
+  "args": {
+    "timesteps": 300000,
+    "seed": 42,
+    "resources": 3,
+    "csv": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/libraries-prescriptive-process/01-rl-online/RL-prescriptive-monitoring/rl/data/ready_to_use_adaptive_bpic2017.csv",
+    "out": "experiments/generality_ppo/models/ppo_bpic2017_rl_prescriptive_monitoring"
+  },
+  "n_episodes": 4012,
+  "mean_episode_reward_last_50": 166503.5,
+  "elapsed_seconds": 856.1447696685791,
+  "timestamp": "2026-08-30T16:12:29Z",
+  "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/libraries-prescriptive-process/01-rl-online/RL-prescriptive-monitoring/rl/data/ready_to_use_adaptive_bpic2017.csv",
+  "csv_mtime": "2026-06-19T20:14:52Z",
+  "env": "PPMEnvFast",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy"
+}
