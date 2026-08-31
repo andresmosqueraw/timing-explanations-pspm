@@ -11,3 +11,4 @@ __pycache__/
 PeerJ2023/
 simbank_resources/data/
 data/*.csv
+zenodo_upload/
