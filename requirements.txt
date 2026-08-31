@@ -1,8 +1,5 @@
-# Environment for the generality study (paper Sec. 4.5). This is NOT the
-# repo's main .venv: stable-baselines3 and the TDQN pipeline have conflicting
-# torch constraints, so this study runs in its own environment.
-# Reference versions are the ones the committed result JSONs were produced with
-# (Python 3.10).
+# Reference versions are the ones the committed result JSONs (fidelity_results.json,
+# gain_table_results.json) were produced with (Python 3.10).
 stable-baselines3==2.9.0
 torch>=2.4
 gymnasium==1.3.0
