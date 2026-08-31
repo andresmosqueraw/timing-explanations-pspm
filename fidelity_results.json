@@ -1,0 +1,113 @@
+[
+  {
+    "log": "BPIC2012",
+    "n_wait_states": 500,
+    "n_total_states": 28692,
+    "reference": [
+      0.5204213857650757,
+      0.6764254570007324,
+      0.6764254570007324,
+      3.0
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "k1": {
+      "k": 1,
+      "abs_guided": 0.051867224276065826,
+      "abs_random": 0.024099221992492675,
+      "abs_anti": 0.0,
+      "gap": 0.02776800174713135,
+      "gap_se": 0.0009783974168118264,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 0.07722891867160797,
+      "abs_random": 0.043201112174987795,
+      "abs_anti": 0.010812751948833466,
+      "gap": 0.03402780971527099,
+      "gap_se": 0.0016689879720045426,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    }
+  },
+  {
+    "log": "BPIC2017",
+    "n_wait_states": 500,
+    "n_total_states": 30000,
+    "reference": [
+      0.5129204988479614,
+      0.8632895350456238,
+      0.9931666851043701,
+      3.0
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "k1": {
+      "k": 1,
+      "abs_guided": 0.03335593268275261,
+      "abs_random": 0.01184335012435913,
+      "abs_anti": 0.0,
+      "gap": 0.021512584018707277,
+      "gap_se": 0.0008962977805164256,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 0.03492584824562073,
+      "abs_random": 0.02124139165878296,
+      "abs_anti": 0.0015834961086511612,
+      "gap": 0.013684456348419189,
+      "gap_se": 0.0008317514892589281,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    }
+  },
+  {
+    "log": "SimBank",
+    "n_wait_states": 500,
+    "n_total_states": 1098853,
+    "reference": [
+      0.5455020070075989,
+      0.3503311276435852,
+      0.204703226685524,
+      1.858574390411377
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.985488772392273,
+      "abs_random": 0.8099453324586153,
+      "abs_anti": 0.11388258635997772,
+      "gap": 1.1755434065550567,
+      "gap_se": 0.05319623650703465,
+      "flip_guided": 0.0,
+      "flip_random": 0.0047
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 2.4043619632720947,
+      "abs_random": 1.431583868521452,
+      "abs_anti": 0.34588780999183655,
+      "gap": 0.972778215867281,
+      "gap_se": 0.04810935605269477,
+      "flip_guided": 0.0,
+      "flip_random": 0.0027
+    }
+  }
+]

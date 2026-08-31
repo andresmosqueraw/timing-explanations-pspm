@@ -4,6 +4,7 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -28,51 +29,94 @@ plt.rcParams.update({"font.size": 10, "axes.grid": True, "grid.alpha": 0.3})
 # ---------------------------------------------------------------------
 # Fig 1: conceptual MDP timeline (wait-vs-act repeated decision)
 # ---------------------------------------------------------------------
-fig, ax = plt.subplots(figsize=(6.0, 2.4))
-ax.set_xlim(-0.3, 6.3)
-ax.set_ylim(-1.6, 1.3)
-ax.axis("off")
+WAIT_COLOR = "#c44e52"
+INTERVENE_COLOR = "#2e8b57"
+NODE_EDGE = "#1a252c"
+TEXT_COLOR = "#1a252c"
+
+fig, ax = plt.subplots(figsize=(6.0, 2.85))
+fig.patch.set_facecolor("white")
+ax.set_facecolor("white")
 
 xs = [0, 1.5, 3, 4.5, 6]
 labels = ["$e_1$", "$e_2$", "$e_3$", "$e_4$", "$e_5$"]
+y_main = 0.0
+node_radius = 0.24
+
+ax.plot([xs[0] - 0.5, xs[-1] + 0.5], [y_main, y_main], color="#555555", lw=1.6, zorder=1)
+
 for x, lab in zip(xs, labels):
-    ax.scatter([x], [0], s=260, color="#4c72b0", zorder=3)
-    ax.text(x, 0, lab, ha="center", va="center", color="white", fontsize=9, zorder=4)
+    circle = plt.Circle((x, y_main), node_radius, facecolor="white",
+                         edgecolor=NODE_EDGE, lw=1.6, zorder=3)
+    ax.add_patch(circle)
+    ax.text(x, y_main, lab, ha="center", va="center", color=TEXT_COLOR,
+            fontsize=11, fontweight="bold", zorder=4)
 
-for i in range(len(xs) - 1):
-    ax.annotate(
-        "", xy=(xs[i + 1] - 0.22, 0), xytext=(xs[i] + 0.22, 0),
-        arrowprops=dict(arrowstyle="-", color="#888888", lw=1.2),
-    )
-
+# "wait" self-loops under e1..e4: a dashed arc that returns to its own node.
 decision_xs = xs[:-1]
 for x in decision_xs:
+    arc = patches.Arc((x, y_main - 0.30), width=0.5, height=0.5, angle=0,
+                       theta1=200, theta2=340, color=WAIT_COLOR, ls=(0, (3, 2)),
+                       lw=1.5, zorder=2)
+    ax.add_patch(arc)
     ax.annotate(
-        "wait", xy=(x, -0.75), xytext=(x, -0.05),
-        ha="center", va="top", fontsize=8, color="#c44e52",
-        arrowprops=dict(arrowstyle="->", color="#c44e52", lw=1.1,
-                         connectionstyle="arc3,rad=-0.35"),
+        "", xy=(x + 0.235, y_main - 0.185), xytext=(x + 0.255, y_main - 0.29),
+        arrowprops=dict(arrowstyle="-|>", color=WAIT_COLOR, lw=1.5, mutation_scale=10),
+        zorder=2,
     )
-    ax.annotate(
-        "", xy=(x + 0.55, -0.75), xytext=(x, -0.75),
-        arrowprops=dict(arrowstyle="->", color="#c44e52", lw=1.0, ls=(0, (2, 2))),
-    )
+    ax.text(x, y_main - 0.66, "wait", fontsize=9, fontweight="bold",
+            color=WAIT_COLOR, ha="center", va="center")
 
+# "intervene" and episode end at e4.
 x_int = xs[3]
 ax.annotate(
-    "intervene", xy=(x_int, 0.95), xytext=(x_int, 0.05),
-    ha="center", va="bottom", fontsize=8.5, color="#55a868", fontweight="bold",
-    arrowprops=dict(arrowstyle="->", color="#55a868", lw=1.4,
-                     connectionstyle="arc3,rad=0.3"),
+    "", xy=(x_int, y_main + 0.78), xytext=(x_int, y_main + node_radius + 0.05),
+    arrowprops=dict(arrowstyle="-|>", color=INTERVENE_COLOR, lw=2.0, mutation_scale=13),
+    zorder=2,
 )
-ax.scatter([x_int], [1.1], marker="s", s=170, color="#55a868", zorder=3)
-ax.text(x_int, 1.1, "END", ha="center", va="center", color="white", fontsize=6.5, zorder=4)
+ax.text(x_int + 0.14, y_main + 0.44, "intervene", fontsize=9.5, fontweight="bold",
+        color=INTERVENE_COLOR, ha="left", va="center")
 
-ax.text(-0.1, -1.35, r"At every event, the policy re-asks: wait (dashed loop, stay open) or"
-                      "\nintervene (solid arrow, episode ends). $a_0{=}$wait is a first-class action,"
-                      "\nnot the absence of one. $e_5$ is simply the last event shown; the same"
-                      "\nchoice recurs at every later event of a longer case.",
-        fontsize=7.6, ha="left", va="top", style="italic")
+badge_w, badge_h = 0.62, 0.30
+badge = patches.FancyBboxPatch(
+    (x_int - badge_w / 2, y_main + 0.78), badge_w, badge_h,
+    boxstyle="round,pad=0.05,rounding_size=0.07",
+    facecolor=INTERVENE_COLOR, edgecolor="none", zorder=4,
+)
+ax.add_patch(badge)
+ax.text(x_int, y_main + 0.78 + badge_h / 2, "END", fontsize=9, fontweight="bold",
+        color="white", ha="center", va="center", zorder=5)
+
+# Callout: the 4-feature state that drives the decision, anchored at e2 (kept
+# away from e4's intervene/END so the two annotations don't collide).
+x_state = xs[1]
+STATE_COLOR = "#4c72b0"
+ax.annotate(
+    "", xy=(x_state, y_main + node_radius + 0.04), xytext=(x_state, y_main + 0.40),
+    arrowprops=dict(arrowstyle="-|>", color=STATE_COLOR, lw=1.2, mutation_scale=9),
+    zorder=2,
+)
+state_box = patches.FancyBboxPatch(
+    (x_state - 0.98, y_main + 0.42), 1.96, 0.52,
+    boxstyle="round,pad=0.06,rounding_size=0.06",
+    facecolor="#eef2f8", edgecolor=STATE_COLOR, lw=1.1, zorder=3,
+)
+ax.add_patch(state_box)
+ax.text(
+    x_state, y_main + 0.68,
+    r"$s_t\,{=}\,$(relative position, reliability,",
+    fontsize=6.6, color=STATE_COLOR, ha="center", va="center", zorder=4,
+)
+ax.text(
+    x_state, y_main + 0.55,
+    r"deviation, available resources)",
+    fontsize=6.6, color=STATE_COLOR, ha="center", va="center", zorder=4,
+)
+
+ax.set_xlim(xs[0] - 0.7, xs[-1] + 0.7)
+ax.set_ylim(y_main - 0.95, y_main + 1.25)
+ax.set_aspect("equal")
+ax.axis("off")
 
 fig.tight_layout()
 fig.savefig(OUT / "fig1_mdp_timeline.pdf", bbox_inches="tight")
@@ -95,12 +139,10 @@ ax.plot(curve["episode"], curve["reward"], color="#4c72b0", alpha=0.25, lw=0.6,
 ax.plot(curve["episode"], roll, color="#c44e52", lw=1.8, label="rolling mean (window 100)")
 ax.set_xlabel("Episode")
 ax.set_ylabel("Reward")
-ax.legend(loc="lower right", fontsize=8, frameon=True)
-ax.set_title(
-    f"seed={manifest['seed']}, total timesteps={manifest['total_timesteps']:,}, "
-    f"{manifest['n_episodes']:,} episodes",
-    fontsize=8.5,
-)
+ax.legend(loc="upper left", fontsize=8, frameon=True)
+# No in-image title: the seed/timesteps/episode count are reported in the
+# LaTeX caption instead, so the caption is self-contained (writing-guide
+# rule: title belongs in the caption, not baked into the figure).
 fig.tight_layout()
 fig.savefig(OUT / "fig2_training_curve.pdf", bbox_inches="tight")
 plt.close(fig)

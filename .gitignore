@@ -4,3 +4,10 @@ __pycache__/
 *.pyc
 *.pyo
 .env
+
+# Heavy data/results, hosted elsewhere (kept on disk, not versioned here).
+# PPO checkpoints under models/ and simbank_resources/models/ stay tracked
+# (small, ~100-150KB each) -- only the raw/intermediate data is excluded.
+PeerJ2023/
+simbank_resources/data/
+data/*.csv

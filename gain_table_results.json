@@ -1,0 +1,26 @@
+{
+  "bpic2012": {
+    "n": 28692,
+    "hist_gain": -28.154189321065104,
+    "policy_gain": 24.269831311863935,
+    "delta": 52.42402063292904,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.5999581764951903
+  },
+  "bpic2017": {
+    "n": 30000,
+    "hist_gain": -76.10583333333334,
+    "policy_gain": 51.39666666666667,
+    "delta": 127.5025,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.9977
+  },
+  "simbank": {
+    "n": 28692,
+    "hist_gain": 36.637390213299874,
+    "policy_gain": 52.498457850637166,
+    "delta": 15.861067637337293,
+    "policy_intervene_rate": 0.03917468283842186,
+    "hist_intervene_rate": 0.03094939355918026
+  }
+}

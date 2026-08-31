@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "total_timesteps": 150000,
+  "args": {
+    "timesteps": 150000,
+    "seed": 42,
+    "n_resources": 5,
+    "data": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/timing-explanations-pspm/simbank_resources/data/simbank_time_contact_hq_with_resources.pkl",
+    "out": null
+  },
+  "n_episodes": 66884,
+  "mean_episode_reward_last_50": 513.1248153887561,
+  "elapsed_seconds": 407.9209804534912,
+  "timestamp": "2026-08-31T13:21:56Z",
+  "data_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/timing-explanations-pspm/simbank_resources/data/simbank_time_contact_hq_with_resources.pkl",
+  "data_mtime": "2026-08-31T01:16:19Z",
+  "env": "SimBankHQEnvFast",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "ite_proxy_mean_unc_quality": 1.022801048001871,
+  "ite_proxy_std_unc_quality": 1.5264303419744827,
+  "note": "available_resources is a synthetic extension (build_resources.py); ite_proxy is a z-scored uncertainty proxy, NOT a causal effect estimate. See module docstring. THREE EARLIER FIX ATTEMPTS (ent_coef alone; ent_coef+VecNormalize at 150k; same at 500k) all failed to fix an always-intervene collapse (100% intervene, mean reward -63.6, worse than always-wait's +43.78). ROOT CAUSE FOUND AFTERWARD: SimBankHQEnvFast.reset() always restarted at row 0 of the globally sorted dataframe (copied 1:1 from the reference PPMEnvFast), so every training episode was the exact same single-step transition (ep_len_mean stuck at 1.0 for the full 500k steps); the policy never saw more than one state during training. FIX: reset() now starts each episode at a uniformly random case's first row (see SimBankHQEnvFast.__init__ comment); the ent_coef/VecNormalize band-aids were removed (plain default PPO). Post-fix dose-response: 150k steps -> 3.4% intervene rate, mean reward 47.499, genuinely beats always-wait (non-degenerate, discriminates by state). 500k steps -> over-trained past this point: intervene rate collapsed to 0.0% (entropy_loss froze near 0 again, just toward the opposite trivial extreme), mean reward 42.3, essentially tied with (very slightly below) always-wait. THIS CHECKPOINT uses 150k steps (early stopping at the point validated as non-degenerate and baseline-beating), seed=42, identical config to the other three logs' checkpoints otherwise. Benchmarks: always-wait=+43.78, always-intervene=-68.67, oracle-best-per-row=+93.08. This run's own eval: intervene rate 3.4%, mean per-step reward 47.499 (BEATS always-wait)."
+}
