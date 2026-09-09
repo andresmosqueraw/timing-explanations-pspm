@@ -109,8 +109,10 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     results = {"variant": args.variant}
-    results["bpic2012"] = bpic_gain("BPIC2012", paths.BPIC2012_CSV, paths.variant_model("BPIC2012", args.variant), "Treatment", variant=args.variant)
-    results["bpic2017"] = bpic_gain("BPIC2017", paths.BPIC2017_CSV, paths.variant_model("BPIC2017", args.variant), "treatment", sample=30000, variant=args.variant)
+    results["bpic2012"] = bpic_gain("BPIC2012", paths.bpic_csv("BPIC2012", args.variant), paths.variant_model("BPIC2012", args.variant),
+                                    pools.treatment_col("BPIC2012", args.variant), variant=args.variant)
+    results["bpic2017"] = bpic_gain("BPIC2017", paths.bpic_csv("BPIC2017", args.variant), paths.variant_model("BPIC2017", args.variant),
+                                    pools.treatment_col("BPIC2017", args.variant), sample=30000, variant=args.variant)
     n_match = results["bpic2012"]["n"]
     results["simbank"] = simbank_gain(args.simbank_rows, sample=n_match, variant=args.variant)
     results["simbank"]["rows"] = args.simbank_rows

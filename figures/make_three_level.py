@@ -66,7 +66,7 @@ for ax, items, title, sub, xlabel, is_state in panels:
     names = [a for a, _, _ in items]
     phi = np.array([c for _, _, c in items])
     ax.barh(range(len(items)), phi, color=[POS if v > 0 else NEG for v in phi], height=0.62)
-    labs = [label(a) for a, _, _ in items]
+    labs = [label(a, v) for a, v, _ in items]
     ax.set_yticks(range(len(items)), labs, fontsize=7.1)
     ax.set_facecolor("white")
     ax.invert_yaxis(); ax.axvline(0, color=INK, lw=0.8)
@@ -81,7 +81,14 @@ for ax, items, title, sub, xlabel, is_state in panels:
 # not separately colourable, so keep both in ink but different size through the newline (matplotlib limitation).
 
 # --- one sentence -------------------------------------------------------------
-sentence = "In plain terms:  the loan looks likely to fail, a call is expected to change that, and someone is free to make it.  Act now."
+acts = rc["dq"] > 0
+risk_s = "the loan looks likely to fail" if rc["r"] >= 0.5 else "the loan looks likely to go through"
+effect_s = "a call is expected to help" if cate > mean_cate else "a call is not expected to help much"
+native = [(k, rc["timing_phi"][k]) for k in ("available_resources", "relative_position")]
+top_native = max(native, key=lambda kv: abs(kv[1]))
+reason = label(top_native[0], rc["state"][top_native[0]])
+timing_s = (f"and {reason}.  Act now." if acts else f"but {reason}.  Wait.")
+sentence = f"In plain terms:  {risk_s}, {effect_s}, {timing_s}"
 fig.patches.append(patches.FancyBboxPatch((X0, 0.03), 3 * COL_W + 2 * GAP, 0.085, boxstyle="square,pad=0", transform=fig.transFigure,
                                           fc="#fffbeb", ec="#f59e0b", lw=0.9, zorder=3))
 fig.text(X0 + 0.015, 0.0725, sentence, fontsize=8.6, color=INK, va="center", zorder=4)

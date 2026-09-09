@@ -85,12 +85,12 @@ cw, ch, cy = 31.3, 27.0, 12.5
 timing_keys = sorted(card["timing_phi"], key=lambda k: -abs(card["timing_phi"][k]))[:3]
 cards = [
     ("Why is this case at risk?", f"{card['r']:.0%} chance the loan is not accepted",
-     [(pretty(a), c) for a, _, c in card["risk_top"][:3]]),
+     [(pretty(a, v), c) for a, v, c in card["risk_top"][:3]]),
     ("Why would calling help?",
      (f"estimated effect of the call {effect['pT'] - effect['pU']:.2f}, usual {effect_mean:.2f}" if effect else "estimated effect of the call"),
-     ([(pretty(a), c) for a, _, c, _, _ in effect["effect_top"][:3]] if effect else None)),
+     ([(pretty(a, v), c) for a, v, c, _, _ in effect["effect_top"][:3]] if effect else None)),
     ("Why call now, not later?", "what tipped the policy to act",
-     [(pretty(k), card["timing_phi"][k]) for k in timing_keys]),
+     [(pretty(k, card["state"][k]), card["timing_phi"][k]) for k in timing_keys]),
 ]
 for i, (title, sub, items) in enumerate(cards):
     x0 = 1.5 + i * (cw + 1.55)

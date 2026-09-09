@@ -267,7 +267,8 @@ def main(argv=None):
     ap.add_argument("--out", default=None)
     args = ap.parse_args(argv)
     results = [run_log(name, args) for name in args.logs]
-    out_path = Path(args.out) if args.out else paths.EFFECT_JSON
+    out_path = Path(args.out) if args.out else (paths.EFFECT_JSON if args.variant == pools.DEFAULT_VARIANT
+                                                 else paths.REPO / f"effect_results_{args.variant}.json")
     out_path.write_text(json.dumps(_jsonable({"args": vars(args), "results": results}), indent=2))
     print(f"\nSaved -> {out_path}")
 

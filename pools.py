@@ -82,7 +82,18 @@ VARIANTS: dict[str, list[str]] = {
     # per-case, ent_coef=0.02, unscaled rewards: same collapse (approx_kl and
     # entropy reach exactly 0); the +-100 rewards swamp any entropy bonus
     "cate_ent002": ["Proba_if_Treated", "Proba_if_Untreated"],
+    # the "cate" recipe trained on the *coherent* state: the prepared log's
+    # test split scored by the retrained risk and effect models
+    # (build_retrained_state.py, paths.retrained_csv), so the two lower
+    # levels explain exactly the numbers the policy reads. The paper's policy.
+    "cate_retrained": ["Proba_if_Treated", "Proba_if_Untreated"],
 }
+# Column holding the historically recorded action in each BPIC CSV
+TREATMENT_COL = {"released": {"BPIC2012": "Treatment", "BPIC2017": "treatment"}}
+
+
+def treatment_col(log: str, variant: str) -> str:
+    return "treatment" if variant == "cate_retrained" else TREATMENT_COL["released"][log]
 
 
 # The policy the paper explains: the "cate" variant on all three logs. On
@@ -104,10 +115,8 @@ def feature_names(log: str = "BPIC2017", variant: str = DEFAULT_VARIANT) -> list
 
 def evaluation_pool(log: str, variant: str = DEFAULT_VARIANT):
     """(states, rows, feature_names) of the Section 6/7 pool for ``log``."""
-    if log == "BPIC2012":
-        states, rows = bpic_pool(paths.BPIC2012_CSV, variant=variant)
-    elif log == "BPIC2017":
-        states, rows = bpic_pool(paths.BPIC2017_CSV, variant=variant)
+    if log in ("BPIC2012", "BPIC2017"):
+        states, rows = bpic_pool(paths.bpic_csv(log, variant), variant=variant)
     elif log == "SimBank":
         states, rows = simbank_pool(paths.simbank_pkl(variant), variant=variant)
     else:

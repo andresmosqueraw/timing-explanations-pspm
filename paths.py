@@ -23,6 +23,25 @@ def _env_path(var: str, default: Path) -> Path:
 # Shoush & Dumas's preprocessed BPIC logs (their repo's own CSVs, ';'-separated).
 BPIC2012_CSV = _env_path("TIMING_BPIC2012_CSV", DATA / "ready_to_use_adaptive_bpic2012.csv")
 BPIC2017_CSV = _env_path("TIMING_BPIC2017_CSV", DATA / "ready_to_use_adaptive_bpic2017.csv")
+# The coherent-pipeline RL CSVs (build_retrained_state.py): the prepared
+# log's test split scored by the retrained risk and effect models, the state
+# the "cate_retrained" policy variant is trained and evaluated on.
+RETRAINED_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_CSV", DATA / "retrained_state_bpic2012.csv"),
+                 "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_CSV", DATA / "retrained_state_bpic2017.csv")}
+
+
+def retrained_csv(log: str):
+    return RETRAINED_CSV[log]
+
+
+def bpic_csv(log: str, variant: str = "cate_retrained"):
+    """The RL CSV a BPIC policy variant reads: the coherent-pipeline CSV for
+    ``cate_retrained``, Shoush & Dumas's shipped CSV for every other variant."""
+    if variant == "cate_retrained":
+        return retrained_csv(log)
+    return {"BPIC2012": BPIC2012_CSV, "BPIC2017": BPIC2017_CSV}[log]
+
+
 # SimBank's as-generated Time-contact-HQ log (De Moor et al.), input of
 # simbank_resources/build_resources.py ...
 SIMBANK_RAW = _env_path("TIMING_SIMBANK_RAW", DATA / "loan_log_[_time_contact_HQ_]_100000_train_normal")
@@ -94,3 +113,7 @@ RISK_FIGURES = _env_path("TIMING_RISK_FIGURES", REPO / "figures/out/risk")
 EFFECT_MODELS = MODELS / "effect"
 EFFECT_JSON = REPO / "effect_results.json"
 EFFECT_FIGURES = _env_path("TIMING_EFFECT_FIGURES", REPO / "figures/out/effect")
+# run_compose_suite.py: how the three levels compose (propagated attribution,
+# end-to-end fidelity, typology, shipped-vs-rebuilt state).
+COMPOSE_JSON = REPO / "compose_results.json"
+COMPOSE_FIGURES = _env_path("TIMING_COMPOSE_FIGURES", REPO / "figures/out/compose")
