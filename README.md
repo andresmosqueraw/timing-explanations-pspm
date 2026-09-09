@@ -37,6 +37,16 @@ the paper's. `--variant released` evaluates the earlier four-feature design
 (`*_released.json`). SimBank keeps its single checkpoint, trained on the
 retrained estimator's features (`simbank_resources/add_effect_features.py`).
 
+Per decision point (`gain_table_results.json`) the paper's policy earns
+40.3 / 21.4 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
+-63.3 for always waiting, -49.5 / -49.8 / 16.6 for always intervening and
+-27.6 / -32.0 / -61.4 for the recorded action (oracle 58.3 / 54.4 / 46.5). It
+intervenes on 21.5 % / 33.6 % / 73.2 % of the decision points (precision
+0.66 / 0.38 / 1.00, recall 0.74 / 0.76 / 1.00 against the positive-effect
+rows): on BPIC2017 it over-intervenes, which the composition study traces to
+the timing level reading `Proba_if_Treated` (54 % of its weight) far more
+than `Proba_if_Untreated` (18 %).
+
 ## Layout
 
 - `paths.py` — every input and output path, overridable by environment
