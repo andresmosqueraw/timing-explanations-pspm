@@ -1,0 +1,46 @@
+BPIC2012: train 50759 / val 28559 / test 28692 prefixes, 45 features (3 categorical), deviant share train=0.480
+{
+ "log": "BPIC2012",
+ "seed": 2,
+ "iterations": 1000,
+ "best_iteration": 190,
+ "n_train": 50759,
+ "n_val": 28559,
+ "n_test": 28692,
+ "n_features": 45,
+ "deviant_share_train": 0.48009220039795897,
+ "test_auc": 0.6974717201066437,
+ "elapsed_seconds": 59.29574775695801,
+ "timestamp": "2026-09-04T15:59:57Z",
+ "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+ "label": "deviant",
+ "rl_csv_overlap_rows": 28692,
+ "corr_with_shipped_proba": 0.7312415470161059,
+ "agreement_with_shipped_predicted": 0.7412519169106371,
+ "label_matches_actual": 1.0,
+ "shipped_auc_on_overlap": 0.7431981486414166,
+ "retrained_auc_on_overlap": 0.6974717201066437
+}
+BPIC2017: train 575329 / val 292857 / test 293559 prefixes, 76 features (9 categorical), deviant share train=0.351
+{
+ "log": "BPIC2017",
+ "seed": 2,
+ "iterations": 1000,
+ "best_iteration": 142,
+ "n_train": 575329,
+ "n_val": 292857,
+ "n_test": 293559,
+ "n_features": 76,
+ "deviant_share_train": 0.3512529352770328,
+ "test_auc": 0.9415019430286857,
+ "elapsed_seconds": 466.0297124385834,
+ "timestamp": "2026-09-04T16:07:43Z",
+ "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+ "label": "deviant",
+ "rl_csv_overlap_rows": 586416,
+ "corr_with_shipped_proba": -0.005177857666046912,
+ "agreement_with_shipped_predicted": 0.6635681836784808,
+ "label_matches_actual": 0.7755620583340155,
+ "shipped_auc_on_overlap": 0.5541706866253563,
+ "retrained_auc_on_overlap": 0.8362280737164572
+}

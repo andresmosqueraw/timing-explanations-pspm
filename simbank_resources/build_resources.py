@@ -48,15 +48,16 @@ METHOD
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-RAW_PATH = Path(
-    "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability"
-    "/tdqn/data/raw/loan_log_[_time_contact_HQ_]_100000_train_normal"
-)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import paths  # noqa: E402
+
+RAW_PATH = paths.SIMBANK_RAW  # override with --raw or TIMING_SIMBANK_RAW
 OUT_DIR = Path(__file__).parent / "data"
 HQ_DURATION_DAYS = 6.0  # SimBank/SimBank/activity_execution.py: times_dic["contact_headquarters"] = 6 * 86400 sec
 
@@ -120,11 +121,12 @@ def main():
     ap.add_argument("--arrival-rate", type=float, default=1.446, help="cases/day, Poisson rate (see docstring)")
     ap.add_argument("--n-servers", type=int, default=None, help="fix N; if omitted, sweep and report")
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--out", type=str, default=str(OUT_DIR / "simbank_time_contact_hq_with_resources.pkl"))
+    ap.add_argument("--raw", type=str, default=str(RAW_PATH), help="SimBank's as-generated Time-contact-HQ log (pickle)")
+    ap.add_argument("--out", type=str, default=str(paths.SIMBANK_PKL))
     args = ap.parse_args()
 
-    print(f"Loading {RAW_PATH} ...")
-    df = pd.read_pickle(RAW_PATH)
+    print(f"Loading {args.raw} ...")
+    df = pd.read_pickle(args.raw)
     print(f"  {len(df):,} rows, {df['case_nr'].nunique():,} cases")
 
     synth = synthetic_schedule(df, args.arrival_rate, args.seed)

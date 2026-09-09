@@ -1,0 +1,28 @@
+{
+  "bpic2012": {
+    "n": 28692,
+    "hist_gain": -28.154189321065104,
+    "policy_gain": 24.269831311863935,
+    "delta": 52.42402063292904,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.5999581764951903,
+    "oracle_gain": 58.096333472745016,
+    "always_wait_gain": 24.269831311863935,
+    "share_ite_positive": 0.1932942980621776,
+    "policy_precision": null,
+    "policy_recall": 0.0
+  },
+  "bpic2017": {
+    "n": 30000,
+    "hist_gain": -76.37166666666667,
+    "policy_gain": 51.65833333333333,
+    "delta": 128.03,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.9977333333333334,
+    "oracle_gain": 57.100833333333334,
+    "always_wait_gain": 51.65833333333333,
+    "share_ite_positive": 0.0311,
+    "policy_precision": null,
+    "policy_recall": 0.0
+  }
+}

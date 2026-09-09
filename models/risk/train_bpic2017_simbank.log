@@ -1,0 +1,40 @@
+BPIC2017: train 575329 / val 292857 / test 293559 prefixes, 77 features (10 categorical), deviant share train=0.351
+{
+ "log": "BPIC2017",
+ "seed": 2,
+ "iterations": 1000,
+ "best_iteration": 225,
+ "n_train": 575329,
+ "n_val": 292857,
+ "n_test": 293559,
+ "n_features": 77,
+ "deviant_share_train": 0.3512529352770328,
+ "test_auc": 0.9365392560593657,
+ "elapsed_seconds": 486.8343925476074,
+ "timestamp": "2026-09-04T15:56:45Z",
+ "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+ "label": "deviant",
+ "rl_csv_overlap_rows": 586416,
+ "corr_with_shipped_proba": 0.001869121681620057,
+ "agreement_with_shipped_predicted": 0.6053211372131729,
+ "label_matches_actual": 0.7755620583340155,
+ "shipped_auc_on_overlap": 0.5541706866253563,
+ "retrained_auc_on_overlap": 0.8340050340961531
+}
+SimBank: train 549471 / val 274487 / test 274859 prefixes, 47 features (1 categorical), deviant share train=0.713
+{
+ "log": "SimBank",
+ "seed": 2,
+ "iterations": 1000,
+ "best_iteration": 445,
+ "n_train": 549471,
+ "n_val": 274487,
+ "n_test": 274859,
+ "n_features": 47,
+ "deviant_share_train": 0.7126563549304695,
+ "test_auc": 0.9944072143444153,
+ "elapsed_seconds": 281.4355483055115,
+ "timestamp": "2026-09-04T16:01:35Z",
+ "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+ "label": "deviant = case ends in cancel_application (SimBank, ours)"
+}

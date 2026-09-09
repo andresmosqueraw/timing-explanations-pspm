@@ -11,4 +11,9 @@ __pycache__/
 PeerJ2023/
 simbank_resources/data/
 data/*.csv
+data/loan_log_*
+figures/out/
 zenodo_upload/
+catboost_info/
+*.log
+!models/**/*.log

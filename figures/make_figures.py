@@ -1,3 +1,13 @@
+"""The paper's four figures: the MDP timeline (Fig. 1), the BPIC2017
+checkpoint's training curve (Fig. 2) and two explanation cards (Figs. 3-4)
+computed on the Section 6 evaluation pool (pools.bpic_pool).
+
+Writes to paths.PAPER_FIGURES (default figures/out; set TIMING_PAPER_FIGURES
+to the manuscript's figures/ directory to regenerate them in place).
+
+Usage: python figures/make_figures.py
+"""
+
 import json
 import sys
 from pathlib import Path
@@ -11,18 +21,14 @@ import pandas as pd
 import torch
 from stable_baselines3 import PPO
 
-GEN = Path(__file__).resolve().parent.parent  # this repo's root (self-contained)
-LIB = Path(
-    "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/libraries-prescriptive-process/01-rl-online"
-)
-OUT = Path("/home/andrew/Documents/docs/3-escribir-paper/conferencias/paper1/figures")
-OUT.mkdir(parents=True, exist_ok=True)
-
-sys.path.insert(0, str(GEN))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import paths  # noqa: E402
+import pools  # noqa: E402
 from dual_level import MarginHead, WaitMarginHead, integrated_gradients  # noqa: E402
-from run_dual_level_ppo import sample_rows  # noqa: E402
 
-FEATS = ["relative_position", "reliability", "deviation", "available_resources"]
+OUT = paths.PAPER_FIGURES
+OUT.mkdir(parents=True, exist_ok=True)
+FEATS = pools.FEATS
 
 plt.rcParams.update({"font.size": 10, "axes.grid": True, "grid.alpha": 0.3})
 
@@ -104,12 +110,12 @@ state_box = patches.FancyBboxPatch(
 ax.add_patch(state_box)
 ax.text(
     x_state, y_main + 0.68,
-    r"$s_t\,{=}\,$(relative position, reliability,",
+    r"$s_t\,{=}\,$(progress, reliability, deviation,",
     fontsize=6.6, color=STATE_COLOR, ha="center", va="center", zorder=4,
 )
 ax.text(
     x_state, y_main + 0.55,
-    r"deviation, available resources)",
+    r"free resources, effect estimates)",
     fontsize=6.6, color=STATE_COLOR, ha="center", va="center", zorder=4,
 )
 
@@ -124,96 +130,111 @@ plt.close(fig)
 print("fig1 done")
 
 # ---------------------------------------------------------------------
-# Fig 2: training curve (real data) with manifest annotation
+# Fig 2: training curve of the BPIC2017 checkpoint (manifest annotation in
+# the LaTeX caption). Rewards were scaled by `reward_scale` during training;
+# the curve is shown in the unscaled units of the reward function.
 # ---------------------------------------------------------------------
-curve = pd.read_csv(GEN / "models/ppo_bpic2017_rl_prescriptive_monitoring_training_curve.csv")
-manifest = json.loads(
-    (GEN / "models/ppo_bpic2017_rl_prescriptive_monitoring_manifest.json").read_text()
-)
-
-roll = curve["reward"].rolling(window=100, min_periods=1).mean()
+VARIANT = pools.DEFAULT_VARIANT
+curve = pd.read_csv(paths.variant_artifact("BPIC2017", VARIANT, "_training_curve.csv"))
+manifest = json.loads(paths.variant_artifact("BPIC2017", VARIANT, "_manifest.json").read_text())
+scale = float(manifest.get("reward_scale", 1.0))
+reward = curve["reward"] / scale
+roll = reward.rolling(window=100, min_periods=1).mean()
 
 fig, ax = plt.subplots(figsize=(6.0, 3.0))
-ax.plot(curve["episode"], curve["reward"], color="#4c72b0", alpha=0.25, lw=0.6,
-        label="episode reward")
+ax.plot(curve["episode"], reward, color="#4c72b0", alpha=0.25, lw=0.6, label="episode return")
 ax.plot(curve["episode"], roll, color="#c44e52", lw=1.8, label="rolling mean (window 100)")
-ax.set_xlabel("Episode")
-ax.set_ylabel("Reward")
+ax.set_xlabel("Episode (one case)")
+ax.set_ylabel("Return")
 ax.legend(loc="upper left", fontsize=8, frameon=True)
-# No in-image title: the seed/timesteps/episode count are reported in the
-# LaTeX caption instead, so the caption is self-contained (writing-guide
-# rule: title belongs in the caption, not baked into the figure).
 fig.tight_layout()
 fig.savefig(OUT / "fig2_training_curve.pdf", bbox_inches="tight")
 plt.close(fig)
-print("fig2 done, n_episodes =", manifest["n_episodes"],
-      "mean_last_50 =", manifest["mean_episode_reward_last_50"])
+print("fig2 done, n_episodes =", manifest["n_episodes"], "mean_last_50 (unscaled) =",
+      manifest["mean_episode_reward_last_50"] / scale, "state =", manifest.get("state_features"))
 
 # ---------------------------------------------------------------------
-# Fig 3 & 4: real explanation cards (IG on WaitMarginHead) for two states
+# Fig 3 & 4: real explanation cards on BPIC2017 -- the median decision to
+# act (IG on Delta Q) and the median decision to wait (IG on Delta Q_wait)
+# of the Section 6 evaluation pool (pools.evaluation_pool).
 # ---------------------------------------------------------------------
-model = PPO.load(str(GEN / "models/ppo_bpic2017_rl_prescriptive_monitoring.zip"), device="cpu")
+model = PPO.load(str(paths.variant_model("BPIC2017", VARIANT)), device="cpu")
 policy = model.policy
-
-# Rebuild the exact same 500-state sample (seed 123) the JSON artifacts used.
-csv = LIB / "RL-prescriptive-monitoring/rl/data/ready_to_use_adaptive_bpic2017.csv"
-df = pd.read_csv(csv, sep=";")
-rows = sample_rows(df, "case_id")
-rel = (rows["prefix_nr"] / rows["case_length"].clip(lower=1)).clip(0, 1)
-resources = np.arange(len(rows)) % 4
-states = np.stack(
-    [rel.to_numpy(), rows["reliability"].to_numpy(), rows["deviation"].to_numpy(), resources],
-    axis=1,
-).astype(np.float32)
+states, _rows, FEATS = pools.evaluation_pool("BPIC2017", VARIANT)
 reference = states.mean(axis=0)
 print("reference (mean state):", dict(zip(FEATS, reference.round(3).tolist())))
 
 margin_head = MarginHead(policy, intervene_action=1)
 wait_head = WaitMarginHead(margin_head)
-
 with torch.no_grad():
     dev = next(policy.parameters()).device
     m0 = margin_head(torch.from_numpy(states).to(dev)).cpu().numpy()
-assert (m0 < 0).all(), "expected every sampled state to be a wait state"
+print(f"pool: {int((m0 > 0).sum())} act states, {int((m0 <= 0).sum())} wait states")
 
-# Pick two illustrative states with different available_resources profiles:
-# one scarce-resource case, one relatively resource-rich case.
-idx_scarce = int(np.argsort(states[:, 3])[5])   # low resources, not the extreme outlier
-idx_rich = int(np.argsort(-states[:, 3])[5])    # high resources, not the extreme outlier
-
-for tag, idx in [("fig3", idx_scarce), ("fig4", idx_rich)]:
+picks = pools.paper_card_indices(states, m0, _rows)  # median *correct* act and wait decisions
+for tag, side in (("fig3", "act"), ("fig4", "wait")):
+    if side not in picks:
+        print(f"{tag}: no {side} state in the pool, skipped")
+        continue
+    idx = picks[side]
     s = states[idx : idx + 1]
-    phi = integrated_gradients(wait_head, s, reference, n_steps=128)[0]
-    dq_wait = float(-margin_head(torch.from_numpy(s).to(dev)).detach().cpu().numpy()[0])
-    print(f"{tag}: idx={idx} state={dict(zip(FEATS, s[0].round(3).tolist()))} "
-          f"dQ_wait={dq_wait:.4f} phi={dict(zip(FEATS, phi.round(4).tolist()))} "
-          f"sum(phi)={phi.sum():.4f}")
+    head, label = (margin_head, r"$\phi^{\Delta Q}$ (pushes toward acting now $\rightarrow$)") if side == "act" \
+        else (wait_head, r"$\phi^{\Delta Q_{\mathrm{wait}}}$ (pulls toward waiting $\rightarrow$)")
+    phi = integrated_gradients(head, s, reference, n_steps=128)[0]
+    target = float(head(torch.from_numpy(s).to(dev)).detach().cpu().numpy()[0])
+    share = np.abs(phi) / np.abs(phi).sum()
+    print(f"{tag} ({side}): idx={idx} state={dict(zip(FEATS, s[0].round(3).tolist()))} target={target:.4f} "
+          f"phi={dict(zip(FEATS, phi.round(4).tolist()))} share={dict(zip(FEATS, share.round(3).tolist()))} sum(phi)={phi.sum():.4f}")
 
     order = np.argsort(-np.abs(phi))
     feats_sorted = [FEATS[i] for i in order]
     phi_sorted = phi[order]
     colors = ["#c44e52" if v > 0 else "#4c72b0" for v in phi_sorted]
 
-    fig, ax = plt.subplots(figsize=(5.4, 2.3))
+    fig, ax = plt.subplots(figsize=(5.4, 2.6))
     y = np.arange(len(feats_sorted))
     ax.barh(y, phi_sorted, color=colors)
     ax.set_yticks(y)
     ax.set_yticklabels(feats_sorted, fontsize=9)
     ax.invert_yaxis()
     ax.axvline(0, color="black", lw=0.8)
-    ax.set_xlabel(r"$\phi^{\Delta Q_{\mathrm{wait}}}$ (pulls toward waiting $\rightarrow$)")
-    # Generous x-margin so the value labels placed just past each bar's tip
-    # never reach the left/right axes edge, where the y-tick labels live --
-    # on a tight bbox that region can otherwise collide with the tip label
-    # of the longest bar.
+    ax.set_xlabel(label)
     ax.margins(x=0.35)
     for yi, v in zip(y, phi_sorted):
         offset = 0.04 * max(abs(phi_sorted))
-        ax.text(v + (offset if v >= 0 else -offset),
-                 yi, f"{v:.3f}", va="center",
-                 ha="left" if v >= 0 else "right", fontsize=8, clip_on=False)
+        ax.text(v + (offset if v >= 0 else -offset), yi, f"{v:.3f}", va="center",
+                ha="left" if v >= 0 else "right", fontsize=8, clip_on=False)
     fig.tight_layout()
     fig.savefig(OUT / f"{tag}_explanation_card.pdf", bbox_inches="tight")
     plt.close(fig)
 
 print("fig3/fig4 done")
+
+# ---------------------------------------------------------------------
+# Fig 3 (combined): the two cards side by side, one figure for the paper.
+# ---------------------------------------------------------------------
+fig, axes = plt.subplots(1, 2, figsize=(9.6, 2.7))
+for ax, side, title in zip(axes, ("act", "wait"), ("(a) decision to act", "(b) decision to wait")):
+    if side not in picks:
+        ax.axis("off"); continue
+    idx = picks[side]
+    s = states[idx : idx + 1]
+    head, label = (margin_head, r"$\phi^{\Delta Q}$ (pushes toward acting now $\rightarrow$)") if side == "act" \
+        else (wait_head, r"$\phi^{\Delta Q_{\mathrm{wait}}}$ (pulls toward waiting $\rightarrow$)")
+    phi = integrated_gradients(head, s, reference, n_steps=128)[0]
+    target = float(head(torch.from_numpy(s).to(dev)).detach().cpu().numpy()[0])
+    order = np.argsort(-np.abs(phi))
+    phi_sorted = phi[order]
+    y = np.arange(len(order))
+    ax.barh(y, phi_sorted, color=["#c44e52" if v > 0 else "#4c72b0" for v in phi_sorted])
+    ax.set_yticks(y); ax.set_yticklabels([FEATS[i] for i in order], fontsize=8)
+    ax.invert_yaxis(); ax.axvline(0, color="black", lw=0.8)
+    ax.set_xlabel(label, fontsize=8); ax.margins(x=0.35)
+    ax.set_title(f"{title}, margin = {target:.2f}", fontsize=9)
+    for yi, v in zip(y, phi_sorted):
+        off = 0.04 * max(abs(phi_sorted))
+        ax.text(v + (off if v >= 0 else -off), yi, f"{v:.2f}", va="center", ha="left" if v >= 0 else "right", fontsize=7, clip_on=False)
+fig.tight_layout()
+fig.savefig(OUT / "fig3_explanation_cards.pdf", bbox_inches="tight")
+plt.close(fig)
+print("fig3 (combined) done")

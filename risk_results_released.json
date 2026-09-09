@@ -1,0 +1,1030 @@
+{
+  "args": {
+    "logs": [
+      "BPIC2012",
+      "BPIC2017",
+      "SimBank"
+    ],
+    "seed": 123,
+    "quick": 0,
+    "skip_plots": false,
+    "out": null
+  },
+  "results": [
+    {
+      "log": "BPIC2012",
+      "n_pool_rows": 500,
+      "n_matched": 500,
+      "n_risk_features": 45,
+      "families_sizes": {
+        "event": 41,
+        "case": 3,
+        "control_flow": 1
+      },
+      "risk_manifest": {
+        "log": "BPIC2012",
+        "seed": 2,
+        "iterations": 1000,
+        "best_iteration": 190,
+        "n_train": 50759,
+        "n_val": 28559,
+        "n_test": 28692,
+        "n_features": 45,
+        "deviant_share_train": 0.48009220039795897,
+        "test_auc": 0.6974717201066437,
+        "feature_importance_top10": {
+          "Activity": 17.67916869103452,
+          "NumberOfOffers": 11.876195516859982,
+          "AMOUNT_REQ": 9.77095483913837,
+          "open_cases_min": 4.824646368703996,
+          "Resource": 4.41748251662815,
+          "timesincelastevent_max": 2.907141896610601,
+          "weekday_max": 2.8857881666283536,
+          "timesincemidnight_max": 2.6773603413184097,
+          "weekday_mean": 2.4580575285075636,
+          "hour_min": 2.3343751292835813
+        },
+        "elapsed_seconds": 59.29574775695801,
+        "timestamp": "2026-09-04T15:59:57Z",
+        "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+        "label": "deviant",
+        "rl_csv_overlap_rows": 28692,
+        "corr_with_shipped_proba": 0.7312415470161059,
+        "agreement_with_shipped_predicted": 0.7412519169106371,
+        "label_matches_actual": 1.0,
+        "shipped_auc_on_overlap": 0.7431981486414166,
+        "retrained_auc_on_overlap": 0.6974717201066437
+      },
+      "risk": {
+        "mean": 0.45954033954935125,
+        "std": 0.19647653046163166,
+        "share_above_0_5": 0.504,
+        "expected_value_logodds": -0.10306116527617355,
+        "global_share_top10": [
+          [
+            "Activity",
+            0.21185244922077395
+          ],
+          [
+            "month_min",
+            0.14142691168210492
+          ],
+          [
+            "open_cases_min",
+            0.0704550210812615
+          ],
+          [
+            "AMOUNT_REQ",
+            0.05333915467572796
+          ],
+          [
+            "month_max",
+            0.05026197527640116
+          ],
+          [
+            "NumberOfOffers",
+            0.04521170912966185
+          ],
+          [
+            "Resource",
+            0.03502455100662656
+          ],
+          [
+            "open_cases_max",
+            0.02622815101547008
+          ],
+          [
+            "timesincecasestart_max",
+            0.018984130537862354
+          ],
+          [
+            "month_mean",
+            0.018375621646338484
+          ]
+        ],
+        "family_share": {
+          "event": 0.6895966869738361,
+          "case": 0.09855086380538981,
+          "control_flow": 0.21185244922077395
+        },
+        "deviant_share_in_pool": 0.512
+      },
+      "link_to_state": {
+        "corr_r_deviation": -0.5529625634636649,
+        "corr_r_reliability": -0.5529625634636649,
+        "deviation_equals_1_minus_predicted": 0.74,
+        "reliability_equals_deviation": true,
+        "corr_retrained_vs_shipped_r": 0.7177289138565951,
+        "mean_shipped_r": 0.44082126329810795
+      },
+      "metrics": {
+        "parsimony": {
+          "nonzero": 41,
+          "of": 45,
+          "by_family": {
+            "event": 38,
+            "case": 2,
+            "control_flow": 1
+          },
+          "above_1pct_share": 29,
+          "effective": 21.519004191603482
+        },
+        "functional_complexity": {
+          "event": {
+            "l1": 12.521094255502515,
+            "flip": 0.326,
+            "n_columns": 41
+          },
+          "case": {
+            "l1": 14.336253812974542,
+            "flip": 0.36,
+            "n_columns": 3
+          },
+          "control_flow": {
+            "l1": 16.126511707914347,
+            "flip": 0.254,
+            "n_columns": 1
+          }
+        },
+        "monotonicity": {
+          "spearman": 0.8135794330916282,
+          "spearman_p": 1.100605788905216e-11,
+          "kendall": 0.6443089430894309,
+          "kendall_p": 5.396106581343035e-10
+        },
+        "lod": {
+          "k": 10,
+          "families": [
+            "event",
+            "case",
+            "control_flow"
+          ],
+          "explanation_counts": [
+            7,
+            2,
+            1
+          ],
+          "model_counts": [
+            7,
+            2,
+            1
+          ],
+          "lod": 0.0
+        },
+        "deletion_test": {
+          "1": {
+            "k": 1,
+            "abs_guided": 0.5154727917628747,
+            "abs_random": 0.06824939448365112,
+            "abs_anti": 0.0,
+            "gap": 0.4472233972792237,
+            "gap_se": 0.03152188870463809,
+            "z": 14.187709418992393,
+            "flip_guided": 0.19
+          },
+          "3": {
+            "k": 3,
+            "abs_guided": 0.6041987170056018,
+            "abs_random": 0.160403644951091,
+            "abs_anti": 0.0,
+            "gap": 0.4437950720545108,
+            "gap_se": 0.0286457589564769,
+            "z": 15.49252274058416,
+            "flip_guided": 0.268
+          }
+        }
+      },
+      "cards": {
+        "highest_risk": {
+          "pool_row": 364,
+          "case_id": "204006",
+          "prefix_nr": 16,
+          "actual_deviant": 1,
+          "r": 0.8540385483137759,
+          "state": {
+            "relative_position": 0.761904776096344,
+            "reliability": 0.0,
+            "deviation": 0.0,
+            "available_resources": 0.0
+          },
+          "dq_wait": 1.2368276119232178,
+          "risk_top": [
+            [
+              "AMOUNT_REQ",
+              50000.0,
+              0.8020188820899251
+            ],
+            [
+              "Activity",
+              "W_Nabellen offertes",
+              0.573013313029254
+            ],
+            [
+              "month_min",
+              1.0,
+              -0.4079026921534023
+            ],
+            [
+              "open_cases_min",
+              821.0,
+              0.3076235696047809
+            ],
+            [
+              "open_cases_mean",
+              841.8125,
+              0.16550111314848423
+            ],
+            [
+              "month_max",
+              2.0,
+              -0.13133641209501362
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -0.0794551894068718,
+            "reliability": -0.3079463839530945,
+            "deviation": -0.4025789499282837,
+            "available_resources": -5.692066669464111
+          }
+        },
+        "lowest_risk": {
+          "pool_row": 384,
+          "case_id": "205313",
+          "prefix_nr": 43,
+          "actual_deviant": 0,
+          "r": 0.04848275196953826,
+          "state": {
+            "relative_position": 0.8113207817077637,
+            "reliability": 1.0,
+            "deviation": 1.0,
+            "available_resources": 0.0
+          },
+          "dq_wait": 2.7004547119140625,
+          "risk_top": [
+            [
+              "Activity",
+              "W_Valideren aanvraag",
+              -0.991235919990129
+            ],
+            [
+              "NumberOfOffers",
+              6.0,
+              -0.9693756728232928
+            ],
+            [
+              "month_min",
+              1.0,
+              -0.38000883216777565
+            ],
+            [
+              "open_cases_min",
+              694.0,
+              0.23120841980169787
+            ],
+            [
+              "open_cases_mean",
+              807.8604651162791,
+              0.16760647218064176
+            ],
+            [
+              "event_nr_mean",
+              22.0,
+              -0.14186532782688158
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -0.0924309641122818,
+            "reliability": 0.06915545463562012,
+            "deviation": 0.1340090036392212,
+            "available_resources": -5.128891944885254
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_highest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_highest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_lowest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_lowest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_beeswarm.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_beeswarm.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_bar.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_bar.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_risk_family_share.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_r_vs_deviation.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2012/BPIC2012_r_vs_deviation.png"
+      ],
+      "seconds": 28.460814441001276
+    },
+    {
+      "log": "BPIC2017",
+      "n_pool_rows": 500,
+      "n_matched": 500,
+      "n_risk_features": 76,
+      "families_sizes": {
+        "event": 71,
+        "case": 4,
+        "control_flow": 1
+      },
+      "risk_manifest": {
+        "log": "BPIC2017",
+        "seed": 2,
+        "iterations": 1000,
+        "best_iteration": 142,
+        "n_train": 575329,
+        "n_val": 292857,
+        "n_test": 293559,
+        "n_features": 76,
+        "deviant_share_train": 0.3512529352770328,
+        "test_auc": 0.9415019430286857,
+        "feature_importance_top10": {
+          "CreditScore_mean": 32.45561952434854,
+          "CreditScore_max": 25.168053094230647,
+          "CreditScore_std": 12.24348641206054,
+          "CreditScore_sum": 11.875796045561511,
+          "NumberOfOffers": 5.457718738073923,
+          "ApplicationType": 2.1716575074629008,
+          "NumberOfTerms_sum": 1.2362622243244155,
+          "MonthlyCost_max": 0.8654946249239002,
+          "lifecycle:transition": 0.8006048453415244,
+          "RequestedAmount": 0.6878515321483111
+        },
+        "elapsed_seconds": 466.0297124385834,
+        "timestamp": "2026-09-04T16:07:43Z",
+        "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+        "label": "deviant",
+        "rl_csv_overlap_rows": 586416,
+        "corr_with_shipped_proba": -0.005177857666046912,
+        "agreement_with_shipped_predicted": 0.6635681836784808,
+        "label_matches_actual": 0.7755620583340155,
+        "shipped_auc_on_overlap": 0.5541706866253563,
+        "retrained_auc_on_overlap": 0.8362280737164572
+      },
+      "risk": {
+        "mean": 0.41979002695580914,
+        "std": 0.38821469181865104,
+        "share_above_0_5": 0.424,
+        "expected_value_logodds": -6.99552950943244,
+        "global_share_top10": [
+          [
+            "CreditScore_mean",
+            0.22684457259470953
+          ],
+          [
+            "CreditScore_max",
+            0.160309908186407
+          ],
+          [
+            "CreditScore_std",
+            0.12810063241047662
+          ],
+          [
+            "CreditScore_sum",
+            0.1081984241352837
+          ],
+          [
+            "NumberOfOffers",
+            0.06699174545012146
+          ],
+          [
+            "Activity",
+            0.06044014388125489
+          ],
+          [
+            "ApplicationType",
+            0.02615358535432902
+          ],
+          [
+            "Action",
+            0.021597741693684416
+          ],
+          [
+            "lifecycle:transition",
+            0.01181396104827794
+          ],
+          [
+            "LoanGoal",
+            0.010256703825884787
+          ]
+        ],
+        "family_share": {
+          "event": 0.8263737851887963,
+          "case": 0.11318607092994877,
+          "control_flow": 0.06044014388125489
+        },
+        "deviant_share_in_pool": 0.454
+      },
+      "link_to_state": {
+        "corr_r_deviation": -0.005968262483312594,
+        "corr_r_reliability": -0.029975621111275247,
+        "deviation_equals_1_minus_predicted": 0.572,
+        "reliability_equals_deviation": false,
+        "corr_retrained_vs_shipped_r": 0.018957595435214334,
+        "mean_shipped_r": 0.14588730450656037
+      },
+      "metrics": {
+        "parsimony": {
+          "nonzero": 65,
+          "of": 76,
+          "by_family": {
+            "event": 60,
+            "case": 4,
+            "control_flow": 1
+          },
+          "above_1pct_share": 10,
+          "effective": 15.422549551282312
+        },
+        "functional_complexity": {
+          "event": {
+            "l1": 41.978637505180224,
+            "flip": 0.424,
+            "n_columns": 71
+          },
+          "case": {
+            "l1": 32.84461752247106,
+            "flip": 0.418,
+            "n_columns": 4
+          },
+          "control_flow": {
+            "l1": 3.368880313856326,
+            "flip": 0.056,
+            "n_columns": 1
+          }
+        },
+        "monotonicity": {
+          "spearman": 0.9396407514054574,
+          "spearman_p": 3.352356945301102e-36,
+          "kendall": 0.8075134168157424,
+          "kendall_p": 3.117331266998194e-24
+        },
+        "lod": {
+          "k": 10,
+          "families": [
+            "event",
+            "case",
+            "control_flow"
+          ],
+          "explanation_counts": [
+            6,
+            3,
+            1
+          ],
+          "model_counts": [
+            6,
+            3,
+            1
+          ],
+          "lod": 0.0
+        },
+        "deletion_test": {
+          "1": {
+            "k": 1,
+            "abs_guided": 3.793897891959186,
+            "abs_random": 0.1627877327358559,
+            "abs_anti": 0.0,
+            "gap": 3.63111015922333,
+            "gap_se": 0.12669227882074527,
+            "z": 28.66086389022117,
+            "flip_guided": 0.412
+          },
+          "3": {
+            "k": 3,
+            "abs_guided": 6.01116834897639,
+            "abs_random": 0.3988327151242046,
+            "abs_anti": 0.0,
+            "gap": 5.612335633852187,
+            "gap_se": 0.1349128973648821,
+            "z": 41.59969686718092,
+            "flip_guided": 0.422
+          }
+        }
+      },
+      "cards": {
+        "highest_risk": {
+          "pool_row": 119,
+          "case_id": "Application_624588306",
+          "prefix_nr": 21,
+          "actual_deviant": 1,
+          "r": 0.9999031072633713,
+          "state": {
+            "relative_position": 0.9545454382896423,
+            "reliability": 0.9998226165771484,
+            "deviation": 1.0,
+            "available_resources": 3.0
+          },
+          "dq_wait": 9.533611297607422,
+          "risk_top": [
+            [
+              "CreditScore_mean",
+              0.0,
+              3.116004396015716
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              2.221345184005022
+            ],
+            [
+              "CreditScore_std",
+              0.0,
+              1.5469388530292016
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              1.4187380743836575
+            ],
+            [
+              "CreditScore_sum",
+              0.0,
+              1.2893380171122115
+            ],
+            [
+              "Activity",
+              "W_Handle leads",
+              1.1710497922112986
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -0.10698441416025162,
+            "reliability": 0.03711678087711334,
+            "deviation": 0.005649594124406576,
+            "available_resources": 1.3968031406402588
+          }
+        },
+        "lowest_risk": {
+          "pool_row": 22,
+          "case_id": "Application_204296489",
+          "prefix_nr": 39,
+          "actual_deviant": 0,
+          "r": 2.916921535254865e-11,
+          "state": {
+            "relative_position": 0.9512194991111755,
+            "reliability": 0.936135470867157,
+            "deviation": 1.0,
+            "available_resources": 2.0
+          },
+          "dq_wait": 8.76022720336914,
+          "risk_top": [
+            [
+              "CreditScore_mean",
+              864.6153846153846,
+              -5.3603743267353074
+            ],
+            [
+              "CreditScore_max",
+              1124.0,
+              -3.978945847195385
+            ],
+            [
+              "CreditScore_std",
+              479.76006148823,
+              -3.188121814526881
+            ],
+            [
+              "CreditScore_sum",
+              33720.0,
+              -2.3794078645625114
+            ],
+            [
+              "Activity",
+              "W_Validate application",
+              -1.5034860200049478
+            ],
+            [
+              "Action",
+              "statechange",
+              -1.062325780786491
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -0.13966971635818481,
+            "reliability": 0.026717590168118477,
+            "deviation": 0.007198254577815533,
+            "available_resources": 0.6636712551116943
+          }
+        },
+        "paper_card_scarce": {
+          "pool_row": 20,
+          "case_id": "Application_1374646252",
+          "prefix_nr": 17,
+          "actual_deviant": 1,
+          "r": 0.995125348643071,
+          "state": {
+            "relative_position": 0.42500001192092896,
+            "reliability": 0.9578851461410522,
+            "deviation": 1.0,
+            "available_resources": 0.0
+          },
+          "dq_wait": 4.196369171142578,
+          "risk_top": [
+            [
+              "CreditScore_mean",
+              0.0,
+              3.1528561523718177
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              2.1855609418319544
+            ],
+            [
+              "CreditScore_std",
+              0.0,
+              1.5680962949900161
+            ],
+            [
+              "CreditScore_sum",
+              0.0,
+              1.3546208031594236
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              1.22694974713311
+            ],
+            [
+              "Activity",
+              "W_Handle leads",
+              0.9953362815005549
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": 0.027871865779161453,
+            "reliability": 0.06322956085205078,
+            "deviation": 0.013112055137753487,
+            "available_resources": -4.110207557678223
+          }
+        },
+        "paper_card_rich": {
+          "pool_row": 23,
+          "case_id": "Application_161125862",
+          "prefix_nr": 35,
+          "actual_deviant": 1,
+          "r": 0.56207352588676,
+          "state": {
+            "relative_position": 0.8536585569381714,
+            "reliability": 0.8885467648506165,
+            "deviation": 1.0,
+            "available_resources": 3.0
+          },
+          "dq_wait": 9.533323287963867,
+          "risk_top": [
+            [
+              "CreditScore_mean",
+              0.0,
+              3.2755672338653103
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              2.6477400740393464
+            ],
+            [
+              "CreditScore_std",
+              0.0,
+              1.5229790766068545
+            ],
+            [
+              "NumberOfOffers",
+              2.0,
+              -1.4380665097053744
+            ],
+            [
+              "CreditScore_sum",
+              0.0,
+              1.3993923627580633
+            ],
+            [
+              "Activity",
+              "W_Validate application",
+              -0.5157405843705718
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -0.07825327664613724,
+            "reliability": 0.00834142416715622,
+            "deviation": 0.0056338924914598465,
+            "available_resources": 1.3965251445770264
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_highest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_highest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_lowest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_lowest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_paper_card_scarce_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_paper_card_scarce_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_paper_card_rich_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_paper_card_rich_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_beeswarm.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_beeswarm.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_bar.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_bar.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_risk_family_share.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_r_vs_deviation.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/BPIC2017/BPIC2017_r_vs_deviation.png"
+      ],
+      "seconds": 72.95176724500016
+    },
+    {
+      "log": "SimBank",
+      "n_pool_rows": 500,
+      "n_matched": 500,
+      "n_risk_features": 47,
+      "families_sizes": {
+        "event": 45,
+        "case": 1,
+        "control_flow": 1
+      },
+      "risk_manifest": {
+        "log": "SimBank",
+        "seed": 2,
+        "iterations": 1000,
+        "best_iteration": 445,
+        "n_train": 549471,
+        "n_val": 274487,
+        "n_test": 274859,
+        "n_features": 47,
+        "deviant_share_train": 0.7126563549304695,
+        "test_auc": 0.9944072143444153,
+        "feature_importance_top10": {
+          "amount": 19.13265734480765,
+          "unc_quality_max": 12.899510018674691,
+          "unc_quality_sum": 9.807385013847933,
+          "noc_mean": 5.976543021209159,
+          "cum_cost_sum": 4.692803497474784,
+          "cum_cost_mean": 4.6329728156579675,
+          "unc_quality_min": 4.498022048502228,
+          "cum_cost_max": 4.362875867496318,
+          "unc_quality_mean": 4.221504880888825,
+          "est_quality_mean": 3.4799252738913875
+        },
+        "elapsed_seconds": 281.4355483055115,
+        "timestamp": "2026-09-04T16:01:35Z",
+        "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+        "label": "deviant = case ends in cancel_application (SimBank, ours)"
+      },
+      "risk": {
+        "mean": 0.6971036763817262,
+        "std": 0.43432909603450465,
+        "share_above_0_5": 0.692,
+        "expected_value_logodds": 8.963226528848162,
+        "global_share_top10": [
+          [
+            "unc_quality_max",
+            0.16470753116222092
+          ],
+          [
+            "amount",
+            0.11332304727088291
+          ],
+          [
+            "unc_quality_sum",
+            0.11274240698772414
+          ],
+          [
+            "unc_quality_mean",
+            0.057132944821763565
+          ],
+          [
+            "cum_cost_max",
+            0.0544366982454397
+          ],
+          [
+            "unc_quality_min",
+            0.04810155639617133
+          ],
+          [
+            "est_quality_mean",
+            0.047142148909774716
+          ],
+          [
+            "cum_cost_sum",
+            0.046746288302268825
+          ],
+          [
+            "cum_cost_mean",
+            0.04191945249843732
+          ],
+          [
+            "est_quality_max",
+            0.03759315226670475
+          ]
+        ],
+        "family_share": {
+          "event": 0.8684477348480442,
+          "case": 0.11332304727088291,
+          "control_flow": 0.01822921788107291
+        },
+        "deviant_share_in_pool": 0.694
+      },
+      "link_to_state": {
+        "corr_r_deviation": 0.08986447298242015,
+        "corr_r_reliability": -0.387944024005164,
+        "deviation_equals_1_minus_predicted": null,
+        "reliability_equals_deviation": false
+      },
+      "metrics": {
+        "parsimony": {
+          "nonzero": 42,
+          "of": 47,
+          "by_family": {
+            "event": 40,
+            "case": 1,
+            "control_flow": 1
+          },
+          "above_1pct_share": 18,
+          "effective": 20.67167795783742
+        },
+        "functional_complexity": {
+          "event": {
+            "l1": 32.97476202419307,
+            "flip": 0.328,
+            "n_columns": 45
+          },
+          "case": {
+            "l1": 11.086017457226855,
+            "flip": 0.116,
+            "n_columns": 1
+          },
+          "control_flow": {
+            "l1": 0.7978263157955822,
+            "flip": 0.006,
+            "n_columns": 1
+          }
+        },
+        "monotonicity": {
+          "spearman": 0.883653623523964,
+          "spearman_p": 1.9545398782940755e-16,
+          "kendall": 0.742296918767507,
+          "kendall_p": 2.8623013968368923e-13
+        },
+        "lod": {
+          "k": 10,
+          "families": [
+            "event",
+            "case",
+            "control_flow"
+          ],
+          "explanation_counts": [
+            9,
+            1,
+            0
+          ],
+          "model_counts": [
+            9,
+            1,
+            0
+          ],
+          "lod": 0.0
+        },
+        "deletion_test": {
+          "1": {
+            "k": 1,
+            "abs_guided": 3.209195259047413,
+            "abs_random": 0.2903270965100131,
+            "abs_anti": 0.0,
+            "gap": 2.9188681625374,
+            "gap_se": 0.17118652776800397,
+            "z": 17.05080534429157,
+            "flip_guided": 0.202
+          },
+          "3": {
+            "k": 3,
+            "abs_guided": 5.067326868265691,
+            "abs_random": 0.7780416369015208,
+            "abs_anti": 0.0,
+            "gap": 4.289285231364171,
+            "gap_se": 0.23689774467795183,
+            "z": 18.106061909517944,
+            "flip_guided": 0.27
+          }
+        }
+      },
+      "cards": {
+        "highest_risk": {
+          "pool_row": 118,
+          "case_id": "8389",
+          "prefix_nr": 3,
+          "actual_deviant": 1,
+          "r": 0.9999999999998868,
+          "state": {
+            "relative_position": 0.27272728085517883,
+            "reliability": 0.20000000298023224,
+            "deviation": 1.0,
+            "available_resources": 2.0
+          },
+          "dq_wait": -0.6701372861862183,
+          "risk_top": [
+            [
+              "unc_quality_max",
+              5.0,
+              5.6695677919949805
+            ],
+            [
+              "unc_quality_sum",
+              15.0,
+              3.493841816781854
+            ],
+            [
+              "unc_quality_min",
+              5.0,
+              3.473252179335028
+            ],
+            [
+              "unc_quality_mean",
+              5.0,
+              2.7646140231505503
+            ],
+            [
+              "amount",
+              28070.0,
+              1.4279307188501709
+            ],
+            [
+              "cum_cost_max",
+              30.0,
+              1.157251480074398
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": -1.3423627614974976,
+            "reliability": -0.40572288632392883,
+            "deviation": -8.191129684448242,
+            "available_resources": -0.006045552436262369
+          }
+        },
+        "lowest_risk": {
+          "pool_row": 312,
+          "case_id": "80694",
+          "prefix_nr": 12,
+          "actual_deviant": 0,
+          "r": 2.5264502072909067e-08,
+          "state": {
+            "relative_position": 1.0,
+            "reliability": 0.5,
+            "deviation": 0.0,
+            "available_resources": 3.0
+          },
+          "dq_wait": 11.481237411499023,
+          "risk_top": [
+            [
+              "unc_quality_max",
+              2.0,
+              -4.344670533123241
+            ],
+            [
+              "amount",
+              16804.0,
+              -3.9792418726061083
+            ],
+            [
+              "cum_cost_max",
+              1530.0,
+              -2.295681317038401
+            ],
+            [
+              "cum_cost_sum",
+              9610.0,
+              -2.1756615528169947
+            ],
+            [
+              "unc_quality_sum",
+              6.0,
+              -1.5857739904812287
+            ],
+            [
+              "interest_rate_sum",
+              0.18,
+              -1.4515807033215384
+            ]
+          ],
+          "timing_phi": {
+            "relative_position": 1.1285185813903809,
+            "reliability": 0.16607794165611267,
+            "deviation": 1.4393672943115234,
+            "available_resources": -0.5316980481147766
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_highest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_highest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_lowest_risk_two_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_lowest_risk_two_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_beeswarm.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_beeswarm.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_bar.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_bar.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_risk_family_share.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_r_vs_deviation.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/risk/SimBank/SimBank_r_vs_deviation.png"
+      ],
+      "seconds": 37.53345781399912
+    }
+  ]
+}

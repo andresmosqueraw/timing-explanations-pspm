@@ -21,11 +21,23 @@ TWO DOCUMENTED SIMPLIFICATIONS versus the BPIC2017/2012/TrafficFines runs
    generator (out of scope here, per plan). We substitute a documented
    PROXY: ite_proxy = z-score of unc_quality (the bank's own uncertainty-
    of-quality estimate at the decision point), i.e. positive exactly when
-   uncertainty is above this log's average. This is consistent with
-   SimBank's own domain narrative for this intervention ("the higher the
-   client's quality uncertainty, the greater the cost of contacting HQ...
-   HQ contact functions as a confidence check"), but it is NOT a causal
-   effect estimate and must not be described as one.
+   uncertainty is above this log's average. SimBank's own narrative for
+   this intervention (De Moor et al., Table 3) is that "the higher the
+   client's quality uncertainty, the greater the cost of contacting HQ",
+   that uncertainty is lowered by each *customer* contact, and that HQ
+   contact is a costly, mandatory step whose omission cancels the
+   application. The proxy keys the sign of the effect to that uncertainty
+   and nothing else; it is NOT a causal effect estimate and must not be
+   described as one. NOTE (verified on the log): on every recorded
+   contact/skip decision event unc_quality is already 0, so the proxy is a
+   single negative constant on those rows -- see pools.py for why the
+   evaluation therefore treats every event as a decision point.
+
+   UPDATE (the paper's "cate" variant): add_effect_features.py scores every
+   event with the retrained two-model estimator of effect_model.py, and
+   this trainer, given that pkl with --extra-features Proba_if_Treated
+   Proba_if_Untreated, reads y1 - y0 from it instead of the proxy (see
+   SimBankHQEnvFast.__init__). The proxy remains the "released" variant.
 """
 
 import argparse
@@ -42,8 +54,8 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
-DATA_DEFAULT = Path(__file__).parent / "data" / "simbank_time_contact_hq_with_resources.pkl"
-MODELS_DIR = Path(__file__).parent / "models"
+DATA_DEFAULT = Path(__file__).resolve().parent / "data" / "simbank_time_contact_hq_with_resources.pkl"
+MODELS_DIR = Path(__file__).resolve().parent / "models"
 
 
 class SimBankHQEnvFast(gym.Env):
@@ -56,9 +68,18 @@ class SimBankHQEnvFast(gym.Env):
 
     metadata = {"render_modes": []}
 
-    def __init__(self, data_path: Path | str = DATA_DEFAULT, n_resources: int = 5):
+    def __init__(self, data_path: Path | str = DATA_DEFAULT, n_resources: int = 5,
+                 extra_features: tuple[str, ...] = (), reward_scale: float = 1.0):
+        """``extra_features``: columns of the pkl appended to the 4-feature
+        state (the "cate" variant: Proba_if_Treated, Proba_if_Untreated from
+        add_effect_features.py); ``reward_scale`` multiplies every reward.
+        When the pkl carries ``y1``/``y0`` the reward uses ``ite = y1 - y0``
+        (the fitted effect), otherwise the uncertainty proxy."""
         super().__init__()
         df = pd.read_pickle(data_path)
+        self._extra = tuple(extra_features)
+        self._reward_scale = float(reward_scale)
+        self._fitted_effect = "y1" in df.columns and "y0" in df.columns
         df = df.sort_values(["case_nr", "synthetic_time_days"]).reset_index(drop=True)
         df["prefix_nr"] = df.groupby("case_nr").cumcount() + 1
         df["case_length"] = df.groupby("case_nr")["case_nr"].transform("size")
@@ -89,9 +110,10 @@ class SimBankHQEnvFast(gym.Env):
         self._case_start_idx = df.groupby("case_nr").head(1).index.to_numpy()
 
         self.action_space = spaces.Discrete(2)
+        n_extra = len(self._extra)
         self.observation_space = spaces.Box(
-            low=np.array([0.0, 0.0, 0.0, 0.0], dtype=np.float32),
-            high=np.array([1.0, 1.0, 1.0, float(n_resources)], dtype=np.float32),
+            low=np.array([0.0, 0.0, 0.0, 0.0] + [0.0] * n_extra, dtype=np.float32),
+            high=np.array([1.0, 1.0, 1.0, float(n_resources)] + [1.0] * n_extra, dtype=np.float32),
         )
         self._idx = 0
 
@@ -104,7 +126,8 @@ class SimBankHQEnvFast(gym.Env):
         rel = float(row["prefix_nr"]) / max(float(row["case_length"]), 1.0)
         rel = float(np.clip(rel, 0.0, 1.0))
         return np.array(
-            [rel, float(row["reliability"]), float(row["deviation"]), float(row["available_resources"])],
+            [rel, float(row["reliability"]), float(row["deviation"]), float(row["available_resources"])]
+            + [float(row[c]) for c in self._extra],
             dtype=np.float32,
         )
 
@@ -135,10 +158,10 @@ class SimBankHQEnvFast(gym.Env):
     def step(self, action):
         row = self._row()
         adapted = bool(action == 1)
-        ite = float(row["ite_proxy"])
+        ite = float(row["y1"] - row["y0"]) if self._fitted_effect else float(row["ite_proxy"])
         has_res = float(row["available_resources"]) > 0
 
-        reward = self._reward(adapted, ite, has_res)
+        reward = self._reward(adapted, ite, has_res) * self._reward_scale
 
         is_last = int(row["prefix_nr"]) >= int(row["case_length"])
         terminated = adapted or is_last
@@ -160,6 +183,10 @@ def main():
     ap.add_argument("--n-resources", type=int, default=5, help="must match build_resources.py's --n-servers")
     ap.add_argument("--data", type=str, default=str(DATA_DEFAULT))
     ap.add_argument("--out", type=str, default=None)
+    ap.add_argument("--extra-features", nargs="*", default=[],
+                    help="pkl columns appended to the state, e.g. Proba_if_Treated Proba_if_Untreated (needs the effect pkl)")
+    ap.add_argument("--reward-scale", type=float, default=1.0)
+    ap.add_argument("--ent-coef", type=float, default=0.0)
     args = ap.parse_args()
 
     data_path = Path(args.data)
@@ -168,7 +195,7 @@ def main():
     monitor_path = str(save_path) + "_monitor.csv"
 
     print(f"Loading env from {data_path} ...")
-    raw_env = SimBankHQEnvFast(data_path, n_resources=args.n_resources)
+    raw_env = SimBankHQEnvFast(data_path, n_resources=args.n_resources, extra_features=tuple(args.extra_features), reward_scale=args.reward_scale)
     check_env(raw_env, warn=True)
     env = Monitor(raw_env, filename=monitor_path)
 
@@ -185,7 +212,7 @@ def main():
     model = PPO(
         "MlpPolicy", vec_env,
         n_steps=512, batch_size=64, n_epochs=5, learning_rate=3e-4, gamma=0.99,
-        seed=args.seed, verbose=1,
+        ent_coef=args.ent_coef, seed=args.seed, verbose=1,
     )
     t0 = time.time()
     model.learn(total_timesteps=args.timesteps)
@@ -207,6 +234,9 @@ def main():
         "data_path": str(data_path.resolve()),
         "data_mtime": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(data_path.stat().st_mtime)),
         "env": "SimBankHQEnvFast",
+        "state_features": ["relative_position", "reliability", "deviation", "available_resources"] + list(args.extra_features),
+        "reward_scale": args.reward_scale, "ent_coef": args.ent_coef,
+        "effect_signal": "fitted two-model estimator (y1 - y0 from add_effect_features.py)" if raw_env._fitted_effect else "uncertainty proxy (ite_proxy)",
         "sb3_algo": "PPO",
         "policy": "MlpPolicy",
         "ite_proxy_mean_unc_quality": raw_env._ite_mean,

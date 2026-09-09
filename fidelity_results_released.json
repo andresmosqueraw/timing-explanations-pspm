@@ -1,0 +1,173 @@
+[
+  {
+    "log": "BPIC2012",
+    "n_pool_states": 500,
+    "n_wait_states": 500,
+    "intervene_rate": 0.0,
+    "mean_abs_wait_margin": 6.617672443389893,
+    "reference": [
+      0.5046315789222717,
+      0.6439999938011169,
+      0.6439999938011169,
+      1.5
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "phi_mean_abs": [
+      0.05527181550860405,
+      0.08384503424167633,
+      0.13902656733989716,
+      2.3581125736236572
+    ],
+    "phi_share": [
+      0.020966026932001114,
+      0.031804587692022324,
+      0.05273636803030968,
+      0.894493043422699
+    ],
+    "top1_feature_counts": {
+      "relative_position": 0,
+      "reliability": 0,
+      "deviation": 0,
+      "available_resources": 500
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 2.379439353942871,
+      "abs_random": 0.661107813167572,
+      "abs_anti": 0.031132956966757774,
+      "gap": 1.7183315770149232,
+      "gap_se": 0.05911394156423173,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 2.369825601577759,
+      "abs_random": 1.2794378968596458,
+      "abs_anti": 0.14089322090148926,
+      "gap": 1.0903876970887183,
+      "gap_se": 0.04169968270088879,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    }
+  },
+  {
+    "log": "BPIC2017",
+    "n_pool_states": 500,
+    "n_wait_states": 500,
+    "intervene_rate": 0.0,
+    "mean_abs_wait_margin": 7.410362243652344,
+    "reference": [
+      0.5198836922645569,
+      0.85881507396698,
+      0.984000027179718,
+      1.5
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "phi_mean_abs": [
+      0.06449083983898163,
+      0.030376899987459183,
+      0.02173917554318905,
+      1.7869024276733398
+    ],
+    "phi_share": [
+      0.03387996926903725,
+      0.01595836691558361,
+      0.011420576833188534,
+      0.9387410879135132
+    ],
+    "top1_feature_counts": {
+      "relative_position": 0,
+      "reliability": 0,
+      "deviation": 0,
+      "available_resources": 500
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.7914512157440186,
+      "abs_random": 0.46548841624259946,
+      "abs_anti": 0.009568944573402405,
+      "gap": 1.3259626469135284,
+      "gap_se": 0.04746313244191231,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 1.7829296588897705,
+      "abs_random": 0.9188242959976195,
+      "abs_anti": 0.032188378274440765,
+      "gap": 0.8641053771972657,
+      "gap_se": 0.03405794121667017,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    }
+  },
+  {
+    "log": "SimBank",
+    "n_pool_states": 500,
+    "n_wait_states": 477,
+    "intervene_rate": 0.046,
+    "mean_abs_wait_margin": 8.929405212402344,
+    "reference": [
+      0.552705705165863,
+      0.3596000671386719,
+      0.2412000149488449,
+      1.8420000076293945
+    ],
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "phi_mean_abs": [
+      0.8266913294792175,
+      0.2525676488876343,
+      1.9947201013565063,
+      0.36179086565971375
+    ],
+    "phi_share": [
+      0.24061313271522522,
+      0.07351122796535492,
+      0.5805744528770447,
+      0.10530125349760056
+    ],
+    "top1_feature_counts": {
+      "relative_position": 54,
+      "reliability": 5,
+      "deviation": 402,
+      "available_resources": 16
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 2.0716934204101562,
+      "abs_random": 0.8646070897141843,
+      "abs_anti": 0.13766537606716156,
+      "gap": 1.2070863791794146,
+      "gap_se": 0.05006050442682837,
+      "flip_guided": 0.0,
+      "flip_random": 0.00408805031446541
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 2.534207820892334,
+      "abs_random": 1.4529081838779478,
+      "abs_anti": 0.389704167842865,
+      "gap": 1.0812998134541312,
+      "gap_se": 0.04810994573827538,
+      "flip_guided": 0.0,
+      "flip_random": 0.0023060796645702313
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "log": "SimBank",
+  "seed": 2,
+  "iterations": 1000,
+  "best_iteration": 445,
+  "n_train": 549471,
+  "n_val": 274487,
+  "n_test": 274859,
+  "n_features": 47,
+  "deviant_share_train": 0.7126563549304695,
+  "test_auc": 0.9944072143444153,
+  "feature_importance_top10": {
+    "amount": 19.13265734480765,
+    "unc_quality_max": 12.899510018674691,
+    "unc_quality_sum": 9.807385013847933,
+    "noc_mean": 5.976543021209159,
+    "cum_cost_sum": 4.692803497474784,
+    "cum_cost_mean": 4.6329728156579675,
+    "unc_quality_min": 4.498022048502228,
+    "cum_cost_max": 4.362875867496318,
+    "unc_quality_mean": 4.221504880888825,
+    "est_quality_mean": 3.4799252738913875
+  },
+  "elapsed_seconds": 281.4355483055115,
+  "timestamp": "2026-09-04T16:01:35Z",
+  "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+  "label": "deviant = case ends in cancel_application (SimBank, ours)"
+}

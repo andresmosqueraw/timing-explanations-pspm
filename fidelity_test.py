@@ -1,131 +1,109 @@
-"""
-Fidelity evaluation of the wait-vs-act timing justification phi^{Delta Q_wait}
-(paper1's Section 4), reusing the deletion-test protocol already built and
-validated in faithful-pspm-explanations/dual_level.py (paper2's repo): guided
-(top-|phi| features masked to the reference) vs. random vs. anti-guided
-(bottom-|phi| features masked) displacement of WaitMarginHead(s), on the
-wait-state pool of each of the 3 checkpoints used in paper1.
+"""Deletion test on the timing justification (paper Section 7), on the same
+evaluation pool the explanation cards and Table "card" (Section 6) are drawn
+from: one prefix per case, 500 cases, seed 123, available_resources cycled
+0..3 on the BPIC logs and read from the resource-augmented log on SimBank
+(see pools.py for why).
 
-This does NOT run the other attribution methods or the risk-side (CriticHead)
-test from dual_level.py -- paper1's scope is only phi^{Delta Q_wait} via
-Integrated Gradients (see paper1/4_FrameworkForExplainingTiming.tex).
+Per log and per side: Integrated Gradients of the margin head against the
+pool's mean state, then guided (top-|phi| features masked to the reference)
+vs. random (20 draws) vs. anti-guided (bottom-|phi|) displacement of the
+margin, for k = 1, 2. The wait side (WaitMarginHead, Delta Q_wait) is run on
+the states where the policy waits; the intervene side (MarginHead, Delta Q)
+on the states where it intervenes, whenever there are at least
+``--min-states`` of them (the released checkpoints never intervene on the
+BPIC pools; the "cate" variant does). The per-feature share of mean |phi| is
+recorded alongside, so the feature the test "names" is on record.
 
-Usage: python fidelity_test.py
+Usage:
+    python fidelity_test.py                       # the paper's policy (cate on BPIC, SimBank's checkpoint) -> fidelity_results.json
+    python fidelity_test.py --variant released    # the released four-feature design -> fidelity_results_released.json
 """
+
+from __future__ import annotations
+
+import argparse
 import json
-import sys
-from pathlib import Path
 
 import numpy as np
+import torch
 from stable_baselines3 import PPO
 
-GEN = Path(__file__).resolve().parent
-sys.path.insert(0, str(GEN))
-from dual_level import MarginHead, WaitMarginHead, integrated_gradients, deletion_test  # noqa: E402
-
-FOREIGN = Path(
-    "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/"
-    "faithful-pspm-explanations/experiments/generality_ppo/foreign"
-)
-sys.path.insert(0, str(FOREIGN))
-from train_ppo_fast_rl_prescriptive_monitoring import PPMEnvFast  # noqa: E402
-
-sys.path.insert(0, str(GEN / "simbank_resources"))
-from train_ppo_simbank import SimBankHQEnvFast  # noqa: E402
-
-FEATS = ["relative_position", "reliability", "deviation", "available_resources"]
+import paths
+import pools
+from dual_level import MarginHead, WaitMarginHead, deletion_test, integrated_gradients
 
 
-def bpi_states(csv_path, n_resources=3, sample=None, seed=42):
-    env = PPMEnvFast(csv_path, resources=n_resources)
-    df = env._df
-    rel = (df["prefix_nr"].astype(float) / df["case_length"].astype(float).clip(lower=1)).clip(0, 1)
-    states = np.stack(
-        [rel.to_numpy(), df["reliability"].astype(float).to_numpy(),
-         df["deviation"].astype(float).to_numpy(),
-         np.full(len(df), float(n_resources))],
-        axis=1,
-    ).astype(np.float32)
-    if sample is not None and len(states) > sample:
-        rng = np.random.default_rng(seed)
-        idx = rng.choice(len(states), size=sample, replace=False)
-        states = states[idx]
-    return states
-
-
-def simbank_states(seed=42):
-    env = SimBankHQEnvFast(GEN / "simbank_resources" / "data" / "simbank_time_contact_hq_with_resources.pkl")
-    df = env._df
-    rel = (df["prefix_nr"].astype(float) / df["case_length"].astype(float).clip(lower=1)).clip(0, 1)
-    states = np.stack(
-        [rel.to_numpy(), df["reliability"].astype(float).to_numpy(),
-         df["deviation"].astype(float).to_numpy(),
-         df["available_resources"].astype(float).to_numpy()],
-        axis=1,
-    ).astype(np.float32)
-    return states
-
-
-def run_one(name, model_path, states, seed=42, max_wait_states=500):
-    model = PPO.load(str(model_path), device="cpu")
-    policy = model.policy
-    margin = MarginHead(policy, intervene_action=1)
-    wait_head = WaitMarginHead(margin)
-
-    import torch
-    dev = next(policy.parameters()).device
+def _side(head, states: np.ndarray, reference: np.ndarray, feats: list[str], seed: int, label: str) -> dict:
+    phi = integrated_gradients(head, states, reference, n_steps=128)
+    mean_abs = np.abs(phi).mean(axis=0)
+    share = mean_abs / mean_abs.sum()
+    top1 = np.argmax(np.abs(phi), axis=1)
     with torch.no_grad():
-        m0 = margin(torch.from_numpy(states).to(dev)).cpu().numpy()
-    wait_states = states[m0 < 0]
-    n_wait = len(wait_states)
-    if n_wait > max_wait_states:
-        rng = np.random.default_rng(seed)
-        idx = rng.choice(n_wait, size=max_wait_states, replace=False)
-        wait_states = wait_states[idx]
-
-    reference = states.mean(axis=0)
-    phi = integrated_gradients(wait_head, wait_states, reference, n_steps=128)
-
-    out = {"log": name, "n_wait_states": int(len(wait_states)), "n_total_states": int(len(states)),
-           "reference": reference.tolist(), "feature_names": FEATS}
+        m = head(torch.from_numpy(states)).numpy()
+    out = {
+        "n_states": int(len(states)),
+        "mean_abs_margin": float(np.abs(m).mean()),
+        "phi_mean_abs": mean_abs.tolist(),
+        "phi_share": share.tolist(),
+        "phi_mean_signed": phi.mean(axis=0).tolist(),
+        "top1_feature_counts": {f: int((top1 == i).sum()) for i, f in enumerate(feats)},
+    }
+    print(f"  [{label}] n={len(states)} E|margin|={out['mean_abs_margin']:.2f} share of mean|phi|:",
+          {f: f"{s:.1%}" for f, s in zip(feats, share)})
     for k in (1, 2):
-        res = deletion_test(wait_head, wait_states, phi, reference, k=k, n_random=20, seed=seed,
-                             track_sign_flips=True)
+        res = deletion_test(head, states, phi, reference, k=k, n_random=20, seed=seed, track_sign_flips=True)
         out[f"k{k}"] = res.as_dict()
-        print(f"{name} k={k}: guided={res.abs_guided:.4f} random={res.abs_random:.4f} "
-              f"anti={res.abs_anti:.4f} gap={res.gap:.4f} (SE {res.gap_se:.4f}) "
-              f"flip_guided={res.flip_guided:.1%} flip_random={res.flip_random:.1%}")
+        print(f"    k={k}: guided={res.abs_guided:.4f} random={res.abs_random:.4f} anti={res.abs_anti:.4f} "
+              f"gap={res.gap:.4f} (SE {res.gap_se:.4f}, z={res.gap / res.gap_se:.1f}) flip_guided={res.flip_guided:.3f}")
+    return out
+
+
+def run_one(name: str, model_path, states: np.ndarray, feats: list[str], seed: int = pools.POOL_SEED,
+            max_states: int = pools.N_CASES, min_states: int = 30) -> dict:
+    model = PPO.load(str(model_path), device="cpu")
+    margin = MarginHead(model.policy, intervene_action=1)
+    wait_head = WaitMarginHead(margin)
+    rng = np.random.default_rng(seed)
+
+    with torch.no_grad():
+        m0 = margin(torch.from_numpy(states)).numpy()
+    wait_states, int_states = states[m0 <= 0], states[m0 > 0]
+    if len(wait_states) > max_states:
+        wait_states = wait_states[rng.choice(len(wait_states), size=max_states, replace=False)]
+    if len(int_states) > max_states:
+        int_states = int_states[rng.choice(len(int_states), size=max_states, replace=False)]
+    reference = states.mean(axis=0)
+
+    out = {
+        "log": name, "model": str(model_path), "feature_names": feats,
+        "n_pool_states": int(len(states)), "n_wait_states": int(len(wait_states)), "n_intervene_states": int(len(int_states)),
+        "intervene_rate": float((m0 > 0).mean()), "reference": reference.tolist(),
+    }
+    print(f"\n{name}: pool={len(states)} wait={len(wait_states)} intervene={len(int_states)} intervene_rate={out['intervene_rate']:.4f}")
+    print("  reference:", {f: round(v, 3) for f, v in zip(feats, reference.tolist())})
+    if len(wait_states) >= min_states:
+        w = _side(wait_head, wait_states, reference, feats, seed, "wait side, Delta Q_wait")
+        out.update({"mean_abs_wait_margin": w["mean_abs_margin"], "phi_mean_abs": w["phi_mean_abs"], "phi_share": w["phi_share"],
+                    "top1_feature_counts": w["top1_feature_counts"], "k1": w["k1"], "k2": w["k2"]})  # legacy flat keys
+        out["wait_side"] = w
+    if len(int_states) >= min_states:
+        out["intervene_side"] = _side(margin, int_states, reference, feats, seed, "intervene side, Delta Q")
     return out
 
 
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--variant", default=pools.DEFAULT_VARIANT, choices=list(pools.VARIANTS),
+                    help="policy variant (all three logs); default = the paper's policy")
+    ap.add_argument("--logs", nargs="+", default=list(pools.LOGS), choices=list(pools.LOGS))
+    ap.add_argument("--min-states", type=int, default=30)
+    ap.add_argument("--out", default=None)
+    args = ap.parse_args()
     results = []
-
-    bpic2012_states = bpi_states(GEN / "data" / "ready_to_use_adaptive_bpic2012.csv", n_resources=3)
-    results.append(run_one(
-        "BPIC2012",
-        GEN / "models" / "ppo_bpic2012_rl_prescriptive_monitoring.zip",
-        bpic2012_states,
-    ))
-
-    bpic2017_csv = Path(
-        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/algorithms-explainability/"
-        "libraries-prescriptive-process/01-rl-online/RL-prescriptive-monitoring/rl/data/ready_to_use_adaptive_bpic2017.csv"
-    )
-    bpic2017_states = bpi_states(bpic2017_csv, n_resources=3, sample=30000)
-    results.append(run_one(
-        "BPIC2017",
-        GEN / "models" / "ppo_bpic2017_rl_prescriptive_monitoring.zip",
-        bpic2017_states,
-    ))
-
-    sb_states = simbank_states()
-    results.append(run_one(
-        "SimBank",
-        GEN / "simbank_resources" / "models" / "ppo_simbank_time_contact_hq.zip",
-        sb_states,
-    ))
-
-    out_path = GEN / "fidelity_results.json"
+    for name in args.logs:
+        states, _rows, feats = pools.evaluation_pool(name, args.variant)
+        results.append(run_one(name, paths.variant_model(name, args.variant), states, feats, min_states=args.min_states))
+    out_path = paths.Path(args.out) if args.out else (paths.FIDELITY_JSON if args.variant == pools.DEFAULT_VARIANT
+                                                      else paths.REPO / f"fidelity_results_{args.variant}.json")
     out_path.write_text(json.dumps(results, indent=2))
     print(f"\nSaved -> {out_path}")

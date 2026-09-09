@@ -1,0 +1,44 @@
+{
+  "seed": 42,
+  "total_timesteps": 300000,
+  "args": {
+    "timesteps": 300000,
+    "seed": 42,
+    "resources": 3,
+    "csv": "data/ready_to_use_adaptive_bpic2012.csv",
+    "out": "models/variants/ppo_bpic2012_cate",
+    "extra_features": [
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "random_start": false,
+    "episode": "case",
+    "ent_coef": 0.3,
+    "reward_scale": 0.01,
+    "learning_rate": 0.0003,
+    "n_steps": 512
+  },
+  "n_episodes": 33575,
+  "mean_episode_reward_last_50": 3.53,
+  "elapsed_seconds": 989.8624696731567,
+  "timestamp": "2026-09-04T17:46:15Z",
+  "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/ready_to_use_adaptive_bpic2012.csv",
+  "csv_mtime": "2026-08-31T01:05:51Z",
+  "env": "PPMEnvFast",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "state_features": [
+    "relative_position",
+    "reliability",
+    "deviation",
+    "available_resources",
+    "Proba_if_Treated",
+    "Proba_if_Untreated"
+  ],
+  "random_start": false,
+  "episode": "case",
+  "ent_coef": 0.3,
+  "reward_scale": 0.01,
+  "learning_rate": 0.0003,
+  "n_steps": 512
+}

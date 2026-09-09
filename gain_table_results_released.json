@@ -1,0 +1,36 @@
+{
+  "bpic2012": {
+    "n": 28692,
+    "hist_gain": -28.154189321065104,
+    "policy_gain": 24.269831311863935,
+    "delta": 52.42402063292904,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.5999581764951903
+  },
+  "bpic2017": {
+    "n": 30000,
+    "hist_gain": -76.37166666666667,
+    "policy_gain": 51.65833333333333,
+    "delta": 128.03,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.9977333333333334
+  },
+  "simbank": {
+    "n": 28692,
+    "hist_gain": 36.637390213299874,
+    "policy_gain": 52.498457850637166,
+    "delta": 15.861067637337293,
+    "policy_intervene_rate": 0.03917468283842186,
+    "hist_intervene_rate": 0.03094939355918026,
+    "rows": "all"
+  },
+  "simbank_decision_rows": {
+    "n": 28692,
+    "hist_gain": 16.624843161856962,
+    "policy_gain": 100.0,
+    "delta": 83.37515683814304,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.3705562526139691,
+    "rows": "decision"
+  }
+}

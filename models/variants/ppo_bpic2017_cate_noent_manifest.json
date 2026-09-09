@@ -1,0 +1,36 @@
+{
+  "seed": 42,
+  "total_timesteps": 300000,
+  "args": {
+    "timesteps": 300000,
+    "seed": 42,
+    "resources": 3,
+    "csv": "data/ready_to_use_adaptive_bpic2017.csv",
+    "out": "models/variants/ppo_bpic2017_cate",
+    "extra_features": [
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "random_start": false,
+    "episode": "case"
+  },
+  "n_episodes": 9670,
+  "mean_episode_reward_last_50": 2332.0,
+  "elapsed_seconds": 1265.668709039688,
+  "timestamp": "2026-09-04T16:56:51Z",
+  "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/libraries-prescriptive-process/01-rl-online/RL-prescriptive-monitoring/rl/data/ready_to_use_adaptive_bpic2017.csv",
+  "csv_mtime": "2026-06-19T20:14:52Z",
+  "env": "PPMEnvFast",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "state_features": [
+    "relative_position",
+    "reliability",
+    "deviation",
+    "available_resources",
+    "Proba_if_Treated",
+    "Proba_if_Untreated"
+  ],
+  "random_start": false,
+  "episode": "case"
+}

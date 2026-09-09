@@ -1,0 +1,252 @@
+[
+  {
+    "log": "BPIC2012",
+    "model": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/models/variants/ppo_bpic2012_cate.zip",
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources",
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "n_pool_states": 500,
+    "n_wait_states": 500,
+    "n_intervene_states": 0,
+    "intervene_rate": 0.0,
+    "reference": [
+      0.5046315789222717,
+      0.6439999938011169,
+      0.6439999938011169,
+      1.5,
+      0.5194899439811707,
+      0.4329896569252014
+    ],
+    "mean_abs_wait_margin": 5.537646293640137,
+    "phi_mean_abs": [
+      0.021002529188990593,
+      0.10490972548723221,
+      0.08603950589895248,
+      1.7173365354537964,
+      0.04959985986351967,
+      0.02144341915845871
+    ],
+    "phi_share": [
+      0.01049952395260334,
+      0.052446167916059494,
+      0.04301261901855469,
+      0.8585259318351746,
+      0.02479581907391548,
+      0.010719931684434414
+    ],
+    "top1_feature_counts": {
+      "relative_position": 0,
+      "reliability": 0,
+      "deviation": 0,
+      "available_resources": 500,
+      "Proba_if_Treated": 0,
+      "Proba_if_Untreated": 0
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.7312498092651367,
+      "abs_random": 0.340487333703041,
+      "abs_anti": 0.014249552972614765,
+      "gap": 1.390762331557274,
+      "gap_se": 0.0473452285024319,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 1.72664213180542,
+      "abs_random": 0.6367885565996169,
+      "abs_anti": 0.03100455552339554,
+      "gap": 1.08985353038311,
+      "gap_se": 0.040206171826370096,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "wait_side": {
+      "n_states": 500,
+      "mean_abs_margin": 5.537646293640137,
+      "phi_mean_abs": [
+        0.021002529188990593,
+        0.10490972548723221,
+        0.08603950589895248,
+        1.7173365354537964,
+        0.04959985986351967,
+        0.02144341915845871
+      ],
+      "phi_share": [
+        0.01049952395260334,
+        0.052446167916059494,
+        0.04301261901855469,
+        0.8585259318351746,
+        0.02479581907391548,
+        0.010719931684434414
+      ],
+      "phi_mean_signed": [
+        -0.014709753915667534,
+        -0.040426794439554214,
+        -0.04005436971783638,
+        -0.6970764994621277,
+        -0.009297111071646214,
+        -0.00880653690546751
+      ],
+      "top1_feature_counts": {
+        "relative_position": 0,
+        "reliability": 0,
+        "deviation": 0,
+        "available_resources": 500,
+        "Proba_if_Treated": 0,
+        "Proba_if_Untreated": 0
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 1.7312498092651367,
+        "abs_random": 0.340487333703041,
+        "abs_anti": 0.014249552972614765,
+        "gap": 1.390762331557274,
+        "gap_se": 0.0473452285024319,
+        "flip_guided": 0.0,
+        "flip_random": 0.0
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 1.72664213180542,
+        "abs_random": 0.6367885565996169,
+        "abs_anti": 0.03100455552339554,
+        "gap": 1.08985353038311,
+        "gap_se": 0.040206171826370096,
+        "flip_guided": 0.0,
+        "flip_random": 0.0
+      }
+    }
+  },
+  {
+    "log": "BPIC2017",
+    "model": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/models/variants/ppo_bpic2017_cate.zip",
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources",
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "n_pool_states": 500,
+    "n_wait_states": 500,
+    "n_intervene_states": 0,
+    "intervene_rate": 0.0,
+    "reference": [
+      0.5198836922645569,
+      0.85881507396698,
+      0.984000027179718,
+      1.5,
+      0.18173158168792725,
+      0.22402723133563995
+    ],
+    "mean_abs_wait_margin": 7.752705097198486,
+    "phi_mean_abs": [
+      0.0621194988489151,
+      0.028599891811609268,
+      0.021060559898614883,
+      1.6255617141723633,
+      0.007094940170645714,
+      0.018495310097932816
+    ],
+    "phi_share": [
+      0.03523647040128708,
+      0.016222912818193436,
+      0.011946326121687889,
+      0.922078549861908,
+      0.00402451166883111,
+      0.010491222143173218
+    ],
+    "top1_feature_counts": {
+      "relative_position": 0,
+      "reliability": 0,
+      "deviation": 4,
+      "available_resources": 496,
+      "Proba_if_Treated": 0,
+      "Proba_if_Untreated": 0
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.6324518918991089,
+      "abs_random": 0.2938764636516571,
+      "abs_anti": 0.004705342464148998,
+      "gap": 1.3385755455493926,
+      "gap_se": 0.04750173243979446,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 1.6289013624191284,
+      "abs_random": 0.5686327124595641,
+      "abs_anti": 0.008619754575192928,
+      "gap": 1.0602686718940735,
+      "gap_se": 0.0397088582289177,
+      "flip_guided": 0.0,
+      "flip_random": 0.0
+    },
+    "wait_side": {
+      "n_states": 500,
+      "mean_abs_margin": 7.752705097198486,
+      "phi_mean_abs": [
+        0.0621194988489151,
+        0.028599891811609268,
+        0.021060559898614883,
+        1.6255617141723633,
+        0.007094940170645714,
+        0.018495310097932816
+      ],
+      "phi_share": [
+        0.03523647040128708,
+        0.016222912818193436,
+        0.011946326121687889,
+        0.922078549861908,
+        0.00402451166883111,
+        0.010491222143173218
+      ],
+      "phi_mean_signed": [
+        -0.019904837012290955,
+        -0.0008153636008501053,
+        -0.004409513436257839,
+        -0.6969383955001831,
+        -0.0068017966113984585,
+        -0.01734195090830326
+      ],
+      "top1_feature_counts": {
+        "relative_position": 0,
+        "reliability": 0,
+        "deviation": 4,
+        "available_resources": 496,
+        "Proba_if_Treated": 0,
+        "Proba_if_Untreated": 0
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 1.6324518918991089,
+        "abs_random": 0.2938764636516571,
+        "abs_anti": 0.004705342464148998,
+        "gap": 1.3385755455493926,
+        "gap_se": 0.04750173243979446,
+        "flip_guided": 0.0,
+        "flip_random": 0.0
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 1.6289013624191284,
+        "abs_random": 0.5686327124595641,
+        "abs_anti": 0.008619754575192928,
+        "gap": 1.0602686718940735,
+        "gap_se": 0.0397088582289177,
+        "flip_guided": 0.0,
+        "flip_random": 0.0
+      }
+    }
+  }
+]

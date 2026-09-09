@@ -1,10 +1,22 @@
 # Reference versions are the ones the committed result JSONs (fidelity_results.json,
-# gain_table_results.json) were produced with (Python 3.10).
+# gain_table_results.json) were produced with (Python 3.10). fidelity_results.json
+# reproduces bit-for-bit under numpy 2.x as well (checked with numpy 2.5.2).
 stable-baselines3==2.9.0
 torch>=2.4
 gymnasium==1.3.0
 pandas>=2.0
-numpy<2
+numpy>=1.26
 pytest
+matplotlib>=3.8  # figures/make_figures.py, xai_plots.py
 captum>=0.9.0
-scikit-learn>=1.3  # required by captum's KernelShap/Lime (linear surrogate fitting)
+scikit-learn>=1.3  # captum's KernelShap/Lime; run_xai_suite.py (KMeans, silhouette, f_classif, mutual information)
+scipy>=1.10  # xai_metrics.py (Spearman / Kendall)
+# run_xai_suite.py -- the literature's explanation methods and metrics
+shap>=0.45  # Kernel / Deep / Gradient explainers and the shap plots
+lime>=0.2.0.1
+lime-stability>=0.1.1  # Visani et al.'s CSI / VSI (LimeTabularExplainerOvr)
+statsmodels>=0.14  # required by lime-stability
+# risk_model.py / run_risk_suite.py -- the outcome ("risk") predictor behind the state
+catboost>=1.2  # Shoush & Dumas's predictive model class; explained with shap.TreeExplainer
+# effect_model.py / run_effect_suite.py -- the causal-effect estimator behind the state (CausalLift two-model)
+xgboost>=2.0

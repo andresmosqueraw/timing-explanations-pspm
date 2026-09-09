@@ -1,26 +1,61 @@
 {
+  "variant": "cate",
   "bpic2012": {
     "n": 28692,
     "hist_gain": -28.154189321065104,
-    "policy_gain": 24.269831311863935,
-    "delta": 52.42402063292904,
-    "policy_intervene_rate": 0.0,
-    "hist_intervene_rate": 0.5999581764951903
+    "policy_gain": 35.622298898647706,
+    "delta": 63.77648821971281,
+    "policy_intervene_rate": 0.20085738184859891,
+    "hist_intervene_rate": 0.5999581764951903,
+    "oracle_gain": 58.096333472745016,
+    "always_wait_gain": 24.269831311863935,
+    "always_intervene_gain": -49.26983131186393,
+    "share_ite_positive": 0.1932942980621776,
+    "policy_precision": 0.6050668054832552,
+    "policy_recall": 0.6287414352686621
   },
   "bpic2017": {
     "n": 30000,
-    "hist_gain": -76.10583333333334,
-    "policy_gain": 51.39666666666667,
-    "delta": 127.5025,
-    "policy_intervene_rate": 0.0,
-    "hist_intervene_rate": 0.9977
+    "hist_gain": -76.37166666666667,
+    "policy_gain": 55.916666666666664,
+    "delta": 132.28833333333333,
+    "policy_intervene_rate": 0.025133333333333334,
+    "hist_intervene_rate": 0.9977333333333334,
+    "oracle_gain": 57.100833333333334,
+    "always_wait_gain": 51.65833333333333,
+    "always_intervene_gain": -76.65833333333333,
+    "share_ite_positive": 0.0311,
+    "policy_precision": 0.9814323607427056,
+    "policy_recall": 0.7931404072883173
   },
   "simbank": {
     "n": 28692,
-    "hist_gain": 36.637390213299874,
-    "policy_gain": 52.498457850637166,
-    "delta": 15.861067637337293,
-    "policy_intervene_rate": 0.03917468283842186,
-    "hist_intervene_rate": 0.03094939355918026
+    "hist_gain": -61.403875644779035,
+    "policy_gain": 46.29949114735815,
+    "delta": 107.70336679213719,
+    "policy_intervene_rate": 0.7320158929318277,
+    "hist_intervene_rate": 0.03094939355918026,
+    "always_wait_gain": -63.31904363585669,
+    "always_intervene_gain": 16.549909382406245,
+    "oracle_gain": 46.53997630001394,
+    "share_ite_positive": 0.7323644221385752,
+    "policy_precision": 0.9990953673284769,
+    "policy_recall": 0.9986199019654499,
+    "rows": "all"
+  },
+  "simbank_decision_rows": {
+    "n": 28692,
+    "hist_gain": -40.68729959570612,
+    "policy_gain": 44.144709326641575,
+    "delta": 84.8320089223477,
+    "policy_intervene_rate": 0.739160741670152,
+    "hist_intervene_rate": 0.3705562526139691,
+    "always_wait_gain": -64.67482225010455,
+    "always_intervene_gain": 15.465983549421441,
+    "oracle_gain": 44.29022027045866,
+    "share_ite_positive": 0.7399623588456713,
+    "policy_precision": 0.9999056959637872,
+    "policy_recall": 0.9988224765672837,
+    "rows": "decision"
   }
 }

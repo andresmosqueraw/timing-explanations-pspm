@@ -1,0 +1,40 @@
+{
+  "seed": 42,
+  "total_timesteps": 150000,
+  "args": {
+    "timesteps": 150000,
+    "seed": 42,
+    "n_resources": 5,
+    "data": "simbank_resources/data/simbank_time_contact_hq_with_effect.pkl",
+    "out": "models/variants/ppo_simbank_cate",
+    "extra_features": [
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "reward_scale": 0.01,
+    "ent_coef": 0.3
+  },
+  "n_episodes": 46294,
+  "mean_episode_reward_last_50": 1.645,
+  "elapsed_seconds": 427.2022626399994,
+  "timestamp": "2026-09-07T04:59:27Z",
+  "data_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/simbank_resources/data/simbank_time_contact_hq_with_effect.pkl",
+  "data_mtime": "2026-09-07T04:52:02Z",
+  "env": "SimBankHQEnvFast",
+  "state_features": [
+    "relative_position",
+    "reliability",
+    "deviation",
+    "available_resources",
+    "Proba_if_Treated",
+    "Proba_if_Untreated"
+  ],
+  "reward_scale": 0.01,
+  "ent_coef": 0.3,
+  "effect_signal": "fitted two-model estimator (y1 - y0 from add_effect_features.py)",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "ite_proxy_mean_unc_quality": 1.022801048001871,
+  "ite_proxy_std_unc_quality": 1.526430341974483,
+  "note": "available_resources is a synthetic extension (build_resources.py); ite_proxy is a z-scored uncertainty proxy, NOT a causal effect estimate. See module docstring. Fix attempt #1 (ent_coef=0.01 alone, 150k steps): still 100% intervene (deterministic eval), mean reward -63.6 (vs -68.67 baseline), entropy_loss decayed to ~0 by end of training. Fix attempt #2 (VecNormalize(norm_reward=True) + ent_coef=0.01, 150k steps): still 100% intervene (deterministic eval), mean reward -63.599 (near-identical to attempt #1), but stochastic training rollout reward reached ~57 (beats always-wait's +43.78). Fix attempt #3 (this run: same config, 500k steps instead of 150k, user-requested): IDENTICAL outcome to attempt #2 -- 100% intervene under deterministic eval, mean reward -63.599, ep_rew_mean(stochastic)=57. entropy_loss was already frozen near 0 by ~142k steps and stayed there through 500k, confirming more training budget does not change the outcome. CONCLUSION: the policy's mode (argmax action) has collapsed to always-intervene, but its full stochastic distribution retains real structure that a deterministic rollout discards -- this is a policy-extraction/evaluation-protocol issue, not a training-duration issue. Three fix attempts per the agreed budget are now exhausted. Benchmarks: always-wait=+43.78, always-intervene=-68.67, oracle-best-per-row=+93.08. See the printed intervene-rate/mean-reward check below for whether this run is sane."
+}

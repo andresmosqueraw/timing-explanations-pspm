@@ -1,0 +1,22 @@
+{
+  "log": "SimBank",
+  "seed": 0,
+  "n_train": 186629,
+  "n_test": 93428,
+  "n_features": 49,
+  "treated_share_train": 0.37306099266459125,
+  "propensity_best": {
+    "C": 10,
+    "penalty": "l1"
+  },
+  "auc_treated_arm_on_treated_test": 0.9516237792317408,
+  "auc_untreated_arm_on_untreated_test": null,
+  "mean_pT": 0.28151416778564453,
+  "mean_pU": 1.0,
+  "share_cate_positive_rule": 0.0,
+  "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
+  "elapsed_seconds": 182.69002532958984,
+  "timestamp": "2026-09-07T04:51:19Z",
+  "prefix_restriction": "prefixes before the case's contact/skip decision and <= 4 (the events both arms share)",
+  "untreated_arm_constant": 1.0
+}

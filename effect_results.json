@@ -1,0 +1,808 @@
+{
+  "args": {
+    "logs": [
+      "BPIC2012",
+      "BPIC2017",
+      "SimBank"
+    ],
+    "variant": "cate",
+    "seed": 123,
+    "quick": 0,
+    "skip_plots": false,
+    "out": null
+  },
+  "results": [
+    {
+      "log": "BPIC2012",
+      "n_matched": 500,
+      "manifest": {
+        "log": "BPIC2012",
+        "seed": 0,
+        "n_train": 50759,
+        "n_test": 28692,
+        "n_features": 56,
+        "treated_share_train": 0.6631336314742213,
+        "propensity_best": {
+          "C": 10,
+          "penalty": "l1"
+        },
+        "auc_treated_arm_on_treated_test": 0.7180471378998494,
+        "auc_untreated_arm_on_untreated_test": 0.6840086287944689,
+        "mean_pT": 0.5497650504112244,
+        "mean_pU": 0.485330730676651,
+        "share_cate_positive_rule": 0.1931548863794786,
+        "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
+        "elapsed_seconds": 212.54872965812683,
+        "timestamp": "2026-09-05T01:58:03Z",
+        "rl_csv_overlap_rows": 28692,
+        "corr_pT_with_shipped": 0.6515792424144822,
+        "corr_pU_with_shipped": 0.6694311069439243,
+        "agreement_cate_sign_rule": 0.7681583716715461
+      },
+      "effect": {
+        "mean_pT": 0.5565982460975647,
+        "mean_pU": 0.4989713728427887,
+        "mean_cate": 0.0576268695294857,
+        "share_positive_rule": 0.186,
+        "expected_value_logodds": {
+          "treated": 0.005985000636428595,
+          "untreated": -0.25469061732292175
+        },
+        "global_share_top10": [
+          [
+            "open_cases_max",
+            0.16317709656162852
+          ],
+          [
+            "AMOUNT_REQ",
+            0.08757835477850101
+          ],
+          [
+            "month_mean",
+            0.07991665228527087
+          ],
+          [
+            "NumberOfOffers",
+            0.07857055169838502
+          ],
+          [
+            "timesincemidnight_max",
+            0.05257044925052513
+          ],
+          [
+            "open_cases_min",
+            0.05171577274475077
+          ],
+          [
+            "Activity",
+            0.05065987219316942
+          ],
+          [
+            "timesincelastevent_mean",
+            0.03559138313867335
+          ],
+          [
+            "timesincelastevent_max",
+            0.03334325765252593
+          ],
+          [
+            "month_max",
+            0.032815344377418135
+          ]
+        ],
+        "family_share": {
+          "event": 0.7717281565372545,
+          "case": 0.1776119712695763,
+          "control_flow": 0.05065987219316942
+        }
+      },
+      "link_to_state": {
+        "corr_pT": 0.5771596085175975,
+        "corr_pU": 0.5977963323039994,
+        "corr_cate": 0.4753501999489625,
+        "positive_rule_agreement": 0.768
+      },
+      "deletion_test": {
+        "1": {
+          "k": 1,
+          "abs_guided": 0.7173309922218323,
+          "abs_random": 0.07237627743128687,
+          "abs_anti": 0.0,
+          "gap": 0.6449546792959794,
+          "gap_se": 0.02237542032432059,
+          "z": 28.82424865980983,
+          "flip_positive_effect_rule": 0.178
+        },
+        "3": {
+          "k": 3,
+          "abs_guided": 0.7807736992835999,
+          "abs_random": 0.18747977593308315,
+          "abs_anti": 0.0,
+          "gap": 0.5932939120256342,
+          "gap_se": 0.02546708419029992,
+          "z": 23.296499418320224,
+          "flip_positive_effect_rule": 0.304
+        }
+      },
+      "cards": {
+        "paper_card_act": {
+          "case_id": "206709",
+          "prefix_nr": 3,
+          "action": "intervene",
+          "dq": 4.024065971374512,
+          "r": 0.41772452026743806,
+          "pT": 0.6350546479225159,
+          "pU": 0.505904495716095,
+          "state": {
+            "relative_position": 0.25,
+            "reliability": 1.0,
+            "deviation": 1.0,
+            "available_resources": 0.0,
+            "Proba_if_Treated": 0.565673828125,
+            "Proba_if_Untreated": 0.4990329444408417
+          },
+          "effect_top": [
+            [
+              "open_cases_max",
+              847.0,
+              0.695411741733551,
+              0.2097909152507782,
+              -0.4856208264827728
+            ],
+            [
+              "month_mean",
+              2.0,
+              -0.324183851480484,
+              0.08924901485443115,
+              0.41343286633491516
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              -0.22487051784992218,
+              0.0,
+              0.22487051784992218
+            ],
+            [
+              "timesincelastevent_mean",
+              0.24748888888888887,
+              -0.15321697294712067,
+              -0.1246020719408989,
+              0.02861490100622177
+            ],
+            [
+              "timesincemidnight_std",
+              0.5773502691224134,
+              -0.11203179322183132,
+              -0.10628622770309448,
+              0.005745565518736839
+            ],
+            [
+              "open_cases_min",
+              847.0,
+              0.10544515401124954,
+              0.1705828309059143,
+              0.06513767689466476
+            ]
+          ],
+          "effect_share_top6": 0.6894774458796807,
+          "timing_phi": {
+            "relative_position": -0.017504310235381126,
+            "reliability": 0.3988966941833496,
+            "deviation": 0.5246730446815491,
+            "available_resources": 2.610589027404785,
+            "Proba_if_Treated": 0.7576863169670105,
+            "Proba_if_Untreated": -1.129501223564148
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "196960",
+          "prefix_nr": 11,
+          "action": "wait",
+          "dq": -2.3204421997070312,
+          "r": 0.4052586200334898,
+          "pT": 0.49820342659950256,
+          "pU": 0.44969043135643005,
+          "state": {
+            "relative_position": 0.6470588445663452,
+            "reliability": 1.0,
+            "deviation": 1.0,
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.41838961839675903,
+            "Proba_if_Untreated": 0.5053600072860718
+          },
+          "effect_top": [
+            [
+              "NumberOfOffers",
+              1.0,
+              -0.2209002524614334,
+              0.0,
+              0.2209002524614334
+            ],
+            [
+              "timesincemidnight_max",
+              932.0,
+              0.17810632847249508,
+              0.004327690228819847,
+              -0.17377863824367523
+            ],
+            [
+              "timesincemidnight_std",
+              142.93177011809104,
+              0.07787408377043903,
+              0.07534042000770569,
+              -0.0025336637627333403
+            ],
+            [
+              "AMOUNT_REQ",
+              25000.0,
+              -0.06281084939837456,
+              -0.08158815652132034,
+              -0.018777307122945786
+            ],
+            [
+              "open_cases_std",
+              27.786523875629307,
+              -0.06149799935519695,
+              -0.03271805867552757,
+              0.02877994067966938
+            ],
+            [
+              "timesincelastevent_std",
+              520.8725322646334,
+              -0.052079224959015846,
+              -0.031966011971235275,
+              0.02011321298778057
+            ]
+          ],
+          "effect_share_top6": 0.5396921001622322,
+          "timing_phi": {
+            "relative_position": 0.26085761189460754,
+            "reliability": -0.6530364751815796,
+            "deviation": -0.9627915620803833,
+            "available_resources": 1.335969090461731,
+            "Proba_if_Treated": 1.9818475246429443,
+            "Proba_if_Untreated": 1.2374889850616455
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_paper_card_act_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_paper_card_act_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_paper_card_wait_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_paper_card_wait_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.png"
+      ],
+      "seconds": 14.348525437999342
+    },
+    {
+      "log": "BPIC2017",
+      "n_matched": 500,
+      "manifest": {
+        "log": "BPIC2017",
+        "seed": 0,
+        "n_train": 575329,
+        "n_test": 293559,
+        "n_features": 201,
+        "treated_share_train": 0.6554753888644584,
+        "propensity_best": {
+          "C": 0.1,
+          "penalty": "l1"
+        },
+        "auc_treated_arm_on_treated_test": 0.9653928539172184,
+        "auc_untreated_arm_on_untreated_test": 0.8707976882670311,
+        "mean_pT": 0.40719276666641235,
+        "mean_pU": 0.2782634198665619,
+        "share_cate_positive_rule": 0.16935266845847002,
+        "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
+        "elapsed_seconds": 4562.337912797928,
+        "timestamp": "2026-09-07T03:32:18Z",
+        "rl_csv_overlap_rows": 293559,
+        "corr_pT_with_shipped": 0.01533572547392152,
+        "corr_pU_with_shipped": -0.027372801880002365,
+        "agreement_cate_sign_rule": 0.8033887566042942
+      },
+      "effect": {
+        "mean_pT": 0.46481314301490784,
+        "mean_pU": 0.326233446598053,
+        "mean_cate": 0.13857971131801605,
+        "share_positive_rule": 0.152,
+        "expected_value_logodds": {
+          "treated": -0.5720033645629883,
+          "untreated": -0.777803897857666
+        },
+        "global_share_top10": [
+          [
+            "CreditScore_max",
+            0.2730676043753172
+          ],
+          [
+            "MonthlyCost_max",
+            0.22542981236298443
+          ],
+          [
+            "ApplicationType",
+            0.19400343430529604
+          ],
+          [
+            "FirstWithdrawalAmount_max",
+            0.03448716509331265
+          ],
+          [
+            "NumberOfOffers",
+            0.03008369693505288
+          ],
+          [
+            "event_nr_mean",
+            0.027160936359725583
+          ],
+          [
+            "Activity",
+            0.023236685621843566
+          ],
+          [
+            "RequestedAmount",
+            0.017550301165826024
+          ],
+          [
+            "OfferedAmount_mean",
+            0.01667105563368072
+          ],
+          [
+            "timesincelastevent_max",
+            0.012306904974994218
+          ]
+        ],
+        "family_share": {
+          "event": 0.7280790831833149,
+          "case": 0.2486842311948415,
+          "control_flow": 0.023236685621843566
+        }
+      },
+      "link_to_state": {
+        "corr_pT": 0.06964694819089536,
+        "corr_pU": 0.010410431774740157,
+        "corr_cate": 0.010314900015248277,
+        "positive_rule_agreement": 0.814
+      },
+      "deletion_test": {
+        "1": {
+          "k": 1,
+          "abs_guided": 3.346383571624756,
+          "abs_random": 0.07385337129794062,
+          "abs_anti": 0.0,
+          "gap": 3.272530144656077,
+          "gap_se": 0.10987300267864691,
+          "z": 29.784661062076093,
+          "flip_positive_effect_rule": 0.28
+        },
+        "3": {
+          "k": 3,
+          "abs_guided": 3.4861176013946533,
+          "abs_random": 0.1885461413020268,
+          "abs_anti": 0.0,
+          "gap": 3.2975713970309126,
+          "gap_se": 0.10709239761353484,
+          "z": 30.791834626122426,
+          "flip_positive_effect_rule": 0.306
+        }
+      },
+      "cards": {
+        "paper_card_act": {
+          "case_id": "Application_788777485",
+          "prefix_nr": 21,
+          "action": "intervene",
+          "dq": 4.664532661437988,
+          "r": 0.9972561738373015,
+          "pT": 0.9931665062904358,
+          "pU": 0.7609431147575378,
+          "state": {
+            "relative_position": 0.875,
+            "reliability": 0.9276978373527527,
+            "deviation": 1.0,
+            "available_resources": 1.0,
+            "Proba_if_Treated": 0.6676196455955505,
+            "Proba_if_Untreated": 0.0
+          },
+          "effect_top": [
+            [
+              "MonthlyCost_max",
+              183.39,
+              1.7971590757369995,
+              1.7907893657684326,
+              -0.0063697099685668945
+            ],
+            [
+              "ApplicationType",
+              "New credit",
+              1.634160228073597,
+              1.694490909576416,
+              0.06033068150281906
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              0.759735107421875,
+              1.689759612083435,
+              0.9300245046615601
+            ],
+            [
+              "FirstWithdrawalAmount_max",
+              6000.0,
+              -0.23055824264883995,
+              0.030361358076334,
+              0.26091960072517395
+            ],
+            [
+              "event_nr_mean",
+              11.0,
+              -0.20752881094813347,
+              0.04622628167271614,
+              0.2537550926208496
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              -0.19259531795978546,
+              0.0,
+              0.19259531795978546
+            ]
+          ],
+          "effect_share_top6": 0.8508191117628434,
+          "timing_phi": {
+            "relative_position": 1.0159404277801514,
+            "reliability": -0.06578622758388519,
+            "deviation": -0.01114313118159771,
+            "available_resources": 0.978875994682312,
+            "Proba_if_Treated": 4.468073844909668,
+            "Proba_if_Untreated": 1.3159589767456055
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "Application_577102636",
+          "prefix_nr": 4,
+          "action": "wait",
+          "dq": -3.769101858139038,
+          "r": 0.45239281327338604,
+          "pT": 0.42292851209640503,
+          "pU": 0.47375160455703735,
+          "state": {
+            "relative_position": 0.1111111119389534,
+            "reliability": 0.9742831587791443,
+            "deviation": 1.0,
+            "available_resources": 3.0,
+            "Proba_if_Treated": 0.4042521119117737,
+            "Proba_if_Untreated": 0.0
+          },
+          "effect_top": [
+            [
+              "MonthlyCost_max",
+              0.0,
+              -1.0632547307759523,
+              -1.0771616697311401,
+              -0.013906938955187798
+            ],
+            [
+              "ApplicationType",
+              "New credit",
+              0.4393690414726734,
+              0.4923401474952698,
+              0.05297110602259636
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              0.426801860332489,
+              1.2600983381271362,
+              0.8332964777946472
+            ],
+            [
+              "FirstWithdrawalAmount_max",
+              0.0,
+              0.2109223259612918,
+              -0.005176742561161518,
+              -0.2160990685224533
+            ],
+            [
+              "RequestedAmount",
+              0.0,
+              -0.17038072645664215,
+              -0.08206184208393097,
+              0.08831888437271118
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              -0.1486814320087433,
+              0.0,
+              0.1486814320087433
+            ]
+          ],
+          "effect_share_top6": 0.7734757496944664,
+          "timing_phi": {
+            "relative_position": 1.654395580291748,
+            "reliability": 0.09263662248849869,
+            "deviation": 0.006908297538757324,
+            "available_resources": 2.8290305137634277,
+            "Proba_if_Treated": -2.388234853744507,
+            "Proba_if_Untreated": -1.4697026014328003
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_paper_card_act_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_paper_card_act_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_paper_card_wait_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_paper_card_wait_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.png"
+      ],
+      "seconds": 51.244190445999266
+    },
+    {
+      "log": "SimBank",
+      "n_matched": 500,
+      "manifest": {
+        "log": "SimBank",
+        "seed": 0,
+        "n_train": 186629,
+        "n_test": 93428,
+        "n_features": 49,
+        "treated_share_train": 0.37306099266459125,
+        "propensity_best": {
+          "C": 10,
+          "penalty": "l1"
+        },
+        "auc_treated_arm_on_treated_test": 0.9516237792317408,
+        "auc_untreated_arm_on_untreated_test": null,
+        "mean_pT": 0.28151416778564453,
+        "mean_pU": 1.0,
+        "share_cate_positive_rule": 0.0,
+        "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
+        "elapsed_seconds": 182.69002532958984,
+        "timestamp": "2026-09-07T04:51:19Z",
+        "prefix_restriction": "prefixes before the case's contact/skip decision and <= 4 (the events both arms share)",
+        "untreated_arm_constant": 1.0
+      },
+      "effect": {
+        "mean_pT": 0.2832299768924713,
+        "mean_pU": 1.0,
+        "mean_cate": -0.7167700087089325,
+        "share_positive_rule": 0.0,
+        "expected_value_logodds": {
+          "treated": -0.8729284405708313,
+          "untreated": 13.815509557935018
+        },
+        "global_share_top10": [
+          [
+            "amount",
+            0.6540277805997241
+          ],
+          [
+            "est_quality_max",
+            0.17314203193698924
+          ],
+          [
+            "est_quality_mean",
+            0.06175701039139566
+          ],
+          [
+            "est_quality_sum",
+            0.03355023101215415
+          ],
+          [
+            "est_quality_min",
+            0.027664039430804043
+          ],
+          [
+            "cum_cost_mean",
+            0.021386181246758444
+          ],
+          [
+            "unc_quality_min",
+            0.021229809486320226
+          ],
+          [
+            "unc_quality_mean",
+            0.0056624129948770335
+          ],
+          [
+            "est_quality_std",
+            0.0015805029009771144
+          ],
+          [
+            "activity",
+            0.0
+          ]
+        ],
+        "family_share": {
+          "event": 0.34597221940027595,
+          "case": 0.6540277805997241,
+          "control_flow": 0.0
+        }
+      },
+      "link_to_state": {
+        "corr_pT": 0.9999999999999999,
+        "corr_pU": null,
+        "corr_cate": 0.9999999999999994,
+        "positive_rule_agreement": 1.0
+      },
+      "deletion_test": {
+        "1": {
+          "k": 1,
+          "abs_guided": 4.383726478151861,
+          "abs_random": 0.12662178062638266,
+          "abs_anti": 0.0,
+          "gap": 4.257104697525477,
+          "gap_se": 0.15851305695828122,
+          "z": 26.856492324451843,
+          "flip_positive_effect_rule": 0.0,
+          "flip_good_outcome_rule": 0.424
+        },
+        "3": {
+          "k": 3,
+          "abs_guided": 5.250512004435063,
+          "abs_random": 0.3842080183570156,
+          "abs_anti": 0.0,
+          "gap": 4.866303986078045,
+          "gap_se": 0.16509776008155874,
+          "z": 29.475287754807077,
+          "flip_positive_effect_rule": 0.0,
+          "flip_good_outcome_rule": 0.708
+        }
+      },
+      "cards": {
+        "paper_card_act": {
+          "case_id": "17195",
+          "prefix_nr": 10,
+          "action": "intervene",
+          "dq": 9.913602828979492,
+          "r": 0.9999999932727015,
+          "pT": 0.064474917948246,
+          "pU": 1.0,
+          "state": {
+            "relative_position": 0.9090909361839294,
+            "reliability": 0.5,
+            "deviation": 0.0,
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.064474917948246,
+            "Proba_if_Untreated": 1.0
+          },
+          "effect_top": [
+            [
+              "est_quality_max",
+              6.0,
+              -1.9361579418182373,
+              -1.9361579418182373,
+              0.0
+            ],
+            [
+              "amount",
+              36738.0,
+              0.42308613657951355,
+              0.42308613657951355,
+              0.0
+            ],
+            [
+              "est_quality_min",
+              4.0,
+              -0.32735493779182434,
+              -0.32735493779182434,
+              0.0
+            ],
+            [
+              "est_quality_mean",
+              4.9,
+              -0.24106323719024658,
+              -0.24106323719024658,
+              0.0
+            ],
+            [
+              "unc_quality_min",
+              0.0,
+              0.2016293704509735,
+              0.2016293704509735,
+              0.0
+            ],
+            [
+              "cum_cost_mean",
+              64.0,
+              0.07087180763483047,
+              0.07087180763483047,
+              0.0
+            ]
+          ],
+          "effect_share_top6": 0.9599566969053887,
+          "timing_phi": {
+            "relative_position": -1.1501365900039673,
+            "reliability": 1.3281967639923096,
+            "deviation": 0.09785568714141846,
+            "available_resources": -0.047531306743621826,
+            "Proba_if_Treated": 3.707468271255493,
+            "Proba_if_Untreated": 0.0
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "480",
+          "prefix_nr": 5,
+          "action": "wait",
+          "dq": -9.931888580322266,
+          "r": 0.9975447511993684,
+          "pT": 0.9636272192001343,
+          "pU": 1.0,
+          "state": {
+            "relative_position": 0.38461539149284363,
+            "reliability": 0.20000000298023224,
+            "deviation": 0.0,
+            "available_resources": 0.0,
+            "Proba_if_Treated": 0.9636272192001343,
+            "Proba_if_Untreated": 1.0
+          },
+          "effect_top": [
+            [
+              "amount",
+              52782.0,
+              1.995418667793274,
+              1.995418667793274,
+              0.0
+            ],
+            [
+              "est_quality_max",
+              2.0,
+              0.8247535824775696,
+              0.8247535824775696,
+              0.0
+            ],
+            [
+              "est_quality_mean",
+              2.0,
+              0.4754534661769867,
+              0.4754534661769867,
+              0.0
+            ],
+            [
+              "unc_quality_min",
+              0.0,
+              0.31993022561073303,
+              0.31993022561073303,
+              0.0
+            ],
+            [
+              "cum_cost_mean",
+              228.0,
+              0.23814260959625244,
+              0.23814260959625244,
+              0.0
+            ],
+            [
+              "est_quality_min",
+              2.0,
+              0.1454860419034958,
+              0.1454860419034958,
+              0.0
+            ]
+          ],
+          "effect_share_top6": 0.9637031493138273,
+          "timing_phi": {
+            "relative_position": -0.5581399202346802,
+            "reliability": 2.0151753425598145,
+            "deviation": -0.23115293681621552,
+            "available_resources": -0.525103747844696,
+            "Proba_if_Treated": 15.1766996383667,
+            "Proba_if_Untreated": -0.0
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_act_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_act_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_wait_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_wait_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.png"
+      ],
+      "seconds": 45.04889744400134
+    }
+  ]
+}
