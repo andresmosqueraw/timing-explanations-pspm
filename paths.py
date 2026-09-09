@@ -83,6 +83,10 @@ def variant_model(log: str, variant: str = "cate") -> Path:
     live under models/variants/ppo_<log>_<variant>.zip."""
     if variant == "released":
         return {"BPIC2012": BPIC2012_MODEL, "BPIC2017": BPIC2017_MODEL, "SimBank": SIMBANK_MODEL}[log]
+    if log == "SimBank" and variant == "cate_retrained":
+        # SimBank's cate checkpoint already reads the retrained estimator's
+        # features (add_effect_features.py): its pipeline is coherent as is.
+        variant = "cate"
     return VARIANT_MODELS / f"ppo_{log.lower()}_{variant}.zip"
 
 

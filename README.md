@@ -1,35 +1,41 @@
 # timing-explanations-pspm
 
-Supporting code for the paper *"Explaining When to Wait: A Timing
-Framework for Explainability in Prescriptive Process Monitoring
-Policies"*.
+Supporting code for the paper *"How Risk, Effect and Timing Explanations
+Compose in Prescriptive Process Monitoring Policies"* (RETIME).
 
-The paper formalizes the timing/wait-vs-act explanation (`φ^ΔQ`,
-`φ^ΔQ_wait`) for already-published resource-constrained PPO policies
-(Shoush & Dumas's design), justified by a Completeness-derived existence
-corollary (Integrated Gradients), and tests its fidelity with a deletion
-test. It retrains and independently revalidates the policy's quality on
-three logs: BPIC2012, BPIC2017, and SimBank's *Time contact HQ*
-intervention.
+The paper reads three explanations on the same decision point of a
+resource-constrained PPO policy (Shoush & Dumas's design): the *timing
+justification* (`φ^ΔQ`, `φ^ΔQ_wait`, Integrated Gradients on the margin for
+acting over waiting), the *risk explanation* of the outcome predictor whose
+outputs the policy reads as state, and the *effect explanation* of the
+causal-effect estimator whose outputs it also reads; and asks how they
+compose. `compose.py` propagates the timing justification to the prefix
+attributes through the two lower levels (DeepSHAP's rescale rule, as Chen
+et al. propagate Shapley values through a series of models), checks the
+result against a direct attribution of the whole prefix-to-margin chain with
+a deletion test, and cross-tabulates the decisions by (at risk) × (treatable)
+× (acts).
 
 ## The explained policy
 
-The paper's policy (`pools.DEFAULT_VARIANT = "cate"`) observes the released
-four features plus a causal estimate's two counterfactual outcome
-probabilities (`Proba_if_Treated`, `Proba_if_Untreated`), the shipped ones on
-the BPIC logs and our retrained two-model estimator's on SimBank
-(`simbank_resources/add_effect_features.py`), and is trained one case per
-episode with `--reward-scale 0.01 --ent-coef 0.3`
-(`models/variants/ppo_<log>_cate.zip`). Every script defaults to it;
-`--variant released` evaluates the earlier four-feature design (on SimBank,
-the uncertainty-proxy checkpoint), whose results are archived as
-`*_released.json`. Per decision point the policy earns 35.6 / 55.9 / 46.3
-(BPIC2012 / BPIC2017 / SimBank) against 24.3 / 51.7 / -63.3 for always
-waiting, -49.3 / -76.7 / 16.6 for always intervening and -28.2 / -76.4 /
--61.4 for the recorded action (oracle 58.1 / 57.1 / 46.5). On SimBank the
-fitted effect says the HQ contact saves 73 % of the events, so the policy
-intervenes on 73 % of them (precision and recall 0.999) and always waiting is
-the punished rule.
+The paper's policy (`pools.DEFAULT_VARIANT = "cate_retrained"`) observes the
+released four features plus the causal estimate's two counterfactual outcome
+probabilities (`Proba_if_Treated`, `Proba_if_Untreated`) and is trained one
+case per episode with `--reward-scale 0.01 --ent-coef 0.3`
+(`models/variants/ppo_<log>_cate_retrained.zip`) on the *coherent* state:
+`build_retrained_state.py` scores the prepared log's temporal test split with
+the retrained outcome predictor (`risk_model.py`) and effect estimator
+(`effect_model.py`) into an RL CSV of Shoush & Dumas's format
+(`data/retrained_state_<log>.csv`), so the risk and effect levels explain
+exactly the numbers the policy reads. Every script defaults to it.
+`--variant cate` is the same recipe on the shipped CSVs (`*_cate.json`):
+there the retrained lower levels explain *other* numbers than the state
+carries (corr 0.02 on r and 0.07 on p_T on BPIC2017), and rebuilding the
+state from them flips 26 % / 39 % of the pool's decisions on BPIC2012 /
+BPIC2017 (`compose_results_cate.json`), which is why the coherent variant is
+the paper's. `--variant released` evaluates the earlier four-feature design
+(`*_released.json`). SimBank keeps its single checkpoint, trained on the
+retrained estimator's features (`simbank_resources/add_effect_features.py`).
 
 ## Layout
 
@@ -91,6 +97,20 @@ the punished rule.
   untreated arm is constant (skipping always cancels);
   `simbank_resources/add_effect_features.py` scores every event into the
   effect-augmented pkl the SimBank `cate` policy is trained and evaluated on.
+- `compose.py`, `run_compose_suite.py`, `test_compose.py` — the composition
+  study (paper Section 6): the state rebuilt from the retrained models, the
+  propagation of `φ^ΔQ` to the prefix attributes through `φ^r`, `φ^{p_T}`,
+  `φ^{p_U}` with the channel of every contribution, the end-to-end function
+  F(x, n) = ΔQ(s(x, n)) with a Shapley-sampling direct attribution and the
+  deletion test on it, the (risky × treatable × acts) typology and the
+  risk-vs-effect agreement on the shared prefix vocabulary. Writes
+  `compose_results.json`, `figures/out/compose/<log>/`.
+- `build_retrained_state.py` — the coherent-pipeline RL CSVs
+  (`data/retrained_state_<log>.csv`) the `cate_retrained` policies are
+  trained and evaluated on.
+- `figures/make_composition_flow.py` — the paper's flow figure: the propagated
+  card of one decision, prefix attributes → state coordinates by level →
+  margin.
 - `models/variants/` — policy checkpoints that depart from the released
   design (`pools.VARIANTS`). Both append the causal model's counterfactual
   outcome probabilities to the state; `cate` trains with one case per
@@ -115,8 +135,11 @@ python risk_model.py               # retrain the outcome (risk) predictors -> mo
 python run_risk_suite.py           # risk explanations + metrics + two-level cards -> risk_results.json
 python effect_model.py             # retrain the causal-effect estimators -> models/effect/ (BPIC2017 takes ~75 min)
 python run_effect_suite.py         # effect explanations + deletion test + three-level cards -> effect_results.json
-TIMING_PAPER_FIGURES=<paper>/figures python figures/make_three_level.py   # the paper's three-level card (fig5)
-TIMING_PAPER_FIGURES=<paper>/figures python figures/make_mockup.py        # the paper's web mock-up figure (fig6)
+python build_retrained_state.py    # coherent-pipeline RL CSVs -> data/retrained_state_<log>.csv (needs the prepared logs)
+python run_compose_suite.py        # composition study -> compose_results.json, figures/out/compose/
+TIMING_PAPER_FIGURES=<paper>/figures python figures/make_three_level.py        # the paper's three-level card (fig5)
+TIMING_PAPER_FIGURES=<paper>/figures python figures/make_composition_flow.py   # the paper's composition flow figure (fig6)
+TIMING_PAPER_FIGURES=<paper>/figures python figures/make_mockup.py             # web mock-up figure (not in the paper)
 ```
 
 Both paper figures read `risk_results.json` and `effect_results.json` and take their

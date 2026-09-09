@@ -82,8 +82,12 @@ def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP
         d = {"input": name, "share": float(share[j]), "mean_abs": float(g[j]), "mean_signed": float(comp[:, j].mean()),
              "channel": {"native": float(g[j])} if name in cp.NATIVE else {c: float(chan[c][j]) for c in chan}}
         rows.append(d)
-    channel_share = {c: float(np.abs(prop["channels"][c][mask]).sum() / np.abs(comp).sum()) for c in chan}
-    channel_share["native"] = float(np.abs(prop["native"][mask]).sum() / np.abs(comp).sum())
+    # share of the total channel mass (channels can cancel inside an input, so
+    # the masses are normalised among themselves rather than by |composed|)
+    masses = {c: float(np.abs(prop["channels"][c][mask]).sum()) for c in chan}
+    masses["native"] = float(np.abs(prop["native"][mask]).sum())
+    channel_share = {c: v / sum(masses.values()) for c, v in masses.items()}
+    channel_share["cancellation"] = float(1.0 - np.abs(comp).sum() / sum(masses.values()))  # mass lost to opposite-sign channels
     return {"n": int(mask.sum()), "top": rows, "channel_share": channel_share,
             "prefix_share_top5": float(np.sort(share[:-2])[::-1][:5].sum())}
 

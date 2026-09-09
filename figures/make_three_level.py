@@ -87,7 +87,11 @@ effect_s = "a call is expected to help" if cate > mean_cate else "a call is not 
 native = [(k, rc["timing_phi"][k]) for k in ("available_resources", "relative_position")]
 top_native = max(native, key=lambda kv: abs(kv[1]))
 reason = label(top_native[0], rc["state"][top_native[0]])
-timing_s = (f"and {reason}.  Act now." if acts else f"but {reason}.  Wait.")
+# the native reason is quoted with its direction: it either backs the decision or is overridden by the effect level
+if top_native[1] > 0:
+    timing_s = f"and {reason}.  Act now." if acts else f"but {reason}.  Wait."
+else:
+    timing_s = f"even though {reason}.  Act now." if acts else f"even though {reason}.  Wait."
 sentence = f"In plain terms:  {risk_s}, {effect_s}, {timing_s}"
 fig.patches.append(patches.FancyBboxPatch((X0, 0.03), 3 * COL_W + 2 * GAP, 0.085, boxstyle="square,pad=0", transform=fig.transFigure,
                                           fc="#fffbeb", ec="#f59e0b", lw=0.9, zorder=3))

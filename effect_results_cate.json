@@ -5,7 +5,7 @@
       "BPIC2017",
       "SimBank"
     ],
-    "variant": "cate_retrained",
+    "variant": "cate",
     "seed": 123,
     "quick": 0,
     "skip_plots": false,
@@ -97,10 +97,10 @@
         }
       },
       "link_to_state": {
-        "corr_pT": 0.999999999999998,
-        "corr_pU": 0.9999999999999988,
-        "corr_cate": 0.9999999999999961,
-        "positive_rule_agreement": 1.0
+        "corr_pT": 0.5771596085175975,
+        "corr_pU": 0.5977963323039994,
+        "corr_cate": 0.4753501999489625,
+        "positive_rule_agreement": 0.768
       },
       "deletion_test": {
         "1": {
@@ -111,8 +111,7 @@
           "gap": 0.6449546792959794,
           "gap_se": 0.02237542032432059,
           "z": 28.82424865980983,
-          "flip_positive_effect_rule": 0.178,
-          "flip_good_outcome_rule": 0.076
+          "flip_positive_effect_rule": 0.178
         },
         "3": {
           "k": 3,
@@ -122,149 +121,148 @@
           "gap": 0.5932939120256342,
           "gap_se": 0.02546708419029992,
           "z": 23.296499418320224,
-          "flip_positive_effect_rule": 0.304,
-          "flip_good_outcome_rule": 0.094
+          "flip_positive_effect_rule": 0.304
         }
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "197366",
-          "prefix_nr": 2,
+          "case_id": "206709",
+          "prefix_nr": 3,
           "action": "intervene",
-          "dq": 2.468289852142334,
-          "r": 0.352044122947837,
-          "pT": 0.6039475202560425,
-          "pU": 0.3410740792751312,
+          "dq": 4.024065971374512,
+          "r": 0.41772452026743806,
+          "pT": 0.6350546479225159,
+          "pU": 0.505904495716095,
           "state": {
-            "relative_position": 0.05128205195069313,
+            "relative_position": 0.25,
             "reliability": 1.0,
             "deviation": 1.0,
-            "available_resources": 1.0,
-            "Proba_if_Treated": 0.6039475202560425,
-            "Proba_if_Untreated": 0.3410740792751312
+            "available_resources": 0.0,
+            "Proba_if_Treated": 0.565673828125,
+            "Proba_if_Untreated": 0.4990329444408417
           },
           "effect_top": [
             [
+              "open_cases_max",
+              847.0,
+              0.695411741733551,
+              0.2097909152507782,
+              -0.4856208264827728
+            ],
+            [
+              "month_mean",
+              2.0,
+              -0.324183851480484,
+              0.08924901485443115,
+              0.41343286633491516
+            ],
+            [
               "NumberOfOffers",
-              3.0,
-              0.543807327747345,
+              1.0,
+              -0.22487051784992218,
               0.0,
-              -0.543807327747345
+              0.22487051784992218
             ],
             [
               "timesincelastevent_mean",
-              0.0029083333333333,
-              -0.17321009188890457,
-              -0.1481417715549469,
-              0.025068320333957672
-            ],
-            [
-              "Activity",
-              "A_SUBMITTED",
-              0.16426948079606518,
-              0.3569874651147984,
-              0.19271798431873322
-            ],
-            [
-              "timesincemidnight_max",
-              1210.0,
-              0.12754735723137856,
-              0.0832013189792633,
-              -0.04434603825211525
+              0.24748888888888887,
+              -0.15321697294712067,
+              -0.1246020719408989,
+              0.02861490100622177
             ],
             [
               "timesincemidnight_std",
-              0.0,
-              -0.11728256847709417,
-              -0.11026705056428909,
-              0.00701551791280508
+              0.5773502691224134,
+              -0.11203179322183132,
+              -0.10628622770309448,
+              0.005745565518736839
             ],
             [
-              "hour_mean",
-              20.0,
-              0.0917512085288763,
-              0.10005103051662445,
-              0.008299821987748146
+              "open_cases_min",
+              847.0,
+              0.10544515401124954,
+              0.1705828309059143,
+              0.06513767689466476
             ]
           ],
-          "effect_share_top6": 0.6659175391260986,
+          "effect_share_top6": 0.6894774458796807,
           "timing_phi": {
-            "relative_position": 0.9045693278312683,
-            "reliability": -0.06264927238225937,
-            "deviation": 0.4144008457660675,
-            "available_resources": -0.5691914558410645,
-            "Proba_if_Treated": 0.782547652721405,
-            "Proba_if_Untreated": 5.026286602020264
+            "relative_position": -0.017504310235381126,
+            "reliability": 0.3988966941833496,
+            "deviation": 0.5246730446815491,
+            "available_resources": 2.610589027404785,
+            "Proba_if_Treated": 0.7576863169670105,
+            "Proba_if_Untreated": -1.129501223564148
           }
         },
         "paper_card_wait": {
-          "case_id": "194145",
-          "prefix_nr": 1,
+          "case_id": "196960",
+          "prefix_nr": 11,
           "action": "wait",
-          "dq": -4.520520210266113,
-          "r": 0.6098954118053795,
-          "pT": 0.5683637857437134,
-          "pU": 0.5955582857131958,
+          "dq": -2.3204421997070312,
+          "r": 0.4052586200334898,
+          "pT": 0.49820342659950256,
+          "pU": 0.44969043135643005,
           "state": {
-            "relative_position": 0.0357142873108387,
-            "reliability": 0.0,
-            "deviation": 0.0,
-            "available_resources": 3.0,
-            "Proba_if_Treated": 0.5683637857437134,
-            "Proba_if_Untreated": 0.5955582857131958
+            "relative_position": 0.6470588445663452,
+            "reliability": 1.0,
+            "deviation": 1.0,
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.41838961839675903,
+            "Proba_if_Untreated": 0.5053600072860718
           },
           "effect_top": [
             [
               "NumberOfOffers",
-              2.0,
-              -0.260615736246109,
+              1.0,
+              -0.2209002524614334,
               0.0,
-              0.260615736246109
-            ],
-            [
-              "timesincelastevent_mean",
-              0.0,
-              -0.19631170481443405,
-              -0.17124338448047638,
-              0.025068320333957672
-            ],
-            [
-              "month_max",
-              12.0,
-              -0.16926596185658127,
-              0.0011224237969145179,
-              0.1703883856534958
+              0.2209002524614334
             ],
             [
               "timesincemidnight_max",
-              1194.0,
-              0.13935139775276184,
-              0.08294437825679779,
-              -0.05640701949596405
-            ],
-            [
-              "hour_mean",
-              19.0,
-              0.13600643537938595,
-              0.1443062573671341,
-              0.008299821987748146
+              932.0,
+              0.17810632847249508,
+              0.004327690228819847,
+              -0.17377863824367523
             ],
             [
               "timesincemidnight_std",
-              0.0,
-              -0.11672343593090773,
-              -0.11279822140932083,
-              0.003925214521586895
+              142.93177011809104,
+              0.07787408377043903,
+              0.07534042000770569,
+              -0.0025336637627333403
+            ],
+            [
+              "AMOUNT_REQ",
+              25000.0,
+              -0.06281084939837456,
+              -0.08158815652132034,
+              -0.018777307122945786
+            ],
+            [
+              "open_cases_std",
+              27.786523875629307,
+              -0.06149799935519695,
+              -0.03271805867552757,
+              0.02877994067966938
+            ],
+            [
+              "timesincelastevent_std",
+              520.8725322646334,
+              -0.052079224959015846,
+              -0.031966011971235275,
+              0.02011321298778057
             ]
           ],
-          "effect_share_top6": 0.5408053100812337,
+          "effect_share_top6": 0.5396921001622322,
           "timing_phi": {
-            "relative_position": 0.214624285697937,
-            "reliability": -0.27959510684013367,
-            "deviation": 0.25292280316352844,
-            "available_resources": -2.2619595527648926,
-            "Proba_if_Treated": -0.16472646594047546,
-            "Proba_if_Untreated": 2.716238260269165
+            "relative_position": 0.26085761189460754,
+            "reliability": -0.6530364751815796,
+            "deviation": -0.9627915620803833,
+            "available_resources": 1.335969090461731,
+            "Proba_if_Treated": 1.9818475246429443,
+            "Proba_if_Untreated": 1.2374889850616455
           }
         }
       },
@@ -276,7 +274,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.png"
       ],
-      "seconds": 11.276840171000003
+      "seconds": 14.348525437999342
     },
     {
       "log": "BPIC2017",
@@ -306,10 +304,10 @@
         "agreement_cate_sign_rule": 0.8033887566042942
       },
       "effect": {
-        "mean_pT": 0.46123209595680237,
-        "mean_pU": 0.3192324638366699,
-        "mean_cate": 0.14199961721897125,
-        "share_positive_rule": 0.188,
+        "mean_pT": 0.46481314301490784,
+        "mean_pU": 0.326233446598053,
+        "mean_cate": 0.13857971131801605,
+        "share_positive_rule": 0.152,
         "expected_value_logodds": {
           "treated": -0.5720033645629883,
           "untreated": -0.777803897857666
@@ -317,220 +315,218 @@
         "global_share_top10": [
           [
             "CreditScore_max",
-            0.27086385588000694
+            0.2730676043753172
           ],
           [
             "MonthlyCost_max",
-            0.2216621403089997
+            0.22542981236298443
           ],
           [
             "ApplicationType",
-            0.19498149815585558
+            0.19400343430529604
           ],
           [
             "FirstWithdrawalAmount_max",
-            0.03291395567080021
+            0.03448716509331265
           ],
           [
             "NumberOfOffers",
-            0.03099085159026856
+            0.03008369693505288
           ],
           [
             "event_nr_mean",
-            0.026096879321515408
+            0.027160936359725583
           ],
           [
             "Activity",
-            0.02236519378133774
+            0.023236685621843566
           ],
           [
             "RequestedAmount",
-            0.01809421919565598
+            0.017550301165826024
           ],
           [
             "OfferedAmount_mean",
-            0.0169793542225046
+            0.01667105563368072
           ],
           [
             "timesincelastevent_max",
-            0.016859236792619407
+            0.012306904974994218
           ]
         ],
         "family_share": {
-          "event": 0.7252955387666391,
-          "case": 0.25233926745202334,
-          "control_flow": 0.02236519378133774
+          "event": 0.7280790831833149,
+          "case": 0.2486842311948415,
+          "control_flow": 0.023236685621843566
         }
       },
       "link_to_state": {
-        "corr_pT": 0.9999999999999996,
-        "corr_pU": 0.9999999999999998,
-        "corr_cate": 0.9999999999999977,
-        "positive_rule_agreement": 1.0
+        "corr_pT": 0.06964694819089536,
+        "corr_pU": 0.010410431774740157,
+        "corr_cate": 0.010314900015248277,
+        "positive_rule_agreement": 0.814
       },
       "deletion_test": {
         "1": {
           "k": 1,
-          "abs_guided": 3.4154858589172363,
-          "abs_random": 0.07760801481045781,
+          "abs_guided": 3.346383571624756,
+          "abs_random": 0.07385337129794062,
           "abs_anti": 0.0,
-          "gap": 3.337877975594625,
-          "gap_se": 0.10903606272646643,
-          "z": 30.612605519040063,
-          "flip_positive_effect_rule": 0.3,
-          "flip_good_outcome_rule": 0.01
+          "gap": 3.272530144656077,
+          "gap_se": 0.10987300267864691,
+          "z": 29.784661062076093,
+          "flip_positive_effect_rule": 0.28
         },
         "3": {
           "k": 3,
-          "abs_guided": 3.5598983764648438,
-          "abs_random": 0.2037218057235703,
+          "abs_guided": 3.4861176013946533,
+          "abs_random": 0.1885461413020268,
           "abs_anti": 0.0,
-          "gap": 3.356176853982545,
-          "gap_se": 0.10593426724676043,
-          "z": 31.681692253223,
-          "flip_positive_effect_rule": 0.328,
-          "flip_good_outcome_rule": 0.01
+          "gap": 3.2975713970309126,
+          "gap_se": 0.10709239761353484,
+          "z": 30.791834626122426,
+          "flip_positive_effect_rule": 0.306
         }
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "Application_1917918136",
-          "prefix_nr": 44,
+          "case_id": "Application_788777485",
+          "prefix_nr": 21,
           "action": "intervene",
-          "dq": 7.009068965911865,
-          "r": 0.9663614126641781,
-          "pT": 0.9938312768936157,
-          "pU": 0.4129893481731415,
+          "dq": 4.664532661437988,
+          "r": 0.9972561738373015,
+          "pT": 0.9931665062904358,
+          "pU": 0.7609431147575378,
           "state": {
-            "relative_position": 1.0,
-            "reliability": 0.966361403465271,
-            "deviation": 0.0,
+            "relative_position": 0.875,
+            "reliability": 0.9276978373527527,
+            "deviation": 1.0,
             "available_resources": 1.0,
-            "Proba_if_Treated": 0.9938312768936157,
-            "Proba_if_Untreated": 0.4129893481731415
+            "Proba_if_Treated": 0.6676196455955505,
+            "Proba_if_Untreated": 0.0
           },
           "effect_top": [
             [
-              "ApplicationType",
-              "New credit",
-              1.9379583671689034,
-              2.0013036727905273,
-              0.06334530562162399
+              "MonthlyCost_max",
+              183.39,
+              1.7971590757369995,
+              1.7907893657684326,
+              -0.0063697099685668945
             ],
             [
-              "MonthlyCost_max",
-              428.6,
-              1.7406623512506485,
-              1.7736605405807495,
-              0.03299818933010101
+              "ApplicationType",
+              "New credit",
+              1.634160228073597,
+              1.694490909576416,
+              0.06033068150281906
             ],
             [
               "CreditScore_max",
               0.0,
-              0.827503502368927,
-              1.6859463453292847,
-              0.8584428429603577
+              0.759735107421875,
+              1.689759612083435,
+              0.9300245046615601
             ],
             [
-              "Activity",
-              "W_Validate application",
-              0.31702679861336946,
-              -0.14067710656672716,
-              -0.4577039051800966
+              "FirstWithdrawalAmount_max",
+              6000.0,
+              -0.23055824264883995,
+              0.030361358076334,
+              0.26091960072517395
             ],
             [
-              "RequestedAmount",
-              35000.0,
-              0.30981626734137535,
-              -0.036931488662958145,
-              -0.3467477560043335
+              "event_nr_mean",
+              11.0,
+              -0.20752881094813347,
+              0.04622628167271614,
+              0.2537550926208496
             ],
             [
               "NumberOfOffers",
               1.0,
-              -0.1846398264169693,
+              -0.19259531795978546,
               0.0,
-              0.1846398264169693
+              0.19259531795978546
             ]
           ],
-          "effect_share_top6": 0.8243098142687544,
+          "effect_share_top6": 0.8508191117628434,
           "timing_phi": {
-            "relative_position": -0.8430709838867188,
-            "reliability": -0.2848978042602539,
-            "deviation": -0.2812959551811218,
-            "available_resources": 0.7471648454666138,
-            "Proba_if_Treated": 6.9403300285339355,
-            "Proba_if_Untreated": -0.6594637632369995
+            "relative_position": 1.0159404277801514,
+            "reliability": -0.06578622758388519,
+            "deviation": -0.01114313118159771,
+            "available_resources": 0.978875994682312,
+            "Proba_if_Treated": 4.468073844909668,
+            "Proba_if_Untreated": 1.3159589767456055
           }
         },
         "paper_card_wait": {
-          "case_id": "Application_2064387905",
-          "prefix_nr": 29,
+          "case_id": "Application_577102636",
+          "prefix_nr": 4,
           "action": "wait",
-          "dq": -6.257122993469238,
-          "r": 1.5204618446376847e-08,
-          "pT": 0.00021843711147084832,
-          "pU": 0.0007739828433841467,
+          "dq": -3.769101858139038,
+          "r": 0.45239281327338604,
+          "pT": 0.42292851209640503,
+          "pU": 0.47375160455703735,
           "state": {
-            "relative_position": 0.5918367505073547,
-            "reliability": 1.0,
+            "relative_position": 0.1111111119389534,
+            "reliability": 0.9742831587791443,
             "deviation": 1.0,
-            "available_resources": 1.0,
-            "Proba_if_Treated": 0.00021843711147084832,
-            "Proba_if_Untreated": 0.0007739828433841467
+            "available_resources": 3.0,
+            "Proba_if_Treated": 0.4042521119117737,
+            "Proba_if_Untreated": 0.0
           },
           "effect_top": [
             [
-              "CreditScore_max",
-              1061.0,
-              -2.5712761878967285,
-              -9.117191314697266,
-              -6.545915126800537
-            ],
-            [
               "MonthlyCost_max",
-              100.0,
-              0.6824105910491198,
-              0.681179940700531,
-              -0.0012306503485888243
+              0.0,
+              -1.0632547307759523,
+              -1.0771616697311401,
+              -0.013906938955187798
             ],
             [
               "ApplicationType",
               "New credit",
-              0.6252454705536366,
-              0.6610279679298401,
-              0.03578249737620354
+              0.4393690414726734,
+              0.4923401474952698,
+              0.05297110602259636
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              0.426801860332489,
+              1.2600983381271362,
+              0.8332964777946472
             ],
             [
               "FirstWithdrawalAmount_max",
               0.0,
-              0.16497755469754338,
-              0.003226627130061388,
-              -0.161750927567482
+              0.2109223259612918,
+              -0.005176742561161518,
+              -0.2160990685224533
+            ],
+            [
+              "RequestedAmount",
+              0.0,
+              -0.17038072645664215,
+              -0.08206184208393097,
+              0.08831888437271118
             ],
             [
               "NumberOfOffers",
               1.0,
-              -0.13155211508274078,
+              -0.1486814320087433,
               0.0,
-              0.13155211508274078
-            ],
-            [
-              "CreditScore_mean",
-              475.62068965517244,
-              -0.11973796784877777,
-              -0.11973796784877777,
-              0.0
+              0.1486814320087433
             ]
           ],
-          "effect_share_top6": 0.8102175344871387,
+          "effect_share_top6": 0.7734757496944664,
           "timing_phi": {
-            "relative_position": -0.07998121529817581,
-            "reliability": 0.363667756319046,
-            "deviation": 0.36264604330062866,
-            "available_resources": -1.2500531673431396,
-            "Proba_if_Treated": 11.560819625854492,
-            "Proba_if_Untreated": -3.305511236190796
+            "relative_position": 1.654395580291748,
+            "reliability": 0.09263662248849869,
+            "deviation": 0.006908297538757324,
+            "available_resources": 2.8290305137634277,
+            "Proba_if_Treated": -2.388234853744507,
+            "Proba_if_Untreated": -1.4697026014328003
           }
         }
       },
@@ -542,7 +538,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.png"
       ],
-      "seconds": 25.328025343000036
+      "seconds": 51.244190445999266
     },
     {
       "log": "SimBank",
@@ -806,7 +802,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.png"
       ],
-      "seconds": 30.653761006999957
+      "seconds": 45.04889744400134
     }
   ]
 }

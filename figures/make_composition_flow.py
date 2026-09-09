@@ -29,11 +29,11 @@ import paths  # noqa: E402
 POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#1f2937", "#6b7280", "#d1d5db"
 LEVEL_COLOR = {"risk": "#e0e7ff", "effect": "#ffedd5", "native": "#dcfce7"}
 MID = [  # (node key, label, level)
-    ("risk", "reliability, deviation\n(risk level)", "risk"),
-    ("effect_T", "$\\hat p_{\\mathrm{treated}}$\n(effect level)", "effect"),
-    ("effect_U", "$\\hat p_{\\mathrm{untreated}}$\n(effect level)", "effect"),
-    ("relative_position", "relative_position\n(native)", "native"),
-    ("available_resources", "available_resources\n(native)", "native"),
+    ("risk", "reliability, deviation (risk)", "risk"),
+    ("effect_T", "$\\hat p_{\\mathrm{treated}}$ (effect)", "effect"),
+    ("effect_U", "$\\hat p_{\\mathrm{untreated}}$ (effect)", "effect"),
+    ("relative_position", "relative_position (native)", "native"),
+    ("available_resources", "available_resources (native)", "native"),
 ]
 
 
@@ -78,8 +78,8 @@ def main(argv=None):
     scale = 1.0 / total if total else 1.0
 
     fig, ax = plt.subplots(figsize=(9.0, 4.6))
-    ax.set_xlim(0, 10); ax.set_ylim(-0.16, 1.14); ax.axis("off")
-    TOPY = 0.94  # top of the usable span; headers sit above it
+    ax.set_xlim(0, 10); ax.set_ylim(-0.2, 1.22); ax.axis("off")
+    TOPY = 0.9  # top of the usable span; headers sit above it
     X0, X1, X2, W = 2.55, 5.55, 8.55, 0.32
     gap_l, gap_m = 0.02, 0.045
 
@@ -130,26 +130,32 @@ def main(argv=None):
         lab = name if val is None else f"{name} = {fmt(val)}"
         ax.text(X0 - 0.08, y0 + h / 2, lab, ha="right", va="center", fontsize=7.4, color=INK)
         ax.text(X0 + W + 0.06, y0 + h / 2, f"{tot:+.2f}", ha="left", va="center", fontsize=6.4, color=MUTED)
-    last_label_y = None
-    for k, lab, lvl in MID:
+    # middle labels: centred on their node, then spread so that consecutive
+    # labels are at least MINSEP apart and the stack stays inside [0, TOPY]
+    MINSEP = 0.13
+    centers = [mid_pos[k][0] + mid_pos[k][1] / 2 for k, _, _ in MID]
+    ys = [min(centers[0], TOPY - 0.02)]
+    for c in centers[1:]:
+        ys.append(min(c, ys[-1] - MINSEP))
+    if ys[-1] < 0.03:
+        shift = 0.03 - ys[-1]
+        ys = [y + shift for y in ys]
+    for (k, lab, lvl), ly in zip(MID, ys):
         y0, h = mid_pos[k]
         ax.add_patch(plt.Rectangle((X1, y0), W, h, fc=LEVEL_COLOR[lvl], ec=INK, lw=0.6, zorder=2))
-        ly = y0 + h / 2
-        if last_label_y is not None and last_label_y - ly < 0.085:  # thin nodes: stagger the labels
-            ly = last_label_y - 0.085
-        last_label_y = ly
-        ax.text(X1 + W + 0.08, ly, f"{lab}\n$\\phi^{{\\Delta Q}}$ = {mid_in[k]:+.2f}", ha="left", va="center", fontsize=7.2, color=INK)
+        ax.plot([X1 + W, X1 + W + 0.06], [y0 + h / 2, ly], color=MUTED, lw=0.5, zorder=2)
+        ax.text(X1 + W + 0.08, ly, f"{lab}\n$\\phi^{{\\Delta Q}}$ = {mid_in[k]:+.2f}", ha="left", va="center", fontsize=6.9, color=INK)
     y0, h = right_pos
     ax.add_patch(plt.Rectangle((X2, y0), W, h, fc="#fef3c7", ec=INK, lw=0.8, zorder=2))
     mlabel = f"$\\Delta Q$ = {card['dq']:.2f}\nact now" if acts else f"$\\Delta Q_{{\\mathrm{{wait}}}}$ = {-card['dq']:.2f}\nwait"
     ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=8, color=INK, fontweight="bold")
 
     # headers
-    ax.text(X0 + W / 2, 1.06, "prefix attributes\n(risk expl. $\\phi^{r}$, effect expl. $\\phi^{p_T}$, $\\phi^{p_U}$)", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X1 + W / 2, 1.06, "state coordinates, by level", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X2 + W / 2, 1.06, "timing level", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X0 + W / 2, 1.13, "prefix attributes\n(risk expl. $\\phi^{r}$, effect expl. $\\phi^{p_T}$, $\\phi^{p_U}$)", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X1 + W / 2, 1.13, "state coordinates, by level", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X2 + W / 2, 1.13, "timing level", ha="center", va="center", fontsize=7.6, color=MUTED)
     side = "toward acting now" if acts else "toward waiting"
-    ax.text(0.05, -0.12, f"ribbon width = |contribution| in units of the margin;  orange = {side},  blue = against it.  "
+    ax.text(0.05, -0.16, f"ribbon width = |contribution| in units of the margin;  orange = {side},  blue = against it.  "
             f"Case {card['case_id']}, event {card['prefix_nr']}; $r$ = {card['r']:.2f}, $\\hat p_T$ = {card['pT']:.2f}, $\\hat p_U$ = {card['pU']:.2f}.",
             ha="left", va="center", fontsize=6.8, color=MUTED)
 

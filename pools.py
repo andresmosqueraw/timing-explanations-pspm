@@ -101,7 +101,7 @@ def treatment_col(log: str, variant: str) -> str:
 # (effect_model.py, simbank_resources/add_effect_features.py) and "released"
 # is the earlier 4-feature checkpoint whose effect signal was the uncertainty
 # proxy.
-DEFAULT_VARIANT = "cate"
+DEFAULT_VARIANT = "cate_retrained"
 LOGS = ("BPIC2012", "BPIC2017", "SimBank")
 
 

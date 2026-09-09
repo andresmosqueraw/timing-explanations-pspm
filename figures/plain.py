@@ -23,7 +23,7 @@ def _credit(agg):
         x = _num(v)
         if x is None:
             return "credit score"
-        return "no credit score yet" if x == 0 else f"credit score {_amount(x)} ({agg})"
+        return f"no credit score yet ({agg})" if x == 0 else f"credit score {_amount(x)} ({agg})"
     return f
 
 
