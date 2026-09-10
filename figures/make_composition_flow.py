@@ -124,12 +124,23 @@ def main(argv=None):
         cursor_r -= h
 
     # nodes and labels
-    for (name, val, c), (y0, h) in zip(left, left_pos):
+    # left labels: centred on the node, spread to at least MINSEP_L apart (top-down), leader line when moved
+    MINSEP_L = 0.06
+    lys = []
+    for y0, h in left_pos:
+        c = y0 + h / 2
+        lys.append(c if not lys else min(c, lys[-1] - MINSEP_L))
+    if lys and lys[-1] < -0.02:
+        shift = -0.02 - lys[-1]
+        lys = [y + shift for y in lys]
+    for (name, val, c), (y0, h), ly in zip(left, left_pos, lys):
         ax.add_patch(plt.Rectangle((X0, y0), W, h, fc="#f3f4f6", ec=INK, lw=0.6, zorder=2))
         tot = sum(c.values())
         lab = name if val is None else f"{name} = {fmt(val)}"
-        ax.text(X0 - 0.08, y0 + h / 2, lab, ha="right", va="center", fontsize=7.4, color=INK)
-        ax.text(X0 + W + 0.06, y0 + h / 2, f"{tot:+.2f}", ha="left", va="center", fontsize=6.4, color=MUTED)
+        if abs(ly - (y0 + h / 2)) > 1e-6:
+            ax.plot([X0 - 0.06, X0], [ly, y0 + h / 2], color=MUTED, lw=0.5, zorder=2)
+        ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=7.0, color=INK)
+        ax.text(X0 + W + 0.06, ly, f"{tot:+.2f}", ha="left", va="center", fontsize=6.4, color=MUTED)
     # middle labels: centred on their node, then spread so that consecutive
     # labels are at least MINSEP apart and the stack stays inside [0, TOPY]
     MINSEP = 0.13

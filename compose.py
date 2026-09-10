@@ -338,3 +338,91 @@ def risk_effect_agreement(phi_r: np.ndarray, phi_cate: np.ndarray, names: list[s
     return {"global_spearman": float(spearmanr(gr, ge)[0]), f"jaccard_top{k}": len(top_r & top_e) / len(top_r | top_e),
             "shared_top": [names[j] for j in top_r & top_e], "per_attribute": per_attr,
             "sign_agreement_overall": float(same.sum() / both.sum()) if both.sum() else None}
+
+
+# ---------------------------------------------------------------------------
+# Cancellation between channels, well-definedness, baseline alignment
+# ---------------------------------------------------------------------------
+
+
+def cancellation(prop: dict) -> dict:
+    """How much of the channel mass cancels inside an input.
+
+    For state s and prefix attribute j the channels contribute
+    ch_c[s, j] (c in risk, effect_T, effect_U) and the composed value is
+    their sum; the cancellation index is 1 - |sum_c ch_c| / sum_c |ch_c|,
+    zero when the channels agree in sign and one when they cancel exactly.
+    Returns the per-state x per-attribute matrix, the mass-weighted index
+    per attribute (over states) and per state (over attributes), and the
+    global one.
+    """
+    chans = [prop["channels"][c] for c in ("risk", "effect_T", "effect_U")]
+    net = np.abs(sum(chans))
+    mass = sum(np.abs(c) for c in chans)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        per = np.where(mass > 0, 1.0 - net / mass, 0.0)
+    per_attr = 1.0 - net.sum(axis=0) / np.where(mass.sum(axis=0) > 0, mass.sum(axis=0), 1.0)
+    per_state = 1.0 - net.sum(axis=1) / np.where(mass.sum(axis=1) > 0, mass.sum(axis=1), 1.0)
+    return {"matrix": per, "per_attribute": per_attr, "per_state": per_state, "overall": float(1.0 - net.sum() / mass.sum()) if mass.sum() > 0 else 0.0}
+
+
+def well_defined(lower: dict[str, np.ndarray], ratio: float = FALLBACK_RATIO) -> dict:
+    """The non-degeneracy condition of the composition, per coordinate: the
+    lower-level attribution must sum to at least ``ratio`` of its |phi| mass
+    for the proportional weights to be defined. Reports the share of states
+    that satisfy it, the median ratio, and the share of states where all
+    coordinates do."""
+    out, ok_all = {}, None
+    for f, phi in lower.items():
+        s, a = phi.sum(axis=1), np.abs(phi).sum(axis=1)
+        r = np.where(a > 0, np.abs(s) / np.where(a > 0, a, 1.0), 0.0)
+        ok = r >= ratio
+        out[f] = {"share_defined": float(ok.mean()), "median_ratio": float(np.median(r)), "n_fallback": int((~ok).sum())}
+        ok_all = ok if ok_all is None else (ok_all & ok)
+    out["ratio"] = ratio
+    out["share_all_defined"] = float(ok_all.mean())
+    return out
+
+
+def baseline_alignment(phi_lower: np.ndarray, logit_output: np.ndarray) -> dict:
+    """How far a lower-level attribution's implicit baseline is from the pool
+    reference the timing level uses. ``phi_lower`` sums to logit m(x) minus
+    the explainer's expected value; the pool-aligned sum is logit m(x) minus
+    the pool mean logit. Reports the gap between the two baselines, the sign
+    agreement of the two sums (does the attribution push the coordinate in the
+    direction of its distance from the pool mean?) and their correlation."""
+    s_tree = phi_lower.sum(axis=1)
+    s_pool = logit_output - logit_output.mean()
+    ev_tree = float((logit_output - s_tree).mean())
+    both = (np.abs(s_tree) > 1e-9) & (np.abs(s_pool) > 1e-9)
+    return {"expected_value": ev_tree, "pool_mean_logit": float(logit_output.mean()), "baseline_gap": float(logit_output.mean() - ev_tree),
+            "sign_agreement": float((np.sign(s_tree[both]) == np.sign(s_pool[both])).mean()) if both.any() else None,
+            "corr": float(np.corrcoef(s_tree, s_pool)[0, 1]) if s_tree.std() > 0 else None}
+
+
+def per_state_spearman(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    from scipy.stats import spearmanr
+
+    out = np.full(len(a), np.nan)
+    for i, (x, y) in enumerate(zip(np.abs(a), np.abs(b))):
+        if x.std() > 0 and y.std() > 0:
+            out[i] = spearmanr(x, y)[0]
+    return out
+
+
+def sign_groups(per_attribute: dict, agree: float = 0.8, oppose: float = 0.2) -> dict:
+    """Classify the shared-vocabulary attributes by whether the risk and effect
+    explanations push them the same way (both risky and treatable), opposite
+    ways (risky but not treatable, or the reverse) or neither."""
+    groups = {"agree": [], "oppose": [], "independent": [], "one_level_only": []}
+    for name, d in per_attribute.items():
+        s = d.get("sign_agreement")
+        if s is None:
+            groups["one_level_only"].append(name)
+        elif s >= agree:
+            groups["agree"].append(name)
+        elif s <= oppose:
+            groups["oppose"].append(name)
+        else:
+            groups["independent"].append(name)
+    return groups

@@ -71,16 +71,20 @@ def _top(names: list[str], phi: np.ndarray, top: int = TOP) -> list[tuple[str, f
 
 
 def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP) -> dict:
-    """Mean |composed phi| per input with the channel split, on the states in ``mask``."""
+    """Mean |composed phi| per input with the channel split and the
+    cancellation index, on the states in ``mask``."""
     comp = prop["composed"][mask]
     g = np.abs(comp).mean(axis=0)
     share = g / g.sum()
     chan = {c: np.abs(prop["channels"][c][mask]).mean(axis=0) for c in ("risk", "effect_T", "effect_U")}
+    sub = {"channels": {c: prop["channels"][c][mask] for c in ("risk", "effect_T", "effect_U")}}
+    canc = cp.cancellation(sub)
     rows = []
     for j in np.argsort(-g)[:top]:
         name = names[j]
         d = {"input": name, "share": float(share[j]), "mean_abs": float(g[j]), "mean_signed": float(comp[:, j].mean()),
-             "channel": {"native": float(g[j])} if name in cp.NATIVE else {c: float(chan[c][j]) for c in chan}}
+             "channel": {"native": float(g[j])} if name in cp.NATIVE else {c: float(chan[c][j]) for c in chan},
+             "cancellation": None if name in cp.NATIVE else float(canc["per_attribute"][j])}
         rows.append(d)
     # share of the total channel mass (channels can cancel inside an input, so
     # the masses are normalised among themselves rather than by |composed|)
@@ -88,7 +92,8 @@ def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP
     masses["native"] = float(np.abs(prop["native"][mask]).sum())
     channel_share = {c: v / sum(masses.values()) for c, v in masses.items()}
     channel_share["cancellation"] = float(1.0 - np.abs(comp).sum() / sum(masses.values()))  # mass lost to opposite-sign channels
-    return {"n": int(mask.sum()), "top": rows, "channel_share": channel_share,
+    return {"n": int(mask.sum()), "top": rows, "channel_share": channel_share, "cancellation_overall": canc["overall"],
+            "cancellation_per_state_mean": float(canc["per_state"].mean()),
             "prefix_share_top5": float(np.sort(share[:-2])[::-1][:5].sum())}
 
 
@@ -165,9 +170,18 @@ def run_log(name: str, args) -> dict:
     # --- lower levels on the pool ----------------------------------------
     r = rbox.proba(X)
     pT, pU = ebox.probs(X)
-    phi_r = _risk_shap(clf, X, rbox.columns)
-    phiT, phiU, ev = ebox.shap_raw(X)
+    phi_r = _risk_shap(clf, X, rbox.columns)  # CatBoost: tree-path-dependent only (categorical splits)
+    bg = None if args.background == "tree" else X.sample(n=min(args.n_background, len(X)), random_state=args.seed)
+    phiT, phiU, ev = ebox.shap_raw(X, background=bg)
     lower = {"reliability": phi_r, "deviation": phi_r, "Proba_if_Treated": phiT, "Proba_if_Untreated": phiU}
+    lg = lambda p: np.log(np.clip(p, 1e-6, 1 - 1e-6) / (1 - np.clip(p, 1e-6, 1 - 1e-6)))
+    out["well_defined"] = cp.well_defined({"risk (r)": phi_r, "Proba_if_Treated": phiT, "Proba_if_Untreated": phiU})
+    out["baseline"] = {"background": args.background, "n_background": None if bg is None else int(len(bg)),
+                       "risk": {"explainer": "tree_path_dependent", **cp.baseline_alignment(phi_r, lg(r))},
+                       "Proba_if_Treated": {"explainer": "interventional(pool)" if bg is not None else "tree_path_dependent", **cp.baseline_alignment(phiT, lg(pT))},
+                       "Proba_if_Untreated": {"explainer": "interventional(pool)" if bg is not None else "tree_path_dependent", **cp.baseline_alignment(phiU, lg(pU))}}
+    print("  well-defined:", {k: (round(v["share_defined"], 3) if isinstance(v, dict) else v) for k, v in out["well_defined"].items()})
+    print("  baseline:", {k: {kk: (round(vv, 2) if isinstance(vv, float) else vv) for kk, vv in v.items() if kk in ("explainer", "baseline_gap", "sign_agreement", "corr")} for k, v in out["baseline"].items() if isinstance(v, dict)})
 
     # --- the two readings of the state ------------------------------------
     rebuilt = cp.rebuild_state(name, states_m, r, pT, pU)
@@ -241,7 +255,16 @@ def run_log(name: str, args) -> dict:
         phi_d = cp.shapley_sampling(box, Z, zref, sign, n_perm=args.n_perm, seed=args.seed)
         f_ref = box.f(pd.DataFrame([zref] * n).reset_index(drop=True), sign)
         rankings["direct"] = phi_d
-        out["direct"] = {"n_perm": args.n_perm, "seconds": time.perf_counter() - t1,
+        rho_s = cp.per_state_spearman(prop["composed"], phi_d)
+        canc_s = cp.cancellation(prop)["per_state"]
+        from scipy.stats import spearmanr as _sp
+        okc = np.isfinite(rho_s)
+        med = float(np.median(canc_s[okc]))
+        agree_canc = {"spearman_rho_vs_cancellation": float(_sp(rho_s[okc], canc_s[okc])[0]), "median_cancellation": med,
+                      "agreement_low_cancellation": float(rho_s[okc & (canc_s <= med)].mean()), "agreement_high_cancellation": float(rho_s[okc & (canc_s > med)].mean()),
+                      "n_low": int((okc & (canc_s <= med)).sum()), "n_high": int((okc & (canc_s > med)).sum())}
+        print("  agreement vs cancellation:", {k: (round(v, 3) if isinstance(v, float) else v) for k, v in agree_canc.items()})
+        out["direct"] = {"n_perm": args.n_perm, "seconds": time.perf_counter() - t1, "agreement_vs_cancellation": agree_canc,
                          "completeness_gap": float(np.abs(phi_d.sum(axis=1) - (box.f(Z, sign) - f_ref)).max()),
                          "agreement_with_propagated": {"all": cp.ranking_agreement(prop["composed"], phi_d),
                                                        "act": cp.ranking_agreement(prop["composed"][m > 0], phi_d[m > 0]) if (m > 0).any() else None,
@@ -261,6 +284,8 @@ def run_log(name: str, args) -> dict:
 
     # --- risk vs effect on the shared vocabulary ----------------------------
     out["risk_effect"] = cp.risk_effect_agreement(phi_r, phiT - phiU, box.raw_columns)
+    out["risk_effect"]["groups"] = cp.sign_groups(out["risk_effect"]["per_attribute"])
+    print("  sign groups:", {k: v for k, v in out["risk_effect"]["groups"].items()})
     print(f"  risk vs effect: global rho={out['risk_effect']['global_spearman']:.2f} jaccard@10={out['risk_effect']['jaccard_top10']:.2f} shared={out['risk_effect']['shared_top']}")
 
     out["figures"] = files
@@ -275,6 +300,10 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=pools.POOL_SEED)
     ap.add_argument("--quick", type=int, default=0)
     ap.add_argument("--n-perm", type=int, default=20)
+    ap.add_argument("--background", choices=["pool", "tree"], default="pool",
+                    help="background of the effect arms' TreeSHAP: a sample of the pool's prefixes (interventional; aligns the "
+                         "lower-level baseline with the timing level's pool reference) or the tree's own path-dependent default")
+    ap.add_argument("--n-background", type=int, default=100)
     ap.add_argument("--skip-direct", action="store_true")
     ap.add_argument("--skip-plots", action="store_true")
     ap.add_argument("--out", default=None)

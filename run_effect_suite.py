@@ -89,11 +89,16 @@ class EffectBox:
                 out.iloc[rows, out.columns.get_loc(c)] = ref[c]
         return out
 
-    def shap_raw(self, X: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, dict]:
-        """TreeSHAP per arm on the one-hot matrix, summed back to raw attributes."""
+    def shap_raw(self, X: pd.DataFrame, background: pd.DataFrame | None = None) -> tuple[np.ndarray, np.ndarray, dict]:
+        """TreeSHAP per arm on the one-hot matrix, summed back to raw attributes.
+        With ``background`` (raw prefixes) the explainer is interventional
+        against that sample, so each arm's attribution sums to its log-odds
+        minus the background's expectation (compose.py's reference alignment);
+        without it, the tree-path-dependent default."""
         import shap
 
         Xd = self.encode(X)
+        bg = None if background is None else self.encode(background)
         out, ev = [], {}
         # map one-hot column -> raw attribute
         owner = {}
@@ -105,7 +110,7 @@ class EffectBox:
                 p = float(np.clip(self.arms[arm].p, 1e-6, 1 - 1e-6))
                 out.append(np.zeros((len(X), len(self.raw_columns)))); ev[arm] = float(np.log(p / (1 - p)))
                 continue
-            ex = shap.TreeExplainer(self.arms[arm])
+            ex = shap.TreeExplainer(self.arms[arm]) if bg is None else shap.TreeExplainer(self.arms[arm], data=bg, feature_perturbation="interventional")
             sv = np.asarray(ex.shap_values(Xd), dtype=np.float64)
             if sv.ndim == 3:
                 sv = sv[..., -1]

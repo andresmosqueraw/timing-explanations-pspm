@@ -134,3 +134,32 @@ def test_ranking_agreement_of_identical_rankings_is_one():
     a = _toy_timing(5)
     out = cp.ranking_agreement(a, a * 3.0, k=2)
     assert out["spearman_mean"] == pytest.approx(1.0) and out["jaccard_top2_mean"] == 1.0 and out["top1_agreement"] == 1.0
+
+
+def test_cancellation_index_is_zero_when_channels_agree_and_one_when_they_cancel():
+    n, D = 3, 4
+    agree = {"channels": {"risk": np.ones((n, D)), "effect_T": np.ones((n, D)), "effect_U": np.zeros((n, D))}}
+    assert cp.cancellation(agree)["overall"] == 0.0
+    cancel = {"channels": {"risk": np.zeros((n, D)), "effect_T": np.ones((n, D)), "effect_U": -np.ones((n, D))}}
+    c = cp.cancellation(cancel)
+    assert c["overall"] == 1.0 and np.allclose(c["per_attribute"], 1.0) and np.allclose(c["per_state"], 1.0)
+
+
+def test_well_defined_counts_degenerate_states():
+    phi = np.array([[1.0, -1.0, 0.0], [1.0, 1.0, 1.0], [0.0, 0.0, 0.0]])
+    w = cp.well_defined({"x": phi, "y": np.ones((3, 3))}, ratio=0.05)
+    assert w["x"]["n_fallback"] == 2 and w["y"]["n_fallback"] == 0 and w["share_all_defined"] == pytest.approx(1 / 3)
+
+
+def test_baseline_alignment_of_a_pool_centred_attribution_is_exact():
+    rng = np.random.default_rng(0)
+    logit = rng.normal(size=50)
+    phi = np.zeros((50, 4)); phi[:, 0] = logit - logit.mean()  # sums to the pool-centred distance
+    b = cp.baseline_alignment(phi, logit)
+    assert abs(b["baseline_gap"]) < 1e-9 and b["sign_agreement"] == 1.0 and b["corr"] == pytest.approx(1.0)
+
+
+def test_sign_groups_partition_the_attributes():
+    per = {"a": {"sign_agreement": 0.95}, "b": {"sign_agreement": 0.1}, "c": {"sign_agreement": 0.5}, "d": {"sign_agreement": None}}
+    g = cp.sign_groups(per)
+    assert g == {"agree": ["a"], "oppose": ["b"], "independent": ["c"], "one_level_only": ["d"]}

@@ -110,8 +110,15 @@ def main():
             else:
                 tot = sum(ch.values()) or 1.0
                 split = ", ".join(f"{CHAN_NAME[c]} {pct(v / tot, 0)}" for c, v in sorted(ch.items(), key=lambda kv: -kv[1]) if v / tot >= 0.05)
-            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {split} \\\\ \\hline")
+            canc = "--" if d.get("cancellation") is None else pct(d["cancellation"], 0)
+            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {split} & {canc} \\\\ \\hline")
         out.append(macro(f"INHERIT{side.upper()}ROWS", "\n".join(rows)))
+        out.append(macro(f"CANCEL{side.upper()}", pct(t["cancellation_overall"], 0)))
+        out.append(macro(f"TOPINPUTCANC{side.upper()}", pct(t["top"][0]["cancellation"], 0) if t["top"][0].get("cancellation") is not None else "--"))
+        top_c = [(d["input"], d["cancellation"]) for d in t["top"] if d.get("cancellation") is not None]
+        hi = max(top_c, key=lambda kv: kv[1]); lo = min(top_c, key=lambda kv: kv[1])
+        out += [macro(f"CANCELHI{side.upper()}", f"\\texttt{{{tex(hi[0])}}}"), macro(f"CANCELHIVAL{side.upper()}", pct(hi[1], 0)),
+                macro(f"CANCELLO{side.upper()}", f"\\texttt{{{tex(lo[0])}}}"), macro(f"CANCELLOVAL{side.upper()}", pct(lo[1], 0))]
         cs = t["channel_share"]
         out += [macro(f"CHANRISK{side.upper()}", pct(cs["risk"])), macro(f"CHANEFFECTT{side.upper()}", pct(cs["effect_T"])),
                 macro(f"CHANEFFECTU{side.upper()}", pct(cs["effect_U"])), macro(f"CHANEFFECT{side.upper()}", pct(cs["effect_T"] + cs["effect_U"])),
@@ -120,9 +127,30 @@ def main():
     out += [macro("COMPLETENESSGAP", f"{rd['propagation']['completeness_gap']:.0e}".replace("e-0", "e-")),
             macro("FALLBACKS", str(sum(rd["propagation"]["fallbacks"].values()))), macro("NPREFIXATTRS", str(len(inputs) - 2))]
 
+    wd = comp["well_defined"]
+    out += [macro("WDRATIO", f"{wd['ratio']:.2f}"), macro("WDALL", pct(wd["share_all_defined"], 0)),
+            macro("WDRISK", pct(wd["risk (r)"]["share_defined"], 0)), macro("WDPT", pct(wd["Proba_if_Treated"]["share_defined"], 0)), macro("WDPU", pct(wd["Proba_if_Untreated"]["share_defined"], 0))]
+    if comp12 and "well_defined" in comp12:
+        out.append(macro("WDALLBPIC", pct(comp12["well_defined"]["share_all_defined"], 0)))
+        out.append(macro("WDRISKBPIC", pct(comp12["well_defined"]["risk (r)"]["share_defined"], 0)))
+    bl = comp["baseline"]
+    out += [macro("NBACKGROUND", str(bl["n_background"])), macro("BLRISKGAP", num(bl["risk"]["baseline_gap"], 2)), macro("BLRISKSIGN", pct(bl["risk"]["sign_agreement"], 0)),
+            macro("BLRISKCORR", num(bl["risk"]["corr"], 2)), macro("BLPTGAP", num(bl["Proba_if_Treated"]["baseline_gap"], 2)), macro("BLPTSIGN", pct(bl["Proba_if_Treated"]["sign_agreement"], 0)),
+            macro("BLPUGAP", num(bl["Proba_if_Untreated"]["baseline_gap"], 2)), macro("BLPUSIGN", pct(bl["Proba_if_Untreated"]["sign_agreement"], 0))]
+
     # --- Section 6.4: faithful? ---------------------------------------------------
     d = comp["direct"]
     ag = d["agreement_with_propagated"]
+    ac = d["agreement_vs_cancellation"]
+    out += [macro("AGREECANCRHO", num(ac["spearman_rho_vs_cancellation"], 2)), macro("AGREELOWCANC", num(ac["agreement_low_cancellation"], 2)),
+            macro("AGREEHIGHCANC", num(ac["agreement_high_cancellation"], 2)), macro("CANCMEDIAN", pct(ac["median_cancellation"], 0)),
+            macro("AGREESPEARMANACT", num(ag["act"]["spearman_mean"], 2)), macro("AGREESPEARMANWAIT", num(ag["wait"]["spearman_mean"], 2)),
+            macro("AGREETOPONEACT", pct(ag["act"]["top1_agreement"], 0)), macro("AGREETOPONEWAIT", pct(ag["wait"]["top1_agreement"], 0))]
+    for side in ("act", "wait"):
+        gt = [a for a, _ in d["global_top"][side]]
+        prop_top = rd["propagation"][side]["top"][0]["input"]
+        out += [macro(f"DIRECTTOP{side.upper()}", f"\\texttt{{{tex(gt[0])}}}"),
+                macro(f"DIRECTRANKOFPROPTOP{side.upper()}", str(gt.index(prop_top) + 1) if prop_top in gt else f"beyond the top {len(gt)}")]
     out += [macro("NPERM", str(d["n_perm"])), macro("AGREESPEARMAN", num(ag["all"]["spearman_mean"], 2)), macro("AGREEGLOBAL", num(ag["all"]["global_spearman"], 2)),
             macro("AGREEJACCARD", num(ag["all"]["jaccard_top5_mean"], 2)), macro("AGREETOPONE", pct(ag["all"]["top1_agreement"], 0)),
             macro("DIRECTCOMPLETENESS", f"{d['completeness_gap']:.0e}")]
@@ -163,6 +191,17 @@ def main():
     out += [macro("RISKEFFECTRHO", num(re_["global_spearman"], 2)), macro("RISKEFFECTJACCARD", num(re_["jaccard_top10"], 2)),
             macro("RISKEFFECTSHARED", ", ".join(f"\\texttt{{{tex(s)}}}" for s in re_["shared_top"])),
             macro("RISKEFFECTSIGN", pct(re_["sign_agreement_overall"], 0) if re_["sign_agreement_overall"] is not None else "--")]
+    groups = re_["groups"]
+    rows = []
+    for name, dd in re_["per_attribute"].items():
+        if dd["sign_agreement"] is None:
+            continue
+        grp = next(g for g, members in groups.items() if name in members)
+        rows.append(f"\\texttt{{{tex(name)}}} & ${pct(dd['risk_share'])}$ & ${pct(dd['effect_share'])}$ & ${pct(dd['sign_agreement'], 0)}$ & {grp} \\\\ \\hline")
+    out.append(macro("SIGNROWS", "\n".join(rows)))
+    for g in ("agree", "oppose", "independent", "one_level_only"):
+        out.append(macro("SIGNN" + g.replace("_", "").upper(), str(len(groups[g]))))
+        out.append(macro("SIGNLIST" + g.replace("_", "").upper(), ", ".join(f"\\texttt{{{tex(a)}}}" for a in groups[g]) or "none"))
     if comp_cate:
         cc = comp_cate[LOG]["state_agreement"]
         out += [macro("DRIFTFLIP", pct(cc["decision"]["flip_rate"], 0)), macro("DRIFTCORRR", num(cc["risk"]["corr_r_shipped"], 2)),
