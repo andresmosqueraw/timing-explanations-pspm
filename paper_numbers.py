@@ -150,7 +150,7 @@ def main():
         gt = [a for a, _ in d["global_top"][side]]
         prop_top = rd["propagation"][side]["top"][0]["input"]
         out += [macro(f"DIRECTTOP{side.upper()}", f"\\texttt{{{tex(gt[0])}}}"),
-                macro(f"DIRECTRANKOFPROPTOP{side.upper()}", str(gt.index(prop_top) + 1) if prop_top in gt else f"beyond the top {len(gt)}")]
+                macro(f"DIRECTRANKOFPROPTOP{side.upper()}", f"${gt.index(prop_top) + 1}$" if prop_top in gt else f"beyond its top {len(gt)}")]
     out += [macro("NPERM", str(d["n_perm"])), macro("AGREESPEARMAN", num(ag["all"]["spearman_mean"], 2)), macro("AGREEGLOBAL", num(ag["all"]["global_spearman"], 2)),
             macro("AGREEJACCARD", num(ag["all"]["jaccard_top5_mean"], 2)), macro("AGREETOPONE", pct(ag["all"]["top1_agreement"], 0)),
             macro("DIRECTCOMPLETENESS", f"{d['completeness_gap']:.0e}")]
@@ -189,7 +189,7 @@ def main():
     out += [macro("TYRISKYN", str(n_risky)), macro("TYRISKYACT", str(n_risky_act))]
     re_ = comp["risk_effect"]
     out += [macro("RISKEFFECTRHO", num(re_["global_spearman"], 2)), macro("RISKEFFECTJACCARD", num(re_["jaccard_top10"], 2)),
-            macro("RISKEFFECTSHARED", ", ".join(f"\\texttt{{{tex(s)}}}" for s in re_["shared_top"])),
+            macro("RISKEFFECTSHARED", ", \\allowbreak ".join(f"\\texttt{{{tex(s)}}}" for s in re_["shared_top"])),
             macro("RISKEFFECTSIGN", pct(re_["sign_agreement_overall"], 0) if re_["sign_agreement_overall"] is not None else "--")]
     groups = re_["groups"]
     rows = []
@@ -201,7 +201,7 @@ def main():
     out.append(macro("SIGNROWS", "\n".join(rows)))
     for g in ("agree", "oppose", "independent", "one_level_only"):
         out.append(macro("SIGNN" + g.replace("_", "").upper(), str(len(groups[g]))))
-        out.append(macro("SIGNLIST" + g.replace("_", "").upper(), ", ".join(f"\\texttt{{{tex(a)}}}" for a in groups[g]) or "none"))
+        out.append(macro("SIGNLIST" + g.replace("_", "").upper(), ", \\allowbreak ".join(f"\\texttt{{{tex(a)}}}" for a in groups[g]) or "none"))
     if comp_cate:
         cc = comp_cate[LOG]["state_agreement"]
         out += [macro("DRIFTFLIP", pct(cc["decision"]["flip_rate"], 0)), macro("DRIFTCORRR", num(cc["risk"]["corr_r_shipped"], 2)),
