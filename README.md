@@ -115,6 +115,15 @@ than `Proba_if_Untreated` (18 %).
   deletion test on it, the (risky × treatable × acts) typology and the
   risk-vs-effect agreement on the shared prefix vocabulary. Writes
   `compose_results.json`, `figures/out/compose/<log>/`.
+  The direct attribution of F is Shapley sampling against the pool as
+  background (the same reference the levels use); `compose.anchor_to_direct`
+  is the per-decision safeguard (direct ranking, propagated channel split),
+  `compose.cancellation` the per-attribute cancellation index,
+  `compose.well_defined` / `baseline_alignment` the two conditions of the
+  operator, `sign_groups` the agree / oppose / independent split of the
+  risk-vs-effect signs. `--variant risk_retrained` runs it on the four-feature
+  policy (same recipe, no effect features), the composition with a live risk
+  channel (`compose_results_risk_retrained.json`).
 - `build_retrained_state.py` — the coherent-pipeline RL CSVs
   (`data/retrained_state_<log>.csv`) the `cate_retrained` policies are
   trained and evaluated on.

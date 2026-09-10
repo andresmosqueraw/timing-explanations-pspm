@@ -1,0 +1,31 @@
+{
+  "variant": "risk_retrained",
+  "bpic2012": {
+    "n": 28692,
+    "hist_gain": -27.634880803011292,
+    "policy_gain": 24.50683117245225,
+    "delta": 52.141711975463544,
+    "policy_intervene_rate": 0.0,
+    "hist_intervene_rate": 0.5999581764951903,
+    "oracle_gain": 58.308936288861005,
+    "always_wait_gain": 24.50683117245225,
+    "always_intervene_gain": -49.50683117245225,
+    "share_ite_positive": 0.1931548863794786,
+    "policy_precision": null,
+    "policy_recall": 0.0
+  },
+  "bpic2017": {
+    "n": 30000,
+    "hist_gain": -32.0375,
+    "policy_gain": 13.319166666666666,
+    "delta": 45.35666666666667,
+    "policy_intervene_rate": 0.3415666666666667,
+    "hist_intervene_rate": 0.6798333333333333,
+    "oracle_gain": 54.44583333333333,
+    "always_wait_gain": 24.795,
+    "always_intervene_gain": -49.795,
+    "share_ite_positive": 0.16943333333333332,
+    "policy_precision": 0.3072118668878696,
+    "policy_recall": 0.619319299626205
+  }
+}

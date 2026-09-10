@@ -1,0 +1,5238 @@
+{
+  "args": {
+    "logs": [
+      "BPIC2012",
+      "BPIC2017"
+    ],
+    "variant": "risk_retrained",
+    "seed": 123,
+    "quick": 0,
+    "n_perm": 20,
+    "background": "pool",
+    "n_background": 100,
+    "skip_direct": false,
+    "skip_plots": false,
+    "out": null
+  },
+  "results": [
+    {
+      "log": "BPIC2012",
+      "n": 500,
+      "inputs": [
+        "NumberOfOffers",
+        "AMOUNT_REQ",
+        "event",
+        "Activity",
+        "Resource",
+        "timesincelastevent_mean",
+        "timesincelastevent_max",
+        "timesincelastevent_min",
+        "timesincelastevent_sum",
+        "timesincelastevent_std",
+        "timesincecasestart_mean",
+        "timesincecasestart_max",
+        "timesincecasestart_min",
+        "timesincecasestart_sum",
+        "timesincecasestart_std",
+        "timesincemidnight_mean",
+        "timesincemidnight_max",
+        "timesincemidnight_min",
+        "timesincemidnight_sum",
+        "timesincemidnight_std",
+        "event_nr_mean",
+        "event_nr_max",
+        "event_nr_min",
+        "event_nr_sum",
+        "event_nr_std",
+        "month_mean",
+        "month_max",
+        "month_min",
+        "month_sum",
+        "month_std",
+        "weekday_mean",
+        "weekday_max",
+        "weekday_min",
+        "weekday_sum",
+        "weekday_std",
+        "hour_mean",
+        "hour_max",
+        "hour_min",
+        "hour_sum",
+        "hour_std",
+        "open_cases_mean",
+        "open_cases_max",
+        "open_cases_min",
+        "open_cases_sum",
+        "open_cases_std",
+        "relative_position",
+        "available_resources"
+      ],
+      "state_features": [
+        "relative_position",
+        "reliability",
+        "deviation",
+        "available_resources"
+      ],
+      "variant": "risk_retrained",
+      "well_defined": {
+        "risk (r)": {
+          "share_defined": 0.874,
+          "median_ratio": 0.2586449172652804,
+          "n_fallback": 63
+        },
+        "Proba_if_Treated": {
+          "share_defined": 0.876,
+          "median_ratio": 0.25456691115226393,
+          "n_fallback": 62
+        },
+        "Proba_if_Untreated": {
+          "share_defined": 0.918,
+          "median_ratio": 0.25402696134834635,
+          "n_fallback": 41
+        },
+        "ratio": 0.05,
+        "share_all_defined": 0.716
+      },
+      "baseline": {
+        "background": "pool",
+        "n_background": 100,
+        "risk": {
+          "explainer": "tree_path_dependent",
+          "expected_value": -0.10306116527617333,
+          "pool_mean_logit": -0.23932328473338907,
+          "baseline_gap": -0.13626211945721572,
+          "sign_agreement": 0.928,
+          "corr": 1.0
+        },
+        "Proba_if_Treated": {
+          "explainer": "interventional(pool)",
+          "expected_value": 0.24209274360201086,
+          "pool_mean_logit": 0.253054678440094,
+          "baseline_gap": 0.010961934924125671,
+          "sign_agreement": 0.992,
+          "corr": 0.9999999999999659
+        },
+        "Proba_if_Untreated": {
+          "explainer": "interventional(pool)",
+          "expected_value": -0.033519166216170404,
+          "pool_mean_logit": 0.006352826952934265,
+          "baseline_gap": 0.03987199440598488,
+          "sign_agreement": 0.978,
+          "corr": 0.9999999999999784
+        }
+      },
+      "state_agreement": {
+        "risk": {
+          "deviation_agrees": 1.0,
+          "predicted_deviant_shipped": 0.504,
+          "predicted_deviant_rebuilt": 0.504,
+          "corr_r_shipped": 0.9999999999999999,
+          "reliability_mean_abs_diff": 0.0
+        },
+        "effect": {
+          "positive_rule_agrees": 1.0,
+          "positive_rule_shipped": 0.186,
+          "positive_rule_rebuilt": 0.186,
+          "corr_pT": null,
+          "corr_pU": null,
+          "mean_abs_diff_pT": null,
+          "mean_abs_diff_pU": null
+        },
+        "decision": {
+          "intervene_rate_shipped": 0.132,
+          "intervene_rate_rebuilt": 0.132,
+          "flip_rate": 0.0,
+          "corr_margin": 1.0,
+          "agreement_with_oracle_shipped": 0.774,
+          "agreement_with_oracle_rebuilt": 0.774,
+          "agreement_with_rebuilt_rule_rebuilt": 0.774
+        }
+      },
+      "readings": {
+        "shipped": {
+          "reference": {
+            "relative_position": 0.5046315789222717,
+            "reliability": 0.4959999918937683,
+            "deviation": 0.4959999918937683,
+            "available_resources": 1.5
+          },
+          "n_act": 66,
+          "n_wait": 434,
+          "level_shares": {
+            "act": {
+              "per_feature": {
+                "relative_position": 0.2150731837915831,
+                "reliability": 0.15983403231678908,
+                "deviation": 0.22957482733890622,
+                "available_resources": 0.39551795655272154
+              },
+              "per_level": {
+                "native": 0.6105911403443046,
+                "risk": 0.38940885965569527
+              }
+            },
+            "wait": {
+              "per_feature": {
+                "relative_position": 0.29240353269774755,
+                "reliability": 0.08169765137448057,
+                "deviation": 0.14777827595293191,
+                "available_resources": 0.47812053997484005
+              },
+              "per_level": {
+                "native": 0.7705240726725876,
+                "risk": 0.22947592732741248
+              }
+            },
+            "all": {
+              "per_feature": {
+                "relative_position": 0.2714547928113886,
+                "reliability": 0.10286474480125539,
+                "deviation": 0.16993690710905454,
+                "available_resources": 0.4557435552783015
+              },
+              "per_level": {
+                "native": 0.7271983480896902,
+                "risk": 0.2728016519103099
+              }
+            }
+          },
+          "propagation": {
+            "completeness_gap": 2.6645352591003757e-15,
+            "fallbacks": {
+              "reliability": 63,
+              "deviation": 63
+            },
+            "act": {
+              "n": 66,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.1554593831286222,
+                  "mean_abs": 1.7046729895201596,
+                  "mean_signed": 1.4679668825684171,
+                  "channel": {
+                    "native": 1.7046729895201596
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "month_min",
+                  "share": 0.12748710235685115,
+                  "mean_abs": 1.3979459812992385,
+                  "mean_signed": 1.392528470206783,
+                  "channel": {
+                    "risk": 1.3979459812992385,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.10235954309367326,
+                  "mean_abs": 1.1224124579668662,
+                  "mean_signed": -0.6789701983050141,
+                  "channel": {
+                    "risk": 1.1224124579668662,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.0845350860202765,
+                  "mean_abs": 0.9269603088949666,
+                  "mean_signed": 0.8338688973224524,
+                  "channel": {
+                    "native": 0.9269603088949666
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "month_max",
+                  "share": 0.06132924413020961,
+                  "mean_abs": 0.6724991688019101,
+                  "mean_signed": 0.6641944680544297,
+                  "channel": {
+                    "risk": 0.6724991688019101,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.05746795948200417,
+                  "mean_abs": 0.6301586711608077,
+                  "mean_signed": -0.4228982484464706,
+                  "channel": {
+                    "risk": 0.6301586711608077,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.051128225471565154,
+                  "mean_abs": 0.5606410060907219,
+                  "mean_signed": 0.17193242733281816,
+                  "channel": {
+                    "risk": 0.5606410060907219,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.02984178617516951,
+                  "mean_abs": 0.32722686677431967,
+                  "mean_signed": 0.27202110284897046,
+                  "channel": {
+                    "risk": 0.32722686677431967,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.7600055308511013,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.23999446914889871,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.39977207453430336
+            },
+            "wait": {
+              "n": 434,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.29162965535980206,
+                  "mean_abs": 0.8434241714840112,
+                  "mean_signed": 0.10342812393942187,
+                  "channel": {
+                    "native": 0.8434241714840112
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.1783515543405018,
+                  "mean_abs": 0.5158117810993301,
+                  "mean_signed": -0.07266181748503098,
+                  "channel": {
+                    "native": 0.5158117810993301
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.08678516976310262,
+                  "mean_abs": 0.25099199810196476,
+                  "mean_signed": 0.08168738646054881,
+                  "channel": {
+                    "risk": 0.25099199810196476,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "month_min",
+                  "share": 0.07442063981596478,
+                  "mean_abs": 0.21523245432858681,
+                  "mean_signed": -0.19228590726762396,
+                  "channel": {
+                    "risk": 0.21523245432858681,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.042130886800331925,
+                  "mean_abs": 0.1218470331819163,
+                  "mean_signed": 0.09475638853899467,
+                  "channel": {
+                    "risk": 0.1218470331819163,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "month_max",
+                  "share": 0.034416710920876344,
+                  "mean_abs": 0.0995368110209207,
+                  "mean_signed": -0.07853322870548995,
+                  "channel": {
+                    "risk": 0.0995368110209207,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.028699410227979002,
+                  "mean_abs": 0.08300176559118701,
+                  "mean_signed": -0.003552559374956118,
+                  "channel": {
+                    "risk": 0.08300176559118701,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.02459289891894391,
+                  "mean_abs": 0.07112529543509309,
+                  "mean_signed": -0.01980488110646017,
+                  "channel": {
+                    "risk": 0.07112529543509309,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.5300187902996962,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.46998120970030377,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.2664528175282546
+            }
+          },
+          "typology": {
+            "risky|treatable|act": {
+              "n": 0
+            },
+            "risky|treatable|wait": {
+              "n": 45,
+              "level_share": {
+                "native": 0.7963136441908765,
+                "risk": 0.2036863558091234
+              }
+            },
+            "risky|untreatable|act": {
+              "n": 0
+            },
+            "risky|untreatable|wait": {
+              "n": 207,
+              "level_share": {
+                "native": 0.8185147114949184,
+                "risk": 0.18148528850508158
+              }
+            },
+            "safe|treatable|act": {
+              "n": 23,
+              "level_share": {
+                "native": 0.615712741162161,
+                "risk": 0.384287258837839
+              }
+            },
+            "safe|treatable|wait": {
+              "n": 25,
+              "level_share": {
+                "native": 0.6372161229992227,
+                "risk": 0.3627838770007773
+              }
+            },
+            "safe|untreatable|act": {
+              "n": 43,
+              "level_share": {
+                "native": 0.6079915706876403,
+                "risk": 0.3920084293123597
+              }
+            },
+            "safe|untreatable|wait": {
+              "n": 157,
+              "level_share": {
+                "native": 0.73983469440313,
+                "risk": 0.2601653055968701
+              }
+            }
+          },
+          "cards": {
+            "paper_card_act": {
+              "case_id": "210830",
+              "prefix_nr": 7,
+              "action": "intervene",
+              "dq": 1.7139065265655518,
+              "r": 0.41878356201254685,
+              "pT": 0.5167466998100281,
+              "pU": 0.3213599920272827,
+              "state": {
+                "relative_position": 0.20000000298023224,
+                "reliability": 1.0,
+                "deviation": 1.0,
+                "available_resources": 1.0
+              },
+              "timing_phi": {
+                "relative_position": 1.1155064105987549,
+                "reliability": 0.7823278307914734,
+                "deviation": 1.118768334388733,
+                "available_resources": 0.9641125798225403
+              },
+              "native_phi": {
+                "relative_position": 1.1155064105987549,
+                "available_resources": 0.9641125798225403
+              },
+              "composed_top": [
+                [
+                  "NumberOfOffers",
+                  5.092719806477717
+                ],
+                [
+                  "month_min",
+                  3.424880711951965
+                ],
+                [
+                  "Resource",
+                  -3.0717535000596055
+                ],
+                [
+                  "Activity",
+                  -2.321907916432501
+                ],
+                [
+                  "open_cases_min",
+                  -1.526187010448869
+                ],
+                [
+                  "relative_position",
+                  1.1155064105987549
+                ],
+                [
+                  "month_mean",
+                  -1.0916573398134954
+                ],
+                [
+                  "AMOUNT_REQ",
+                  1.0156564950350822
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "NumberOfOffers",
+                    5.092719806477717
+                  ],
+                  [
+                    "month_min",
+                    3.424880711951965
+                  ],
+                  [
+                    "Resource",
+                    -3.0717535000596055
+                  ],
+                  [
+                    "Activity",
+                    -2.321907916432501
+                  ],
+                  [
+                    "open_cases_min",
+                    -1.526187010448869
+                  ],
+                  [
+                    "month_mean",
+                    -1.0916573398134954
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    1.0156564950350822
+                  ],
+                  [
+                    "timesincecasestart_std",
+                    -0.794389067274557
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "NumberOfOffers",
+                  "value": 3.0,
+                  "risk": 5.092719806477717,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 5.092719806477717
+                },
+                {
+                  "input": "month_min",
+                  "value": 2.0,
+                  "risk": 3.424880711951965,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 3.424880711951965
+                },
+                {
+                  "input": "Resource",
+                  "value": "11300.0",
+                  "risk": -3.0717535000596055,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -3.0717535000596055
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Completeren aanvraag",
+                  "risk": -2.321907916432501,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -2.321907916432501
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 692.0,
+                  "risk": -1.526187010448869,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -1.526187010448869
+                },
+                {
+                  "input": "month_mean",
+                  "value": 2.0,
+                  "risk": -1.0916573398134954,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -1.0916573398134954
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "value": 16000.0,
+                  "risk": 1.0156564950350822,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.0156564950350822
+                },
+                {
+                  "input": "timesincecasestart_std",
+                  "value": 655.6651398858318,
+                  "risk": -0.794389067274557,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.794389067274557
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 1.1737339857444697,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.1737339857444697
+                }
+              ],
+              "completeness": {
+                "timing_sum": 3.9807151556015015,
+                "composed_sum": 3.980715155601502
+              }
+            },
+            "paper_card_wait": {
+              "case_id": "202830",
+              "prefix_nr": 18,
+              "action": "wait",
+              "dq": -2.129209518432617,
+              "r": 0.6862412401597177,
+              "pT": 0.8752155900001526,
+              "pU": 0.6772506833076477,
+              "state": {
+                "relative_position": 0.8999999761581421,
+                "reliability": 0.0,
+                "deviation": 0.0,
+                "available_resources": 3.0
+              },
+              "timing_phi": {
+                "relative_position": -0.9357640743255615,
+                "reliability": -0.02441873587667942,
+                "deviation": 0.09003946930170059,
+                "available_resources": 0.7213112115859985
+              },
+              "native_phi": {
+                "relative_position": -0.9357640743255615,
+                "available_resources": 0.7213112115859985
+              },
+              "composed_top": [
+                [
+                  "relative_position",
+                  -0.9357640743255615
+                ],
+                [
+                  "available_resources",
+                  0.7213112115859985
+                ],
+                [
+                  "month_min",
+                  -0.04419818200275714
+                ],
+                [
+                  "Activity",
+                  0.04405248318988973
+                ],
+                [
+                  "timesincecasestart_max",
+                  0.019315129414050974
+                ],
+                [
+                  "timesincelastevent_sum",
+                  0.011862311207942646
+                ],
+                [
+                  "month_max",
+                  -0.009774681611927084
+                ],
+                [
+                  "open_cases_max",
+                  0.008354394834892245
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "month_min",
+                    -0.04419818200275714
+                  ],
+                  [
+                    "Activity",
+                    0.04405248318988973
+                  ],
+                  [
+                    "timesincecasestart_max",
+                    0.019315129414050974
+                  ],
+                  [
+                    "timesincelastevent_sum",
+                    0.011862311207942646
+                  ],
+                  [
+                    "month_max",
+                    -0.009774681611927084
+                  ],
+                  [
+                    "open_cases_max",
+                    0.008354394834892245
+                  ],
+                  [
+                    "NumberOfOffers",
+                    0.008025828359001763
+                  ],
+                  [
+                    "open_cases_min",
+                    -0.007132059906296994
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "month_min",
+                  "value": 1.0,
+                  "risk": -0.04419818200275714,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.04419818200275714
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Nabellen offertes",
+                  "risk": 0.04405248318988973,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.04405248318988973
+                },
+                {
+                  "input": "timesincecasestart_max",
+                  "value": 48635.71491666666,
+                  "risk": 0.019315129414050974,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.019315129414050974
+                },
+                {
+                  "input": "timesincelastevent_sum",
+                  "value": 48635.714916666664,
+                  "risk": 0.011862311207942646,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.011862311207942646
+                },
+                {
+                  "input": "month_max",
+                  "value": 2.0,
+                  "risk": -0.009774681611927084,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.009774681611927084
+                },
+                {
+                  "input": "open_cases_max",
+                  "value": 847.0,
+                  "risk": 0.008354394834892245,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.008354394834892245
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 1.0,
+                  "risk": 0.008025828359001763,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.008025828359001763
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 588.0,
+                  "risk": -0.007132059906296994,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.007132059906296994
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.03511550994022503,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.03511550994022503
+                }
+              ],
+              "completeness": {
+                "timing_sum": -0.14883212931454182,
+                "composed_sum": -0.14883212931454182
+              }
+            }
+          }
+        },
+        "rebuilt": {
+          "reference": {
+            "relative_position": 0.5046315789222717,
+            "reliability": 0.4959999918937683,
+            "deviation": 0.4959999918937683,
+            "available_resources": 1.5
+          },
+          "n_act": 66,
+          "n_wait": 434,
+          "level_shares": {
+            "act": {
+              "per_feature": {
+                "relative_position": 0.2150731837915831,
+                "reliability": 0.15983403231678908,
+                "deviation": 0.22957482733890622,
+                "available_resources": 0.39551795655272154
+              },
+              "per_level": {
+                "native": 0.6105911403443046,
+                "risk": 0.38940885965569527
+              }
+            },
+            "wait": {
+              "per_feature": {
+                "relative_position": 0.29240353269774755,
+                "reliability": 0.08169765137448057,
+                "deviation": 0.14777827595293191,
+                "available_resources": 0.47812053997484005
+              },
+              "per_level": {
+                "native": 0.7705240726725876,
+                "risk": 0.22947592732741248
+              }
+            },
+            "all": {
+              "per_feature": {
+                "relative_position": 0.2714547928113886,
+                "reliability": 0.10286474480125539,
+                "deviation": 0.16993690710905454,
+                "available_resources": 0.4557435552783015
+              },
+              "per_level": {
+                "native": 0.7271983480896902,
+                "risk": 0.2728016519103099
+              }
+            }
+          },
+          "propagation": {
+            "completeness_gap": 2.6645352591003757e-15,
+            "fallbacks": {
+              "reliability": 63,
+              "deviation": 63
+            },
+            "act": {
+              "n": 66,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.1554593831286222,
+                  "mean_abs": 1.7046729895201596,
+                  "mean_signed": 1.4679668825684171,
+                  "channel": {
+                    "native": 1.7046729895201596
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "month_min",
+                  "share": 0.12748710235685115,
+                  "mean_abs": 1.3979459812992385,
+                  "mean_signed": 1.392528470206783,
+                  "channel": {
+                    "risk": 1.3979459812992385,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.10235954309367326,
+                  "mean_abs": 1.1224124579668662,
+                  "mean_signed": -0.6789701983050141,
+                  "channel": {
+                    "risk": 1.1224124579668662,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.0845350860202765,
+                  "mean_abs": 0.9269603088949666,
+                  "mean_signed": 0.8338688973224524,
+                  "channel": {
+                    "native": 0.9269603088949666
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "month_max",
+                  "share": 0.06132924413020961,
+                  "mean_abs": 0.6724991688019101,
+                  "mean_signed": 0.6641944680544297,
+                  "channel": {
+                    "risk": 0.6724991688019101,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.05746795948200417,
+                  "mean_abs": 0.6301586711608077,
+                  "mean_signed": -0.4228982484464706,
+                  "channel": {
+                    "risk": 0.6301586711608077,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.051128225471565154,
+                  "mean_abs": 0.5606410060907219,
+                  "mean_signed": 0.17193242733281816,
+                  "channel": {
+                    "risk": 0.5606410060907219,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.02984178617516951,
+                  "mean_abs": 0.32722686677431967,
+                  "mean_signed": 0.27202110284897046,
+                  "channel": {
+                    "risk": 0.32722686677431967,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.7600055308511013,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.23999446914889871,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.39977207453430336
+            },
+            "wait": {
+              "n": 434,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.29162965535980206,
+                  "mean_abs": 0.8434241714840112,
+                  "mean_signed": 0.10342812393942187,
+                  "channel": {
+                    "native": 0.8434241714840112
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.1783515543405018,
+                  "mean_abs": 0.5158117810993301,
+                  "mean_signed": -0.07266181748503098,
+                  "channel": {
+                    "native": 0.5158117810993301
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.08678516976310262,
+                  "mean_abs": 0.25099199810196476,
+                  "mean_signed": 0.08168738646054881,
+                  "channel": {
+                    "risk": 0.25099199810196476,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "month_min",
+                  "share": 0.07442063981596478,
+                  "mean_abs": 0.21523245432858681,
+                  "mean_signed": -0.19228590726762396,
+                  "channel": {
+                    "risk": 0.21523245432858681,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.042130886800331925,
+                  "mean_abs": 0.1218470331819163,
+                  "mean_signed": 0.09475638853899467,
+                  "channel": {
+                    "risk": 0.1218470331819163,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "month_max",
+                  "share": 0.034416710920876344,
+                  "mean_abs": 0.0995368110209207,
+                  "mean_signed": -0.07853322870548995,
+                  "channel": {
+                    "risk": 0.0995368110209207,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.028699410227979002,
+                  "mean_abs": 0.08300176559118701,
+                  "mean_signed": -0.003552559374956118,
+                  "channel": {
+                    "risk": 0.08300176559118701,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.02459289891894391,
+                  "mean_abs": 0.07112529543509309,
+                  "mean_signed": -0.01980488110646017,
+                  "channel": {
+                    "risk": 0.07112529543509309,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.5300187902996962,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.46998120970030377,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.2664528175282546
+            }
+          },
+          "typology": {
+            "risky|treatable|act": {
+              "n": 0
+            },
+            "risky|treatable|wait": {
+              "n": 45,
+              "level_share": {
+                "native": 0.7963136441908765,
+                "risk": 0.2036863558091234
+              }
+            },
+            "risky|untreatable|act": {
+              "n": 0
+            },
+            "risky|untreatable|wait": {
+              "n": 207,
+              "level_share": {
+                "native": 0.8185147114949184,
+                "risk": 0.18148528850508158
+              }
+            },
+            "safe|treatable|act": {
+              "n": 23,
+              "level_share": {
+                "native": 0.615712741162161,
+                "risk": 0.384287258837839
+              }
+            },
+            "safe|treatable|wait": {
+              "n": 25,
+              "level_share": {
+                "native": 0.6372161229992227,
+                "risk": 0.3627838770007773
+              }
+            },
+            "safe|untreatable|act": {
+              "n": 43,
+              "level_share": {
+                "native": 0.6079915706876403,
+                "risk": 0.3920084293123597
+              }
+            },
+            "safe|untreatable|wait": {
+              "n": 157,
+              "level_share": {
+                "native": 0.73983469440313,
+                "risk": 0.2601653055968701
+              }
+            }
+          },
+          "cards": {
+            "paper_card_act": {
+              "case_id": "210830",
+              "prefix_nr": 7,
+              "action": "intervene",
+              "dq": 1.7139065265655518,
+              "r": 0.41878356201254685,
+              "pT": 0.5167466998100281,
+              "pU": 0.3213599920272827,
+              "state": {
+                "relative_position": 0.20000000298023224,
+                "reliability": 1.0,
+                "deviation": 1.0,
+                "available_resources": 1.0
+              },
+              "timing_phi": {
+                "relative_position": 1.1155064105987549,
+                "reliability": 0.7823278307914734,
+                "deviation": 1.118768334388733,
+                "available_resources": 0.9641125798225403
+              },
+              "native_phi": {
+                "relative_position": 1.1155064105987549,
+                "available_resources": 0.9641125798225403
+              },
+              "composed_top": [
+                [
+                  "NumberOfOffers",
+                  5.092719806477717
+                ],
+                [
+                  "month_min",
+                  3.424880711951965
+                ],
+                [
+                  "Resource",
+                  -3.0717535000596055
+                ],
+                [
+                  "Activity",
+                  -2.321907916432501
+                ],
+                [
+                  "open_cases_min",
+                  -1.526187010448869
+                ],
+                [
+                  "relative_position",
+                  1.1155064105987549
+                ],
+                [
+                  "month_mean",
+                  -1.0916573398134954
+                ],
+                [
+                  "AMOUNT_REQ",
+                  1.0156564950350822
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "NumberOfOffers",
+                    5.092719806477717
+                  ],
+                  [
+                    "month_min",
+                    3.424880711951965
+                  ],
+                  [
+                    "Resource",
+                    -3.0717535000596055
+                  ],
+                  [
+                    "Activity",
+                    -2.321907916432501
+                  ],
+                  [
+                    "open_cases_min",
+                    -1.526187010448869
+                  ],
+                  [
+                    "month_mean",
+                    -1.0916573398134954
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    1.0156564950350822
+                  ],
+                  [
+                    "timesincecasestart_std",
+                    -0.794389067274557
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "NumberOfOffers",
+                  "value": 3.0,
+                  "risk": 5.092719806477717,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 5.092719806477717
+                },
+                {
+                  "input": "month_min",
+                  "value": 2.0,
+                  "risk": 3.424880711951965,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 3.424880711951965
+                },
+                {
+                  "input": "Resource",
+                  "value": "11300.0",
+                  "risk": -3.0717535000596055,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -3.0717535000596055
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Completeren aanvraag",
+                  "risk": -2.321907916432501,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -2.321907916432501
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 692.0,
+                  "risk": -1.526187010448869,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -1.526187010448869
+                },
+                {
+                  "input": "month_mean",
+                  "value": 2.0,
+                  "risk": -1.0916573398134954,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -1.0916573398134954
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "value": 16000.0,
+                  "risk": 1.0156564950350822,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.0156564950350822
+                },
+                {
+                  "input": "timesincecasestart_std",
+                  "value": 655.6651398858318,
+                  "risk": -0.794389067274557,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.794389067274557
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 1.1737339857444697,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.1737339857444697
+                }
+              ],
+              "completeness": {
+                "timing_sum": 3.9807151556015015,
+                "composed_sum": 3.980715155601502
+              },
+              "anchored_flows": [
+                {
+                  "input": "NumberOfOffers",
+                  "value": 3.0,
+                  "risk": 1.341447228193283,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.341447228193283
+                },
+                {
+                  "input": "Resource",
+                  "value": "11300.0",
+                  "risk": -0.6235528945922851,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.6235528945922851
+                },
+                {
+                  "input": "timesincemidnight_mean",
+                  "value": 734.8571428571429,
+                  "risk": 0.5183294355869293,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.5183294355869293
+                },
+                {
+                  "input": "open_cases_mean",
+                  "value": 701.5714285714286,
+                  "risk": -0.437475960329175,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.437475960329175
+                },
+                {
+                  "input": "open_cases_std",
+                  "value": 8.960229588897743,
+                  "risk": 0.40941244959831236,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.40941244959831236
+                },
+                {
+                  "input": "timesincelastevent_sum",
+                  "value": 1243.7654666666667,
+                  "risk": -0.33977680206298827,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.33977680206298827
+                },
+                {
+                  "input": "timesincelastevent_max",
+                  "value": 1209.6945,
+                  "risk": 0.2809629440307617,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.2809629440307617
+                },
+                {
+                  "input": "month_min",
+                  "value": 2.0,
+                  "risk": 0.23615901470184325,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.23615901470184325
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.7732792794704438,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.7732792794704438
+                }
+              ],
+              "anchored_top": [
+                [
+                  "NumberOfOffers",
+                  1.341447228193283
+                ],
+                [
+                  "available_resources",
+                  0.9509335994720459
+                ],
+                [
+                  "Resource",
+                  -0.6235528945922851
+                ],
+                [
+                  "timesincemidnight_mean",
+                  0.5183294355869293
+                ],
+                [
+                  "open_cases_mean",
+                  -0.437475960329175
+                ],
+                [
+                  "open_cases_std",
+                  0.40941244959831236
+                ],
+                [
+                  "timesincelastevent_sum",
+                  -0.33977680206298827
+                ],
+                [
+                  "relative_position",
+                  0.29074663780629634
+                ]
+              ],
+              "direct_top": [
+                [
+                  "NumberOfOffers",
+                  1.341447228193283
+                ],
+                [
+                  "available_resources",
+                  0.9509335994720459
+                ],
+                [
+                  "Resource",
+                  -0.6235528945922851
+                ],
+                [
+                  "timesincemidnight_mean",
+                  0.5183294355869293
+                ],
+                [
+                  "open_cases_mean",
+                  -0.437475960329175
+                ],
+                [
+                  "open_cases_std",
+                  0.40941244959831236
+                ],
+                [
+                  "timesincelastevent_sum",
+                  -0.33977680206298827
+                ],
+                [
+                  "relative_position",
+                  0.29074663780629634
+                ]
+              ],
+              "direct_vs_propagated": {
+                "spearman": 0.44313166035575835,
+                "same_top": true
+              }
+            },
+            "paper_card_wait": {
+              "case_id": "202830",
+              "prefix_nr": 18,
+              "action": "wait",
+              "dq": -2.129209518432617,
+              "r": 0.6862412401597177,
+              "pT": 0.8752155900001526,
+              "pU": 0.6772506833076477,
+              "state": {
+                "relative_position": 0.8999999761581421,
+                "reliability": 0.0,
+                "deviation": 0.0,
+                "available_resources": 3.0
+              },
+              "timing_phi": {
+                "relative_position": -0.9357640743255615,
+                "reliability": -0.02441873587667942,
+                "deviation": 0.09003946930170059,
+                "available_resources": 0.7213112115859985
+              },
+              "native_phi": {
+                "relative_position": -0.9357640743255615,
+                "available_resources": 0.7213112115859985
+              },
+              "composed_top": [
+                [
+                  "relative_position",
+                  -0.9357640743255615
+                ],
+                [
+                  "available_resources",
+                  0.7213112115859985
+                ],
+                [
+                  "month_min",
+                  -0.04419818200275714
+                ],
+                [
+                  "Activity",
+                  0.04405248318988973
+                ],
+                [
+                  "timesincecasestart_max",
+                  0.019315129414050974
+                ],
+                [
+                  "timesincelastevent_sum",
+                  0.011862311207942646
+                ],
+                [
+                  "month_max",
+                  -0.009774681611927084
+                ],
+                [
+                  "open_cases_max",
+                  0.008354394834892245
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "month_min",
+                    -0.04419818200275714
+                  ],
+                  [
+                    "Activity",
+                    0.04405248318988973
+                  ],
+                  [
+                    "timesincecasestart_max",
+                    0.019315129414050974
+                  ],
+                  [
+                    "timesincelastevent_sum",
+                    0.011862311207942646
+                  ],
+                  [
+                    "month_max",
+                    -0.009774681611927084
+                  ],
+                  [
+                    "open_cases_max",
+                    0.008354394834892245
+                  ],
+                  [
+                    "NumberOfOffers",
+                    0.008025828359001763
+                  ],
+                  [
+                    "open_cases_min",
+                    -0.007132059906296994
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "AMOUNT_REQ",
+                    0.0
+                  ],
+                  [
+                    "event",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "Resource",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_max",
+                    0.0
+                  ],
+                  [
+                    "timesincelastevent_min",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "month_min",
+                  "value": 1.0,
+                  "risk": -0.04419818200275714,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.04419818200275714
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Nabellen offertes",
+                  "risk": 0.04405248318988973,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.04405248318988973
+                },
+                {
+                  "input": "timesincecasestart_max",
+                  "value": 48635.71491666666,
+                  "risk": 0.019315129414050974,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.019315129414050974
+                },
+                {
+                  "input": "timesincelastevent_sum",
+                  "value": 48635.714916666664,
+                  "risk": 0.011862311207942646,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.011862311207942646
+                },
+                {
+                  "input": "month_max",
+                  "value": 2.0,
+                  "risk": -0.009774681611927084,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.009774681611927084
+                },
+                {
+                  "input": "open_cases_max",
+                  "value": 847.0,
+                  "risk": 0.008354394834892245,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.008354394834892245
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 1.0,
+                  "risk": 0.008025828359001763,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.008025828359001763
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 588.0,
+                  "risk": -0.007132059906296994,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.007132059906296994
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.03511550994022503,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.03511550994022503
+                }
+              ],
+              "completeness": {
+                "timing_sum": -0.14883212931454182,
+                "composed_sum": -0.14883212931454182
+              },
+              "anchored_flows": [
+                {
+                  "input": "month_std",
+                  "value": 0.32338083338177703,
+                  "risk": 0.37981495559215545,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.37981495559215545
+                },
+                {
+                  "input": "timesincecasestart_max",
+                  "value": 48635.71491666666,
+                  "risk": 0.37254000306129453,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.37254000306129453
+                },
+                {
+                  "input": "open_cases_mean",
+                  "value": 797.8333333333334,
+                  "risk": -0.25659994781017303,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.25659994781017303
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 588.0,
+                  "risk": -0.19823466539382933,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.19823466539382933
+                },
+                {
+                  "input": "month_mean",
+                  "value": 1.1111111111111112,
+                  "risk": -0.19670141935348512,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.19670141935348512
+                },
+                {
+                  "input": "timesincelastevent_std",
+                  "value": 5886.681289880254,
+                  "risk": 0.19426307082176208,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.19426307082176208
+                },
+                {
+                  "input": "timesincelastevent_mean",
+                  "value": 2701.984162037037,
+                  "risk": 0.17823779881000518,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.17823779881000518
+                },
+                {
+                  "input": "month_min",
+                  "value": 1.0,
+                  "risk": -0.17798599004745483,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.17798599004745483
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.09515772555023433,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.09515772555023433
+                }
+              ],
+              "anchored_top": [
+                [
+                  "relative_position",
+                  -0.7231935659423471
+                ],
+                [
+                  "available_resources",
+                  0.6529542326927185
+                ],
+                [
+                  "month_std",
+                  0.37981495559215545
+                ],
+                [
+                  "timesincecasestart_max",
+                  0.37254000306129453
+                ],
+                [
+                  "open_cases_mean",
+                  -0.25659994781017303
+                ],
+                [
+                  "open_cases_min",
+                  -0.19823466539382933
+                ],
+                [
+                  "month_mean",
+                  -0.19670141935348512
+                ],
+                [
+                  "timesincelastevent_std",
+                  0.19426307082176208
+                ]
+              ],
+              "direct_top": [
+                [
+                  "relative_position",
+                  -0.7231935659423471
+                ],
+                [
+                  "available_resources",
+                  0.6529542326927185
+                ],
+                [
+                  "month_std",
+                  0.37981495559215545
+                ],
+                [
+                  "timesincecasestart_max",
+                  0.37254000306129453
+                ],
+                [
+                  "open_cases_mean",
+                  -0.25659994781017303
+                ],
+                [
+                  "open_cases_min",
+                  -0.19823466539382933
+                ],
+                [
+                  "month_mean",
+                  -0.19670141935348512
+                ],
+                [
+                  "timesincelastevent_std",
+                  0.19426307082176208
+                ]
+              ],
+              "direct_vs_propagated": {
+                "spearman": 0.4886820095033529,
+                "same_top": true
+              }
+            }
+          },
+          "anchored": {
+            "act": {
+              "n": 66,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.1433909089962154,
+                  "mean_abs": 1.1379395603540945,
+                  "mean_signed": 0.9303535058163108,
+                  "channel": {
+                    "native": 1.1379395603540945
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.0981981356832266,
+                  "mean_abs": 0.7792930816130882,
+                  "mean_signed": 0.5627895419260093,
+                  "channel": {
+                    "native": 0.7792930816130882
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.04442002114114825,
+                  "mean_abs": 0.35251397513361143,
+                  "mean_signed": 0.22237663255778675,
+                  "channel": {
+                    "risk": 0.35251397513361143,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.04235967673637206,
+                  "mean_abs": 0.3361632355883944,
+                  "mean_signed": -0.05995811787575031,
+                  "channel": {
+                    "risk": 0.3361632355883944,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.0398647753615861,
+                  "mean_abs": 0.3163638843364563,
+                  "mean_signed": -0.053738455894882936,
+                  "channel": {
+                    "risk": 0.3163638843364563,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Resource",
+                  "share": 0.03320861709726356,
+                  "mean_abs": 0.2635411087367119,
+                  "mean_signed": 0.10294377875486108,
+                  "channel": {
+                    "risk": 0.2635411087367119,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "timesincemidnight_std",
+                  "share": 0.03168876715634261,
+                  "mean_abs": 0.25147969294903855,
+                  "mean_signed": 0.13125408701598645,
+                  "channel": {
+                    "risk": 0.25147969294903855,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.03134491935466006,
+                  "mean_abs": 0.24875094243748627,
+                  "mean_signed": 0.06938894297363182,
+                  "channel": {
+                    "risk": 0.24875094243748627,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.7584109553205578,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.24158904467944206,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.19154185749271257
+            },
+            "wait": {
+              "n": 434,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.2036575513359616,
+                  "mean_abs": 0.9717416196201027,
+                  "mean_signed": 0.278281692125135,
+                  "channel": {
+                    "native": 0.9717416196201027
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.07842624343349186,
+                  "mean_abs": 0.3742068207874242,
+                  "mean_signed": 0.00282834269801661,
+                  "channel": {
+                    "native": 0.3742068207874242
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.06503864741118559,
+                  "mean_abs": 0.3103285891373003,
+                  "mean_signed": 0.054229351275167016,
+                  "channel": {
+                    "risk": 0.3103285891373003,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_min",
+                  "share": 0.04301884894492015,
+                  "mean_abs": 0.20526224377002852,
+                  "mean_signed": 0.030198463434482226,
+                  "channel": {
+                    "risk": 0.20526224377002852,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "month_min",
+                  "share": 0.03940610119911354,
+                  "mean_abs": 0.18802420215183352,
+                  "mean_signed": 0.054772560627624596,
+                  "channel": {
+                    "risk": 0.18802420215183352,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "AMOUNT_REQ",
+                  "share": 0.0363331903952127,
+                  "mean_abs": 0.1733619649701404,
+                  "mean_signed": 0.03644482197694926,
+                  "channel": {
+                    "risk": 0.1733619649701404,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Resource",
+                  "share": 0.03457114982507326,
+                  "mean_abs": 0.16495447825417262,
+                  "mean_signed": 0.07102398947911329,
+                  "channel": {
+                    "risk": 0.16495447825417262,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "open_cases_max",
+                  "share": 0.02523629700644524,
+                  "mean_abs": 0.12041370410961422,
+                  "mean_signed": 0.015316921400876225,
+                  "channel": {
+                    "risk": 0.12041370410961422,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.7179162052305466,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.2820837947694535,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.21836793777550523
+            }
+          }
+        }
+      },
+      "direct": {
+        "n_perm": 20,
+        "seconds": 5.204028178000044,
+        "agreement_vs_cancellation": {
+          "spearman_rho_vs_cancellation": null,
+          "median_cancellation": 0.0,
+          "agreement_low_cancellation": 0.44632773141842347,
+          "agreement_high_cancellation": null,
+          "n_low": 500,
+          "n_high": 0
+        },
+        "reference": "pool background",
+        "F_reference_mean": -1.4212113516777753,
+        "completeness_gap": 1.114207218810916,
+        "agreement_with_propagated": {
+          "all": {
+            "spearman_mean": 0.44632773141842347,
+            "spearman_median": 0.4507631885817376,
+            "jaccard_top5_mean": 0.3362698412698413,
+            "global_spearman": 0.8679856531297002,
+            "top1_agreement": 0.536
+          },
+          "act": {
+            "spearman_mean": 0.43934764068091364,
+            "spearman_median": 0.4553544500822952,
+            "jaccard_top5_mean": 0.32215007215007213,
+            "global_spearman": 0.805623047552933,
+            "top1_agreement": 0.6060606060606061
+          },
+          "wait": {
+            "spearman_mean": 0.44738921987159325,
+            "spearman_median": 0.45004956442490285,
+            "jaccard_top5_mean": 0.33841708726501346,
+            "global_spearman": 0.8796714103899108,
+            "top1_agreement": 0.5253456221198156
+          }
+        },
+        "global_top": {
+          "act": [
+            [
+              "available_resources",
+              1.1379395603540945
+            ],
+            [
+              "relative_position",
+              0.7792930816130882
+            ],
+            [
+              "NumberOfOffers",
+              0.35251397513361143
+            ],
+            [
+              "Activity",
+              0.3361632355883944
+            ],
+            [
+              "open_cases_min",
+              0.3163638843364563
+            ],
+            [
+              "Resource",
+              0.2635411087367119
+            ],
+            [
+              "timesincemidnight_std",
+              0.25147969294903855
+            ],
+            [
+              "AMOUNT_REQ",
+              0.24875094243748627
+            ]
+          ],
+          "wait": [
+            [
+              "available_resources",
+              0.9717416196201027
+            ],
+            [
+              "relative_position",
+              0.3742068207874242
+            ],
+            [
+              "Activity",
+              0.3103285891373003
+            ],
+            [
+              "open_cases_min",
+              0.20526224377002852
+            ],
+            [
+              "month_min",
+              0.18802420215183352
+            ],
+            [
+              "AMOUNT_REQ",
+              0.1733619649701404
+            ],
+            [
+              "Resource",
+              0.16495447825417262
+            ],
+            [
+              "open_cases_max",
+              0.12041370410961422
+            ]
+          ]
+        },
+        "native_share_direct": {
+          "act": 0.24158904467944206,
+          "wait": 0.2820837947694535
+        }
+      },
+      "deletion_e2e": {
+        "act": {
+          "1": {
+            "k": 1,
+            "abs_random": 0.21522120955033283,
+            "flip_random": 0.06060606060606061,
+            "propagated": {
+              "abs_guided": 2.067526112395254,
+              "abs_anti": 0.0,
+              "gap": 1.8523049028449212,
+              "gap_se": 0.16472992571026993,
+              "z": 11.244495466493378,
+              "flip_guided": 0.6363636363636364
+            },
+            "direct": {
+              "abs_guided": 2.531281501336983,
+              "abs_anti": 0.07796700795491536,
+              "gap": 2.3160602917866497,
+              "gap_se": 0.16270744046628127,
+              "z": 14.234507562465279,
+              "flip_guided": 0.7272727272727273
+            }
+          },
+          "3": {
+            "k": 3,
+            "abs_random": 0.663458916155452,
+            "flip_random": 0.16666666666666666,
+            "propagated": {
+              "abs_guided": 2.641405599981998,
+              "abs_anti": 0.0,
+              "gap": 1.9779466838265463,
+              "gap_se": 0.17813500081686226,
+              "z": 11.103638671549122,
+              "flip_guided": 0.7878787878787878
+            },
+            "direct": {
+              "abs_guided": 3.0724666885692966,
+              "abs_anti": 0.04511843305645567,
+              "gap": 2.4090077724138443,
+              "gap_se": 0.19100130602318674,
+              "z": 12.612519896180192,
+              "flip_guided": 0.8787878787878788
+            }
+          }
+        },
+        "wait": {
+          "1": {
+            "k": 1,
+            "abs_random": 0.1067409140457,
+            "flip_random": 0.02304147465437788,
+            "propagated": {
+              "abs_guided": 0.9454288377774202,
+              "abs_anti": 0.0,
+              "gap": 0.8386879237317201,
+              "gap_se": 0.03353688563621721,
+              "z": 25.007925089681038,
+              "flip_guided": 0.03225806451612903
+            },
+            "direct": {
+              "abs_guided": 0.9997968926407774,
+              "abs_anti": 0.08122411232939514,
+              "gap": 0.8930559785950773,
+              "gap_se": 0.04762671392975914,
+              "z": 18.751156754425146,
+              "flip_guided": 0.10138248847926268
+            }
+          },
+          "3": {
+            "k": 3,
+            "abs_random": 0.2687420625625873,
+            "flip_random": 0.03686635944700461,
+            "propagated": {
+              "abs_guided": 0.9603021141776841,
+              "abs_anti": 0.0,
+              "gap": 0.6915600516150968,
+              "gap_se": 0.037393780003194106,
+              "z": 18.493986207225507,
+              "flip_guided": 0.02304147465437788
+            },
+            "direct": {
+              "abs_guided": 1.15748108253913,
+              "abs_anti": 0.11258438857023342,
+              "gap": 0.8887390199765425,
+              "gap_se": 0.05317890439738536,
+              "z": 16.712247648716865,
+              "flip_guided": 0.09907834101382489
+            }
+          }
+        }
+      },
+      "risk_effect": {
+        "global_spearman": 0.6958846095030372,
+        "jaccard_top10": 0.42857142857142855,
+        "shared_top": [
+          "AMOUNT_REQ",
+          "Activity",
+          "open_cases_max",
+          "open_cases_min",
+          "month_mean",
+          "month_max"
+        ],
+        "per_attribute": {
+          "Activity": {
+            "risk_share": 0.21185244922077395,
+            "effect_share": 0.05625544300442616,
+            "sign_agreement": 0.91,
+            "n_both": 500
+          },
+          "AMOUNT_REQ": {
+            "risk_share": 0.05333915467572796,
+            "effect_share": 0.12217600083270141,
+            "sign_agreement": 0.642,
+            "n_both": 500
+          },
+          "month_min": {
+            "risk_share": 0.14142691168210492,
+            "effect_share": 0.0,
+            "sign_agreement": null,
+            "n_both": 0
+          },
+          "open_cases_max": {
+            "risk_share": 0.02622815101547008,
+            "effect_share": 0.0980269957013564,
+            "sign_agreement": 0.816,
+            "n_both": 500
+          },
+          "open_cases_min": {
+            "risk_share": 0.0704550210812615,
+            "effect_share": 0.04960787225015073,
+            "sign_agreement": 0.622,
+            "n_both": 500
+          },
+          "month_max": {
+            "risk_share": 0.05026197527640116,
+            "effect_share": 0.04659675343657637,
+            "sign_agreement": 0.006,
+            "n_both": 500
+          },
+          "NumberOfOffers": {
+            "risk_share": 0.04521170912966185,
+            "effect_share": 0.03317853385775884,
+            "sign_agreement": 0.104,
+            "n_both": 500
+          },
+          "timesincemidnight_max": {
+            "risk_share": 0.013457225158743447,
+            "effect_share": 0.05134701624330135,
+            "sign_agreement": 0.568,
+            "n_both": 500
+          },
+          "timesincelastevent_mean": {
+            "risk_share": 0.013851469880251252,
+            "effect_share": 0.05007548639872526,
+            "sign_agreement": 0.604,
+            "n_both": 500
+          },
+          "month_mean": {
+            "risk_share": 0.018375621646338484,
+            "effect_share": 0.03887410448888414,
+            "sign_agreement": 0.472,
+            "n_both": 500
+          },
+          "timesincelastevent_max": {
+            "risk_share": 0.015653348044791456,
+            "effect_share": 0.03979150983939316,
+            "sign_agreement": 0.596,
+            "n_both": 500
+          },
+          "Resource": {
+            "risk_share": 0.03502455100662656,
+            "effect_share": 0.01845886573864437,
+            "sign_agreement": 0.41,
+            "n_both": 500
+          },
+          "timesincemidnight_std": {
+            "risk_share": 0.015687786278632716,
+            "effect_share": 0.036330976894774866,
+            "sign_agreement": 0.798,
+            "n_both": 500
+          },
+          "timesincecasestart_max": {
+            "risk_share": 0.018984130537862354,
+            "effect_share": 0.008826671014547803,
+            "sign_agreement": 0.372,
+            "n_both": 500
+          }
+        },
+        "sign_agreement_overall": 0.5308235294117647,
+        "groups": {
+          "agree": [
+            "Activity",
+            "open_cases_max"
+          ],
+          "oppose": [
+            "month_max",
+            "NumberOfOffers"
+          ],
+          "independent": [
+            "AMOUNT_REQ",
+            "open_cases_min",
+            "timesincemidnight_max",
+            "timesincelastevent_mean",
+            "month_mean",
+            "timesincelastevent_max",
+            "Resource",
+            "timesincemidnight_std",
+            "timesincecasestart_max"
+          ],
+          "one_level_only": [
+            "month_min"
+          ]
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_shipped_act_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_shipped_act_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_shipped_wait_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_shipped_wait_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_rebuilt_act_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_rebuilt_act_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_rebuilt_wait_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2012/BPIC2012_rebuilt_wait_composed_top.png"
+      ],
+      "seconds": 21.950866172000133
+    },
+    {
+      "log": "BPIC2017",
+      "n": 500,
+      "inputs": [
+        "NumberOfOffers",
+        "RequestedAmount",
+        "ApplicationType",
+        "LoanGoal",
+        "Activity",
+        "org:resource",
+        "Action",
+        "EventOrigin",
+        "lifecycle:transition",
+        "Accepted",
+        "Selected",
+        "FirstWithdrawalAmount_mean",
+        "FirstWithdrawalAmount_max",
+        "FirstWithdrawalAmount_min",
+        "FirstWithdrawalAmount_sum",
+        "FirstWithdrawalAmount_std",
+        "MonthlyCost_mean",
+        "MonthlyCost_max",
+        "MonthlyCost_min",
+        "MonthlyCost_sum",
+        "MonthlyCost_std",
+        "NumberOfTerms_mean",
+        "NumberOfTerms_max",
+        "NumberOfTerms_min",
+        "NumberOfTerms_sum",
+        "NumberOfTerms_std",
+        "OfferedAmount_mean",
+        "OfferedAmount_max",
+        "OfferedAmount_min",
+        "OfferedAmount_sum",
+        "OfferedAmount_std",
+        "CreditScore_mean",
+        "CreditScore_max",
+        "CreditScore_min",
+        "CreditScore_sum",
+        "CreditScore_std",
+        "timesincelastevent_mean",
+        "timesincelastevent_max",
+        "timesincelastevent_min",
+        "timesincelastevent_sum",
+        "timesincelastevent_std",
+        "timesincecasestart_mean",
+        "timesincecasestart_max",
+        "timesincecasestart_min",
+        "timesincecasestart_sum",
+        "timesincecasestart_std",
+        "timesincemidnight_mean",
+        "timesincemidnight_max",
+        "timesincemidnight_min",
+        "timesincemidnight_sum",
+        "timesincemidnight_std",
+        "event_nr_mean",
+        "event_nr_max",
+        "event_nr_min",
+        "event_nr_sum",
+        "event_nr_std",
+        "month_mean",
+        "month_max",
+        "month_min",
+        "month_sum",
+        "month_std",
+        "weekday_mean",
+        "weekday_max",
+        "weekday_min",
+        "weekday_sum",
+        "weekday_std",
+        "hour_mean",
+        "hour_max",
+        "hour_min",
+        "hour_sum",
+        "hour_std",
+        "open_cases_mean",
+        "open_cases_max",
+        "open_cases_min",
+        "open_cases_sum",
+        "open_cases_std",
+        "relative_position",
+        "available_resources"
+      ],
+      "state_features": [
+        "relative_position",
+        "reliability",
+        "deviation",
+        "available_resources"
+      ],
+      "variant": "risk_retrained",
+      "well_defined": {
+        "risk (r)": {
+          "share_defined": 1.0,
+          "median_ratio": 0.6603886441075547,
+          "n_fallback": 0
+        },
+        "Proba_if_Treated": {
+          "share_defined": 0.962,
+          "median_ratio": 0.7667934418287536,
+          "n_fallback": 19
+        },
+        "Proba_if_Untreated": {
+          "share_defined": 1.0,
+          "median_ratio": 0.6747604786375485,
+          "n_fallback": 0
+        },
+        "ratio": 0.05,
+        "share_all_defined": 0.962
+      },
+      "baseline": {
+        "background": "pool",
+        "n_background": 100,
+        "risk": {
+          "explainer": "tree_path_dependent",
+          "expected_value": -5.464608144890499,
+          "pool_mean_logit": -4.054870628839756,
+          "baseline_gap": 1.4097375160507433,
+          "sign_agreement": 0.998,
+          "corr": 0.9843487065434615
+        },
+        "Proba_if_Treated": {
+          "explainer": "interventional(pool)",
+          "expected_value": -1.3480807769016112,
+          "pool_mean_logit": -1.4474983215332031,
+          "baseline_gap": -0.09941756725311279,
+          "sign_agreement": 0.992,
+          "corr": 0.9999999999992996
+        },
+        "Proba_if_Untreated": {
+          "explainer": "interventional(pool)",
+          "expected_value": -2.4716520937204907,
+          "pool_mean_logit": -2.6063036918640137,
+          "baseline_gap": -0.13465166091918945,
+          "sign_agreement": 1.0,
+          "corr": 0.9999999999999917
+        }
+      },
+      "state_agreement": {
+        "risk": {
+          "deviation_agrees": 1.0,
+          "predicted_deviant_shipped": 0.394,
+          "predicted_deviant_rebuilt": 0.394,
+          "corr_r_shipped": 1.0,
+          "reliability_mean_abs_diff": 0.0
+        },
+        "effect": {
+          "positive_rule_agrees": 1.0,
+          "positive_rule_shipped": 0.188,
+          "positive_rule_rebuilt": 0.188,
+          "corr_pT": null,
+          "corr_pU": null,
+          "mean_abs_diff_pT": null,
+          "mean_abs_diff_pU": null
+        },
+        "decision": {
+          "intervene_rate_shipped": 0.172,
+          "intervene_rate_rebuilt": 0.172,
+          "flip_rate": 0.0,
+          "corr_margin": 1.0,
+          "agreement_with_oracle_shipped": 0.728,
+          "agreement_with_oracle_rebuilt": 0.728,
+          "agreement_with_rebuilt_rule_rebuilt": 0.728
+        }
+      },
+      "readings": {
+        "shipped": {
+          "reference": {
+            "relative_position": 0.5271222591400146,
+            "reliability": 0.8508806228637695,
+            "deviation": 0.6060000061988831,
+            "available_resources": 1.5
+          },
+          "n_act": 86,
+          "n_wait": 414,
+          "level_shares": {
+            "act": {
+              "per_feature": {
+                "relative_position": 0.1667667951647118,
+                "reliability": 0.18841173883673432,
+                "deviation": 0.38760990674071727,
+                "available_resources": 0.2572115592578366
+              },
+              "per_level": {
+                "native": 0.4239783544225484,
+                "risk": 0.5760216455774516
+              }
+            },
+            "wait": {
+              "per_feature": {
+                "relative_position": 0.19499540210569088,
+                "reliability": 0.22952105462834996,
+                "deviation": 0.33216719132483563,
+                "available_resources": 0.24331635194112353
+              },
+              "per_level": {
+                "native": 0.43831175404681444,
+                "risk": 0.5616882459531856
+              }
+            },
+            "all": {
+              "per_feature": {
+                "relative_position": 0.18880097253715364,
+                "reliability": 0.2205001078343993,
+                "deviation": 0.34433343092887253,
+                "available_resources": 0.24636548869957442
+              },
+              "per_level": {
+                "native": 0.4351664612367281,
+                "risk": 0.5648335387632718
+              }
+            }
+          },
+          "propagation": {
+            "completeness_gap": 1.7763568394002505e-15,
+            "fallbacks": {
+              "reliability": 0,
+              "deviation": 0
+            },
+            "act": {
+              "n": 86,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.23930110889093084,
+                  "mean_abs": 1.6608516476875128,
+                  "mean_signed": 1.5064675932706788,
+                  "channel": {
+                    "native": 1.6608516476875128
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.15515429836921832,
+                  "mean_abs": 1.0768369327104368,
+                  "mean_signed": 0.11881681358398394,
+                  "channel": {
+                    "native": 1.0768369327104368
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.13191878315429098,
+                  "mean_abs": 0.9155725578463433,
+                  "mean_signed": 0.9155725578463433,
+                  "channel": {
+                    "risk": 0.9155725578463433,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.09631416407743164,
+                  "mean_abs": 0.6684613324401949,
+                  "mean_signed": 0.6684613324401948,
+                  "channel": {
+                    "risk": 0.6684613324401949,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.07415247792286188,
+                  "mean_abs": 0.5146497887497441,
+                  "mean_signed": 0.514649788749744,
+                  "channel": {
+                    "risk": 0.5146497887497441,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.06281973077178074,
+                  "mean_abs": 0.43599569531101373,
+                  "mean_signed": 0.43599569531101384,
+                  "channel": {
+                    "risk": 0.43599569531101373,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.047192330457511714,
+                  "mean_abs": 0.3275348792232128,
+                  "mean_signed": -0.01941244876964699,
+                  "channel": {
+                    "risk": 0.3275348792232128,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.038956999238324706,
+                  "mean_abs": 0.27037817197672365,
+                  "mean_signed": 0.2327314474311731,
+                  "channel": {
+                    "risk": 0.27037817197672365,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.6055445927398508,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.3944554072601492,
+                "cancellation": 2.220446049250313e-16
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.41239748638387697
+            },
+            "wait": {
+              "n": 414,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.22945139204479637,
+                  "mean_abs": 1.1609280052266404,
+                  "mean_signed": -0.4340191488446677,
+                  "channel": {
+                    "native": 1.1609280052266404
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.18388392764622752,
+                  "mean_abs": 0.9303757079577767,
+                  "mean_signed": 0.006616605341137535,
+                  "channel": {
+                    "native": 0.9303757079577767
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.13113839450464954,
+                  "mean_abs": 0.6635053872812607,
+                  "mean_signed": 0.14780000084239653,
+                  "channel": {
+                    "risk": 0.6635053872812607,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.08993295983128488,
+                  "mean_abs": 0.4550231346632133,
+                  "mean_signed": 0.06357236272381364,
+                  "channel": {
+                    "risk": 0.4550231346632133,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.07333421215241644,
+                  "mean_abs": 0.37104041893261125,
+                  "mean_signed": 0.07146713435112226,
+                  "channel": {
+                    "risk": 0.37104041893261125,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.06362441634419427,
+                  "mean_abs": 0.3219129162474385,
+                  "mean_signed": 0.07653139078975561,
+                  "channel": {
+                    "risk": 0.3219129162474385,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.035783755799771784,
+                  "mean_abs": 0.18105082680010878,
+                  "mean_signed": -0.054988434214669445,
+                  "channel": {
+                    "risk": 0.18105082680010878,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.03566167789693881,
+                  "mean_abs": 0.18043316370835263,
+                  "mean_signed": 0.008308792362814118,
+                  "channel": {
+                    "risk": 0.18043316370835263,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.5866646803089761,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.4133353196910239,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.39381373863231695
+            }
+          },
+          "typology": {
+            "risky|treatable|act": {
+              "n": 21,
+              "level_share": {
+                "native": 0.3784027729625177,
+                "risk": 0.6215972270374823
+              }
+            },
+            "risky|treatable|wait": {
+              "n": 37,
+              "level_share": {
+                "native": 0.3356966956312234,
+                "risk": 0.6643033043687765
+              }
+            },
+            "risky|untreatable|act": {
+              "n": 63,
+              "level_share": {
+                "native": 0.4375172191488549,
+                "risk": 0.5624827808511451
+              }
+            },
+            "risky|untreatable|wait": {
+              "n": 76,
+              "level_share": {
+                "native": 0.3789839319374807,
+                "risk": 0.6210160680625193
+              }
+            },
+            "safe|treatable|act": {
+              "n": 1,
+              "level_share": {
+                "native": 0.451903784781768,
+                "risk": 0.548096215218232
+              }
+            },
+            "safe|treatable|wait": {
+              "n": 35,
+              "level_share": {
+                "native": 0.39841615159477684,
+                "risk": 0.6015838484052232
+              }
+            },
+            "safe|untreatable|act": {
+              "n": 1,
+              "level_share": {
+                "native": 0.48249538438783046,
+                "risk": 0.5175046156121695
+              }
+            },
+            "safe|untreatable|wait": {
+              "n": 266,
+              "level_share": {
+                "native": 0.486757536924177,
+                "risk": 0.5132424630758232
+              }
+            }
+          },
+          "cards": {
+            "paper_card_act": {
+              "case_id": "Application_230511974",
+              "prefix_nr": 1,
+              "action": "intervene",
+              "dq": 0.7524915933609009,
+              "r": 0.5160495189587428,
+              "pT": 0.5035589933395386,
+              "pU": 0.4707286059856415,
+              "state": {
+                "relative_position": 0.03846153989434242,
+                "reliability": 0.5160495042800903,
+                "deviation": 0.0,
+                "available_resources": 3.0
+              },
+              "timing_phi": {
+                "relative_position": -1.6295299530029297,
+                "reliability": 1.9171266555786133,
+                "deviation": 2.1247940063476562,
+                "available_resources": 2.0211026668548584
+              },
+              "native_phi": {
+                "relative_position": -1.6295299530029297,
+                "available_resources": 2.0211026668548584
+              },
+              "composed_top": [
+                [
+                  "available_resources",
+                  2.0211026668548584
+                ],
+                [
+                  "relative_position",
+                  -1.6295299530029297
+                ],
+                [
+                  "CreditScore_mean",
+                  1.2492970640608563
+                ],
+                [
+                  "CreditScore_max",
+                  0.9876534536756149
+                ],
+                [
+                  "CreditScore_std",
+                  0.8717984122792433
+                ],
+                [
+                  "CreditScore_sum",
+                  0.6838836355784108
+                ],
+                [
+                  "Activity",
+                  0.36009523841306434
+                ],
+                [
+                  "NumberOfOffers",
+                  -0.3059592573763614
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "CreditScore_mean",
+                    1.2492970640608563
+                  ],
+                  [
+                    "CreditScore_max",
+                    0.9876534536756149
+                  ],
+                  [
+                    "CreditScore_std",
+                    0.8717984122792433
+                  ],
+                  [
+                    "CreditScore_sum",
+                    0.6838836355784108
+                  ],
+                  [
+                    "Activity",
+                    0.36009523841306434
+                  ],
+                  [
+                    "NumberOfOffers",
+                    -0.3059592573763614
+                  ],
+                  [
+                    "org:resource",
+                    0.08562995082601893
+                  ],
+                  [
+                    "month_min",
+                    0.07881259569005941
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "CreditScore_mean",
+                  "value": 0.0,
+                  "risk": 1.2492970640608563,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.2492970640608563
+                },
+                {
+                  "input": "CreditScore_max",
+                  "value": 0.0,
+                  "risk": 0.9876534536756149,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.9876534536756149
+                },
+                {
+                  "input": "CreditScore_std",
+                  "value": 0.0,
+                  "risk": 0.8717984122792433,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.8717984122792433
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 0.0,
+                  "risk": 0.6838836355784108,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.6838836355784108
+                },
+                {
+                  "input": "Activity",
+                  "value": "A_Create Application",
+                  "risk": 0.36009523841306434,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.36009523841306434
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 2.0,
+                  "risk": -0.3059592573763614,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.3059592573763614
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_1",
+                  "risk": 0.08562995082601893,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.08562995082601893
+                },
+                {
+                  "input": "month_min",
+                  "value": 9.0,
+                  "risk": 0.07881259569005941,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.07881259569005941
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.030709568779363115,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.030709568779363115
+                }
+              ],
+              "completeness": {
+                "timing_sum": 4.433493375778198,
+                "composed_sum": 4.433493375778197
+              }
+            },
+            "paper_card_wait": {
+              "case_id": "Application_774436640",
+              "prefix_nr": 51,
+              "action": "wait",
+              "dq": -3.881934642791748,
+              "r": 5.527646964532655e-09,
+              "pT": 0.000236214415053837,
+              "pU": 0.0006056103156879544,
+              "state": {
+                "relative_position": 0.9444444179534912,
+                "reliability": 1.0,
+                "deviation": 1.0,
+                "available_resources": 0.0
+              },
+              "timing_phi": {
+                "relative_position": -1.372792363166809,
+                "reliability": 0.6570702791213989,
+                "deviation": 0.7478286027908325,
+                "available_resources": 0.16483555734157562
+              },
+              "native_phi": {
+                "relative_position": -1.372792363166809,
+                "available_resources": 0.16483555734157562
+              },
+              "composed_top": [
+                [
+                  "relative_position",
+                  -1.372792363166809
+                ],
+                [
+                  "CreditScore_mean",
+                  0.5691003413701912
+                ],
+                [
+                  "CreditScore_max",
+                  0.34296810607486616
+                ],
+                [
+                  "CreditScore_sum",
+                  0.27786953981947354
+                ],
+                [
+                  "Activity",
+                  0.17759850532184593
+                ],
+                [
+                  "available_resources",
+                  0.16483555734157562
+                ],
+                [
+                  "CreditScore_std",
+                  0.15641569655394433
+                ],
+                [
+                  "NumberOfOffers",
+                  -0.08666819169655532
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "CreditScore_mean",
+                    0.5691003413701912
+                  ],
+                  [
+                    "CreditScore_max",
+                    0.34296810607486616
+                  ],
+                  [
+                    "CreditScore_sum",
+                    0.27786953981947354
+                  ],
+                  [
+                    "Activity",
+                    0.17759850532184593
+                  ],
+                  [
+                    "CreditScore_std",
+                    0.15641569655394433
+                  ],
+                  [
+                    "NumberOfOffers",
+                    -0.08666819169655532
+                  ],
+                  [
+                    "Action",
+                    0.07671502263831811
+                  ],
+                  [
+                    "RequestedAmount",
+                    -0.06414021362500155
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "CreditScore_mean",
+                  "value": 800.0392156862745,
+                  "risk": 0.5691003413701912,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.5691003413701912
+                },
+                {
+                  "input": "CreditScore_max",
+                  "value": 887.0,
+                  "risk": 0.34296810607486616,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.34296810607486616
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 40802.0,
+                  "risk": 0.27786953981947354,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.27786953981947354
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Validate application",
+                  "risk": 0.17759850532184593,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.17759850532184593
+                },
+                {
+                  "input": "CreditScore_std",
+                  "value": 266.3897115719236,
+                  "risk": 0.15641569655394433,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.15641569655394433
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 1.0,
+                  "risk": -0.08666819169655532,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.08666819169655532
+                },
+                {
+                  "input": "Action",
+                  "value": "statechange",
+                  "risk": 0.07671502263831811,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.07671502263831811
+                },
+                {
+                  "input": "RequestedAmount",
+                  "value": 55000.0,
+                  "risk": -0.06414021362500155,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.06414021362500155
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": -0.04495992454485082,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.04495992454485082
+                }
+              ],
+              "completeness": {
+                "timing_sum": 0.19694207608699799,
+                "composed_sum": 0.19694207608699776
+              }
+            }
+          }
+        },
+        "rebuilt": {
+          "reference": {
+            "relative_position": 0.5271222591400146,
+            "reliability": 0.8508806228637695,
+            "deviation": 0.6060000061988831,
+            "available_resources": 1.5
+          },
+          "n_act": 86,
+          "n_wait": 414,
+          "level_shares": {
+            "act": {
+              "per_feature": {
+                "relative_position": 0.1667667951647118,
+                "reliability": 0.18841173883673432,
+                "deviation": 0.38760990674071727,
+                "available_resources": 0.2572115592578366
+              },
+              "per_level": {
+                "native": 0.4239783544225484,
+                "risk": 0.5760216455774516
+              }
+            },
+            "wait": {
+              "per_feature": {
+                "relative_position": 0.19499540210569088,
+                "reliability": 0.22952105462834996,
+                "deviation": 0.33216719132483563,
+                "available_resources": 0.24331635194112353
+              },
+              "per_level": {
+                "native": 0.43831175404681444,
+                "risk": 0.5616882459531856
+              }
+            },
+            "all": {
+              "per_feature": {
+                "relative_position": 0.18880097253715364,
+                "reliability": 0.2205001078343993,
+                "deviation": 0.34433343092887253,
+                "available_resources": 0.24636548869957442
+              },
+              "per_level": {
+                "native": 0.4351664612367281,
+                "risk": 0.5648335387632718
+              }
+            }
+          },
+          "propagation": {
+            "completeness_gap": 1.7763568394002505e-15,
+            "fallbacks": {
+              "reliability": 0,
+              "deviation": 0
+            },
+            "act": {
+              "n": 86,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.23930110889093084,
+                  "mean_abs": 1.6608516476875128,
+                  "mean_signed": 1.5064675932706788,
+                  "channel": {
+                    "native": 1.6608516476875128
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.15515429836921832,
+                  "mean_abs": 1.0768369327104368,
+                  "mean_signed": 0.11881681358398394,
+                  "channel": {
+                    "native": 1.0768369327104368
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.13191878315429098,
+                  "mean_abs": 0.9155725578463433,
+                  "mean_signed": 0.9155725578463433,
+                  "channel": {
+                    "risk": 0.9155725578463433,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.09631416407743164,
+                  "mean_abs": 0.6684613324401949,
+                  "mean_signed": 0.6684613324401948,
+                  "channel": {
+                    "risk": 0.6684613324401949,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.07415247792286188,
+                  "mean_abs": 0.5146497887497441,
+                  "mean_signed": 0.514649788749744,
+                  "channel": {
+                    "risk": 0.5146497887497441,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.06281973077178074,
+                  "mean_abs": 0.43599569531101373,
+                  "mean_signed": 0.43599569531101384,
+                  "channel": {
+                    "risk": 0.43599569531101373,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.047192330457511714,
+                  "mean_abs": 0.3275348792232128,
+                  "mean_signed": -0.01941244876964699,
+                  "channel": {
+                    "risk": 0.3275348792232128,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.038956999238324706,
+                  "mean_abs": 0.27037817197672365,
+                  "mean_signed": 0.2327314474311731,
+                  "channel": {
+                    "risk": 0.27037817197672365,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.6055445927398508,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.3944554072601492,
+                "cancellation": 2.220446049250313e-16
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.41239748638387697
+            },
+            "wait": {
+              "n": 414,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.22945139204479637,
+                  "mean_abs": 1.1609280052266404,
+                  "mean_signed": -0.4340191488446677,
+                  "channel": {
+                    "native": 1.1609280052266404
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.18388392764622752,
+                  "mean_abs": 0.9303757079577767,
+                  "mean_signed": 0.006616605341137535,
+                  "channel": {
+                    "native": 0.9303757079577767
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.13113839450464954,
+                  "mean_abs": 0.6635053872812607,
+                  "mean_signed": 0.14780000084239653,
+                  "channel": {
+                    "risk": 0.6635053872812607,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.08993295983128488,
+                  "mean_abs": 0.4550231346632133,
+                  "mean_signed": 0.06357236272381364,
+                  "channel": {
+                    "risk": 0.4550231346632133,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.07333421215241644,
+                  "mean_abs": 0.37104041893261125,
+                  "mean_signed": 0.07146713435112226,
+                  "channel": {
+                    "risk": 0.37104041893261125,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.06362441634419427,
+                  "mean_abs": 0.3219129162474385,
+                  "mean_signed": 0.07653139078975561,
+                  "channel": {
+                    "risk": 0.3219129162474385,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.035783755799771784,
+                  "mean_abs": 0.18105082680010878,
+                  "mean_signed": -0.054988434214669445,
+                  "channel": {
+                    "risk": 0.18105082680010878,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.03566167789693881,
+                  "mean_abs": 0.18043316370835263,
+                  "mean_signed": 0.008308792362814118,
+                  "channel": {
+                    "risk": 0.18043316370835263,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.5866646803089761,
+                "effect_T": 0.0,
+                "effect_U": 0.0,
+                "native": 0.4133353196910239,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.39381373863231695
+            }
+          },
+          "typology": {
+            "risky|treatable|act": {
+              "n": 21,
+              "level_share": {
+                "native": 0.3784027729625177,
+                "risk": 0.6215972270374823
+              }
+            },
+            "risky|treatable|wait": {
+              "n": 37,
+              "level_share": {
+                "native": 0.3356966956312234,
+                "risk": 0.6643033043687765
+              }
+            },
+            "risky|untreatable|act": {
+              "n": 63,
+              "level_share": {
+                "native": 0.4375172191488549,
+                "risk": 0.5624827808511451
+              }
+            },
+            "risky|untreatable|wait": {
+              "n": 76,
+              "level_share": {
+                "native": 0.3789839319374807,
+                "risk": 0.6210160680625193
+              }
+            },
+            "safe|treatable|act": {
+              "n": 1,
+              "level_share": {
+                "native": 0.451903784781768,
+                "risk": 0.548096215218232
+              }
+            },
+            "safe|treatable|wait": {
+              "n": 35,
+              "level_share": {
+                "native": 0.39841615159477684,
+                "risk": 0.6015838484052232
+              }
+            },
+            "safe|untreatable|act": {
+              "n": 1,
+              "level_share": {
+                "native": 0.48249538438783046,
+                "risk": 0.5175046156121695
+              }
+            },
+            "safe|untreatable|wait": {
+              "n": 266,
+              "level_share": {
+                "native": 0.486757536924177,
+                "risk": 0.5132424630758232
+              }
+            }
+          },
+          "cards": {
+            "paper_card_act": {
+              "case_id": "Application_230511974",
+              "prefix_nr": 1,
+              "action": "intervene",
+              "dq": 0.7524915933609009,
+              "r": 0.5160495189587428,
+              "pT": 0.5035589933395386,
+              "pU": 0.4707286059856415,
+              "state": {
+                "relative_position": 0.03846153989434242,
+                "reliability": 0.5160495042800903,
+                "deviation": 0.0,
+                "available_resources": 3.0
+              },
+              "timing_phi": {
+                "relative_position": -1.6295299530029297,
+                "reliability": 1.9171266555786133,
+                "deviation": 2.1247940063476562,
+                "available_resources": 2.0211026668548584
+              },
+              "native_phi": {
+                "relative_position": -1.6295299530029297,
+                "available_resources": 2.0211026668548584
+              },
+              "composed_top": [
+                [
+                  "available_resources",
+                  2.0211026668548584
+                ],
+                [
+                  "relative_position",
+                  -1.6295299530029297
+                ],
+                [
+                  "CreditScore_mean",
+                  1.2492970640608563
+                ],
+                [
+                  "CreditScore_max",
+                  0.9876534536756149
+                ],
+                [
+                  "CreditScore_std",
+                  0.8717984122792433
+                ],
+                [
+                  "CreditScore_sum",
+                  0.6838836355784108
+                ],
+                [
+                  "Activity",
+                  0.36009523841306434
+                ],
+                [
+                  "NumberOfOffers",
+                  -0.3059592573763614
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "CreditScore_mean",
+                    1.2492970640608563
+                  ],
+                  [
+                    "CreditScore_max",
+                    0.9876534536756149
+                  ],
+                  [
+                    "CreditScore_std",
+                    0.8717984122792433
+                  ],
+                  [
+                    "CreditScore_sum",
+                    0.6838836355784108
+                  ],
+                  [
+                    "Activity",
+                    0.36009523841306434
+                  ],
+                  [
+                    "NumberOfOffers",
+                    -0.3059592573763614
+                  ],
+                  [
+                    "org:resource",
+                    0.08562995082601893
+                  ],
+                  [
+                    "month_min",
+                    0.07881259569005941
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "CreditScore_mean",
+                  "value": 0.0,
+                  "risk": 1.2492970640608563,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 1.2492970640608563
+                },
+                {
+                  "input": "CreditScore_max",
+                  "value": 0.0,
+                  "risk": 0.9876534536756149,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.9876534536756149
+                },
+                {
+                  "input": "CreditScore_std",
+                  "value": 0.0,
+                  "risk": 0.8717984122792433,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.8717984122792433
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 0.0,
+                  "risk": 0.6838836355784108,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.6838836355784108
+                },
+                {
+                  "input": "Activity",
+                  "value": "A_Create Application",
+                  "risk": 0.36009523841306434,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.36009523841306434
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 2.0,
+                  "risk": -0.3059592573763614,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.3059592573763614
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_1",
+                  "risk": 0.08562995082601893,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.08562995082601893
+                },
+                {
+                  "input": "month_min",
+                  "value": 9.0,
+                  "risk": 0.07881259569005941,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.07881259569005941
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.030709568779363115,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.030709568779363115
+                }
+              ],
+              "completeness": {
+                "timing_sum": 4.433493375778198,
+                "composed_sum": 4.433493375778197
+              },
+              "anchored_flows": [
+                {
+                  "input": "Activity",
+                  "value": "A_Create Application",
+                  "risk": 0.5782594818621873,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.5782594818621873
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 0.0,
+                  "risk": 0.5439471185207367,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.5439471185207367
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_1",
+                  "risk": 0.4844895888119936,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.4844895888119936
+                },
+                {
+                  "input": "open_cases_max",
+                  "value": 2346.0,
+                  "risk": 0.32246607206761835,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.32246607206761835
+                },
+                {
+                  "input": "LoanGoal",
+                  "value": "Car",
+                  "risk": 0.32006632536649704,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.32006632536649704
+                },
+                {
+                  "input": "lifecycle:transition",
+                  "value": "complete",
+                  "risk": 0.3160597212612629,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.3160597212612629
+                },
+                {
+                  "input": "timesincelastevent_sum",
+                  "value": 0.0,
+                  "risk": -0.30090107023715973,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.30090107023715973
+                },
+                {
+                  "input": "RequestedAmount",
+                  "value": 10000.0,
+                  "risk": 0.26832106336951256,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.26832106336951256
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.16487763449549686,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.16487763449549686
+                }
+              ],
+              "anchored_top": [
+                [
+                  "available_resources",
+                  1.8021113641560078
+                ],
+                [
+                  "relative_position",
+                  -1.1278488330543042
+                ],
+                [
+                  "Activity",
+                  0.5782594818621873
+                ],
+                [
+                  "CreditScore_sum",
+                  0.5439471185207367
+                ],
+                [
+                  "org:resource",
+                  0.4844895888119936
+                ],
+                [
+                  "open_cases_max",
+                  0.32246607206761835
+                ],
+                [
+                  "LoanGoal",
+                  0.32006632536649704
+                ],
+                [
+                  "lifecycle:transition",
+                  0.3160597212612629
+                ]
+              ],
+              "direct_top": [
+                [
+                  "available_resources",
+                  1.8021113641560078
+                ],
+                [
+                  "relative_position",
+                  -1.1278488330543042
+                ],
+                [
+                  "Activity",
+                  0.5782594818621873
+                ],
+                [
+                  "CreditScore_sum",
+                  0.5439471185207367
+                ],
+                [
+                  "org:resource",
+                  0.4844895888119936
+                ],
+                [
+                  "open_cases_max",
+                  0.32246607206761835
+                ],
+                [
+                  "LoanGoal",
+                  0.32006632536649704
+                ],
+                [
+                  "lifecycle:transition",
+                  0.3160597212612629
+                ]
+              ],
+              "direct_vs_propagated": {
+                "spearman": 0.6200390978024826,
+                "same_top": true
+              }
+            },
+            "paper_card_wait": {
+              "case_id": "Application_774436640",
+              "prefix_nr": 51,
+              "action": "wait",
+              "dq": -3.881934642791748,
+              "r": 5.527646964532655e-09,
+              "pT": 0.000236214415053837,
+              "pU": 0.0006056103156879544,
+              "state": {
+                "relative_position": 0.9444444179534912,
+                "reliability": 1.0,
+                "deviation": 1.0,
+                "available_resources": 0.0
+              },
+              "timing_phi": {
+                "relative_position": -1.372792363166809,
+                "reliability": 0.6570702791213989,
+                "deviation": 0.7478286027908325,
+                "available_resources": 0.16483555734157562
+              },
+              "native_phi": {
+                "relative_position": -1.372792363166809,
+                "available_resources": 0.16483555734157562
+              },
+              "composed_top": [
+                [
+                  "relative_position",
+                  -1.372792363166809
+                ],
+                [
+                  "CreditScore_mean",
+                  0.5691003413701912
+                ],
+                [
+                  "CreditScore_max",
+                  0.34296810607486616
+                ],
+                [
+                  "CreditScore_sum",
+                  0.27786953981947354
+                ],
+                [
+                  "Activity",
+                  0.17759850532184593
+                ],
+                [
+                  "available_resources",
+                  0.16483555734157562
+                ],
+                [
+                  "CreditScore_std",
+                  0.15641569655394433
+                ],
+                [
+                  "NumberOfOffers",
+                  -0.08666819169655532
+                ]
+              ],
+              "per_channel_top": {
+                "risk": [
+                  [
+                    "CreditScore_mean",
+                    0.5691003413701912
+                  ],
+                  [
+                    "CreditScore_max",
+                    0.34296810607486616
+                  ],
+                  [
+                    "CreditScore_sum",
+                    0.27786953981947354
+                  ],
+                  [
+                    "Activity",
+                    0.17759850532184593
+                  ],
+                  [
+                    "CreditScore_std",
+                    0.15641569655394433
+                  ],
+                  [
+                    "NumberOfOffers",
+                    -0.08666819169655532
+                  ],
+                  [
+                    "Action",
+                    0.07671502263831811
+                  ],
+                  [
+                    "RequestedAmount",
+                    -0.06414021362500155
+                  ]
+                ],
+                "effect_T": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ],
+                "effect_U": [
+                  [
+                    "NumberOfOffers",
+                    0.0
+                  ],
+                  [
+                    "RequestedAmount",
+                    0.0
+                  ],
+                  [
+                    "ApplicationType",
+                    0.0
+                  ],
+                  [
+                    "LoanGoal",
+                    0.0
+                  ],
+                  [
+                    "Activity",
+                    0.0
+                  ],
+                  [
+                    "org:resource",
+                    0.0
+                  ],
+                  [
+                    "Action",
+                    0.0
+                  ],
+                  [
+                    "EventOrigin",
+                    0.0
+                  ]
+                ]
+              },
+              "flows": [
+                {
+                  "input": "CreditScore_mean",
+                  "value": 800.0392156862745,
+                  "risk": 0.5691003413701912,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.5691003413701912
+                },
+                {
+                  "input": "CreditScore_max",
+                  "value": 887.0,
+                  "risk": 0.34296810607486616,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.34296810607486616
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 40802.0,
+                  "risk": 0.27786953981947354,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.27786953981947354
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Validate application",
+                  "risk": 0.17759850532184593,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.17759850532184593
+                },
+                {
+                  "input": "CreditScore_std",
+                  "value": 266.3897115719236,
+                  "risk": 0.15641569655394433,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.15641569655394433
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "value": 1.0,
+                  "risk": -0.08666819169655532,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.08666819169655532
+                },
+                {
+                  "input": "Action",
+                  "value": "statechange",
+                  "risk": 0.07671502263831811,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.07671502263831811
+                },
+                {
+                  "input": "RequestedAmount",
+                  "value": 55000.0,
+                  "risk": -0.06414021362500155,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.06414021362500155
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": -0.04495992454485082,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": -0.04495992454485082
+                }
+              ],
+              "completeness": {
+                "timing_sum": 0.19694207608699799,
+                "composed_sum": 0.19694207608699776
+              },
+              "anchored_flows": [
+                {
+                  "input": "CreditScore_max",
+                  "value": 887.0,
+                  "risk": 0.8294110748916864,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.8294110748916864
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "value": 800.0392156862745,
+                  "risk": 0.6139843940734864,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.6139843940734864
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "value": 40802.0,
+                  "risk": 0.3060967862606049,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.3060967862606049
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Validate application",
+                  "risk": 0.23221350312232972,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.23221350312232972
+                },
+                {
+                  "input": "FirstWithdrawalAmount_sum",
+                  "value": 264684.0,
+                  "risk": -0.17401684522628785,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.17401684522628785
+                },
+                {
+                  "input": "event_nr_max",
+                  "value": 51.0,
+                  "risk": 0.1609010875225067,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.1609010875225067
+                },
+                {
+                  "input": "timesincemidnight_sum",
+                  "value": 39636.0,
+                  "risk": -0.11712253093719482,
+                  "effect_T": -0.0,
+                  "effect_U": -0.0,
+                  "total": -0.11712253093719482
+                },
+                {
+                  "input": "CreditScore_std",
+                  "value": 266.3897115719236,
+                  "risk": 0.11486376523971557,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.11486376523971557
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.14407437443733212,
+                  "effect_T": 0.0,
+                  "effect_U": 0.0,
+                  "total": 0.14407437443733212
+                }
+              ],
+              "anchored_top": [
+                [
+                  "relative_position",
+                  -1.53193838596344
+                ],
+                [
+                  "CreditScore_max",
+                  0.8294110748916864
+                ],
+                [
+                  "CreditScore_mean",
+                  0.6139843940734864
+                ],
+                [
+                  "available_resources",
+                  0.4487865328788757
+                ],
+                [
+                  "CreditScore_sum",
+                  0.3060967862606049
+                ],
+                [
+                  "Activity",
+                  0.23221350312232972
+                ],
+                [
+                  "FirstWithdrawalAmount_sum",
+                  -0.17401684522628785
+                ],
+                [
+                  "event_nr_max",
+                  0.1609010875225067
+                ]
+              ],
+              "direct_top": [
+                [
+                  "relative_position",
+                  -1.53193838596344
+                ],
+                [
+                  "CreditScore_max",
+                  0.8294110748916864
+                ],
+                [
+                  "CreditScore_mean",
+                  0.6139843940734864
+                ],
+                [
+                  "available_resources",
+                  0.4487865328788757
+                ],
+                [
+                  "CreditScore_sum",
+                  0.3060967862606049
+                ],
+                [
+                  "Activity",
+                  0.23221350312232972
+                ],
+                [
+                  "FirstWithdrawalAmount_sum",
+                  -0.17401684522628785
+                ],
+                [
+                  "event_nr_max",
+                  0.1609010875225067
+                ]
+              ],
+              "direct_vs_propagated": {
+                "spearman": 0.57103808183402,
+                "same_top": true
+              }
+            }
+          },
+          "anchored": {
+            "act": {
+              "n": 86,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.1993757715614296,
+                  "mean_abs": 1.3772351297528247,
+                  "mean_signed": 1.2932382810990823,
+                  "channel": {
+                    "native": 1.3772351297528247
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.13038602202343255,
+                  "mean_abs": 0.9006721757265719,
+                  "mean_signed": 0.20570022365468194,
+                  "channel": {
+                    "native": 0.9006721757265719
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.06735087488603513,
+                  "mean_abs": 0.46524204112762624,
+                  "mean_signed": 0.4652420411276263,
+                  "channel": {
+                    "risk": 0.46524204112762624,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.05468489525008692,
+                  "mean_abs": 0.377748801749806,
+                  "mean_signed": 0.377748801749806,
+                  "channel": {
+                    "risk": 0.377748801749806,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.053287510345071704,
+                  "mean_abs": 0.3680960361910766,
+                  "mean_signed": 0.3627458767358993,
+                  "channel": {
+                    "risk": 0.3680960361910766,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.04463143610145507,
+                  "mean_abs": 0.3083021633413642,
+                  "mean_signed": 0.30134122123032114,
+                  "channel": {
+                    "risk": 0.3083021633413642,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "Activity",
+                  "share": 0.030207106081028768,
+                  "mean_abs": 0.20866270428523423,
+                  "mean_signed": 0.13781009044194983,
+                  "channel": {
+                    "risk": 0.20866270428523423,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.02985315908586334,
+                  "mean_abs": 0.20621773200001306,
+                  "mean_signed": 0.11209319326268555,
+                  "channel": {
+                    "risk": 0.20621773200001306,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.6702382063683157,
+                "effect_T": 2.341114890488206e-11,
+                "effect_U": 2.341114890488206e-11,
+                "native": 0.3297617935848621,
+                "cancellation": -2.220446049250313e-16
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.2501618226636776
+            },
+            "wait": {
+              "n": 414,
+              "top": [
+                {
+                  "input": "available_resources",
+                  "share": 0.1436411427183921,
+                  "mean_abs": 0.8823575758984856,
+                  "mean_signed": 0.1284156181698818,
+                  "channel": {
+                    "native": 0.8823575758984856
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.13025849495671257,
+                  "mean_abs": 0.8001507623447329,
+                  "mean_signed": -0.05415435696160196,
+                  "channel": {
+                    "native": 0.8001507623447329
+                  },
+                  "cancellation": null
+                },
+                {
+                  "input": "CreditScore_mean",
+                  "share": 0.08467261975229586,
+                  "mean_abs": 0.5201262402658663,
+                  "mean_signed": 0.15109046892519448,
+                  "channel": {
+                    "risk": 0.5201262402658663,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_max",
+                  "share": 0.0792860694828496,
+                  "mean_abs": 0.4870377856054776,
+                  "mean_signed": 0.16690023824671546,
+                  "channel": {
+                    "risk": 0.4870377856054776,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_std",
+                  "share": 0.055237474399504445,
+                  "mean_abs": 0.33931228259200374,
+                  "mean_signed": -0.0030974793850763755,
+                  "channel": {
+                    "risk": 0.33931228259200374,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "CreditScore_sum",
+                  "share": 0.04669329972538294,
+                  "mean_abs": 0.286827199900262,
+                  "mean_signed": 0.011674201906465249,
+                  "channel": {
+                    "risk": 0.286827199900262,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "NumberOfOffers",
+                  "share": 0.03782275710644833,
+                  "mean_abs": 0.23233730700451882,
+                  "mean_signed": -0.01079827355004955,
+                  "channel": {
+                    "risk": 0.23233730700451882,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "ApplicationType",
+                  "share": 0.030249499885401217,
+                  "mean_abs": 0.18581636769175175,
+                  "mean_signed": 0.04562372036305243,
+                  "channel": {
+                    "risk": 0.18581636769175175,
+                    "effect_T": 0.0,
+                    "effect_U": 0.0
+                  },
+                  "cancellation": 0.0
+                }
+              ],
+              "channel_share": {
+                "risk": 0.7261003623217702,
+                "effect_T": 1.5625097515833051e-12,
+                "effect_U": 1.5625097515833051e-12,
+                "native": 0.27389963767510467,
+                "cancellation": 0.0
+              },
+              "cancellation_overall": 0.0,
+              "cancellation_per_state_mean": 0.0,
+              "prefix_share_top5": 0.30371222046648116
+            }
+          }
+        }
+      },
+      "direct": {
+        "n_perm": 20,
+        "seconds": 12.024953224000456,
+        "agreement_vs_cancellation": {
+          "spearman_rho_vs_cancellation": null,
+          "median_cancellation": 0.0,
+          "agreement_low_cancellation": 0.6636291993468946,
+          "agreement_high_cancellation": null,
+          "n_low": 500,
+          "n_high": 0
+        },
+        "reference": "pool background",
+        "F_reference_mean": -2.8323142712935807,
+        "completeness_gap": 1.3913745218887925,
+        "agreement_with_propagated": {
+          "all": {
+            "spearman_mean": 0.6636291993468946,
+            "spearman_median": 0.666269717504441,
+            "jaccard_top5_mean": 0.555,
+            "global_spearman": 0.8732470585742391,
+            "top1_agreement": 0.666
+          },
+          "act": {
+            "spearman_mean": 0.7030720813279608,
+            "spearman_median": 0.7069287129019802,
+            "jaccard_top5_mean": 0.5528792912513842,
+            "global_spearman": 0.900260055032217,
+            "top1_agreement": 0.7674418604651163
+          },
+          "wait": {
+            "spearman_mean": 0.6554357504329532,
+            "spearman_median": 0.6554510460301325,
+            "jaccard_top5_mean": 0.5554405337014033,
+            "global_spearman": 0.8644162365741387,
+            "top1_agreement": 0.644927536231884
+          }
+        },
+        "global_top": {
+          "act": [
+            [
+              "available_resources",
+              1.3772351297528247
+            ],
+            [
+              "relative_position",
+              0.9006721757265719
+            ],
+            [
+              "CreditScore_mean",
+              0.46524204112762624
+            ],
+            [
+              "CreditScore_max",
+              0.377748801749806
+            ],
+            [
+              "CreditScore_std",
+              0.3680960361910766
+            ],
+            [
+              "CreditScore_sum",
+              0.3083021633413642
+            ],
+            [
+              "Activity",
+              0.20866270428523423
+            ],
+            [
+              "NumberOfOffers",
+              0.20621773200001306
+            ]
+          ],
+          "wait": [
+            [
+              "available_resources",
+              0.8823575758984856
+            ],
+            [
+              "relative_position",
+              0.8001507623447329
+            ],
+            [
+              "CreditScore_mean",
+              0.5201262402658663
+            ],
+            [
+              "CreditScore_max",
+              0.4870377856054776
+            ],
+            [
+              "CreditScore_std",
+              0.33931228259200374
+            ],
+            [
+              "CreditScore_sum",
+              0.286827199900262
+            ],
+            [
+              "NumberOfOffers",
+              0.23233730700451882
+            ],
+            [
+              "ApplicationType",
+              0.18581636769175175
+            ]
+          ]
+        },
+        "native_share_direct": {
+          "act": 0.329761793584862,
+          "wait": 0.27389963767510467
+        }
+      },
+      "deletion_e2e": {
+        "act": {
+          "1": {
+            "k": 1,
+            "abs_random": 0.24524178095378504,
+            "flip_random": 0.046511627906976744,
+            "propagated": {
+              "abs_guided": 2.333795011476722,
+              "abs_anti": 0.0,
+              "gap": 2.0885532305229364,
+              "gap_se": 0.2023012262326467,
+              "z": 10.323977117771383,
+              "flip_guided": 0.7790697674418605
+            },
+            "direct": {
+              "abs_guided": 1.846870789737549,
+              "abs_anti": 0.0,
+              "gap": 1.6016290087837637,
+              "gap_se": 0.1334992679710972,
+              "z": 11.997286825052244,
+              "flip_guided": 0.7325581395348837
+            }
+          },
+          "3": {
+            "k": 3,
+            "abs_random": 0.6716482553620238,
+            "flip_random": 0.12790697674418605,
+            "propagated": {
+              "abs_guided": 5.96045086194956,
+              "abs_anti": 0.0,
+              "gap": 5.288802606587536,
+              "gap_se": 0.1336319220995726,
+              "z": 39.57738932054508,
+              "flip_guided": 0.9883720930232558
+            },
+            "direct": {
+              "abs_guided": 4.234342186863339,
+              "abs_anti": 0.0,
+              "gap": 3.562693931501315,
+              "gap_se": 0.2045668895349133,
+              "z": 17.415789718468943,
+              "flip_guided": 0.9069767441860465
+            }
+          }
+        },
+        "wait": {
+          "1": {
+            "k": 1,
+            "abs_random": 0.1709161310857117,
+            "flip_random": 0.00966183574879227,
+            "propagated": {
+              "abs_guided": 1.4907705855290383,
+              "abs_anti": 0.0,
+              "gap": 1.3198544544433266,
+              "gap_se": 0.057609646294403315,
+              "z": 22.91030303672509,
+              "flip_guided": 0.033816425120772944
+            },
+            "direct": {
+              "abs_guided": 1.3893707468655807,
+              "abs_anti": 0.0,
+              "gap": 1.218454615779869,
+              "gap_se": 0.055039426580281686,
+              "z": 22.13785083684702,
+              "flip_guided": 0.07729468599033816
+            }
+          },
+          "3": {
+            "k": 3,
+            "abs_random": 0.4053637164176987,
+            "flip_random": 0.03140096618357488,
+            "propagated": {
+              "abs_guided": 2.005987290724896,
+              "abs_anti": 0.0,
+              "gap": 1.6006235743071977,
+              "gap_se": 0.06887563188752985,
+              "z": 23.239330521437957,
+              "flip_guided": 0.014492753623188406
+            },
+            "direct": {
+              "abs_guided": 1.8102195318518342,
+              "abs_anti": 0.0,
+              "gap": 1.4048558154341355,
+              "gap_se": 0.0712816925569613,
+              "z": 19.708508104118224,
+              "flip_guided": 0.050724637681159424
+            }
+          }
+        }
+      },
+      "risk_effect": {
+        "global_spearman": 0.5454053992289328,
+        "jaccard_top10": 0.25,
+        "shared_top": [
+          "CreditScore_max",
+          "ApplicationType",
+          "Activity",
+          "CreditScore_mean"
+        ],
+        "per_attribute": {
+          "CreditScore_max": {
+            "risk_share": 0.1585315693963201,
+            "effect_share": 0.3854803474536896,
+            "sign_agreement": 0.984,
+            "n_both": 500
+          },
+          "CreditScore_mean": {
+            "risk_share": 0.2253941624331509,
+            "effect_share": 0.014098930200991086,
+            "sign_agreement": 1.0,
+            "n_both": 500
+          },
+          "MonthlyCost_max": {
+            "risk_share": 0.005535657501661761,
+            "effect_share": 0.21283871433231596,
+            "sign_agreement": 0.498,
+            "n_both": 500
+          },
+          "CreditScore_std": {
+            "risk_share": 0.12430509946906024,
+            "effect_share": 0.0,
+            "sign_agreement": null,
+            "n_both": 0
+          },
+          "ApplicationType": {
+            "risk_share": 0.028475050505802596,
+            "effect_share": 0.09035884886909798,
+            "sign_agreement": 1.0,
+            "n_both": 500
+          },
+          "CreditScore_sum": {
+            "risk_share": 0.10709931303822044,
+            "effect_share": 0.0,
+            "sign_agreement": null,
+            "n_both": 0
+          },
+          "Activity": {
+            "risk_share": 0.05861850417057632,
+            "effect_share": 0.036095224846865205,
+            "sign_agreement": 0.078,
+            "n_both": 500
+          },
+          "NumberOfOffers": {
+            "risk_share": 0.06623351676920099,
+            "effect_share": 0.013466472925995699,
+            "sign_agreement": 0.182,
+            "n_both": 500
+          },
+          "FirstWithdrawalAmount_max": {
+            "risk_share": 0.00793989010559219,
+            "effect_share": 0.02817664967979447,
+            "sign_agreement": 0.15,
+            "n_both": 500
+          },
+          "event_nr_mean": {
+            "risk_share": 0.0027544764403078697,
+            "effect_share": 0.02887587089015765,
+            "sign_agreement": 0.05,
+            "n_both": 500
+          },
+          "timesincelastevent_max": {
+            "risk_share": 0.004663571338451065,
+            "effect_share": 0.024870380155790912,
+            "sign_agreement": 0.338,
+            "n_both": 500
+          },
+          "RequestedAmount": {
+            "risk_share": 0.009679388947159955,
+            "effect_share": 0.01606672253817239,
+            "sign_agreement": 0.506,
+            "n_both": 500
+          },
+          "OfferedAmount_mean": {
+            "risk_share": 0.0060790943924428605,
+            "effect_share": 0.01686427963706744,
+            "sign_agreement": 0.862,
+            "n_both": 500
+          },
+          "Action": {
+            "risk_share": 0.021084950438930578,
+            "effect_share": 0.0,
+            "sign_agreement": null,
+            "n_both": 0
+          },
+          "lifecycle:transition": {
+            "risk_share": 0.012646646687462425,
+            "effect_share": 0.0031473916157434036,
+            "sign_agreement": 0.47,
+            "n_both": 500
+          },
+          "month_min": {
+            "risk_share": 0.012958362974815294,
+            "effect_share": 0.0003483643104488571,
+            "sign_agreement": 0.9529411764705882,
+            "n_both": 340
+          }
+        },
+        "sign_agreement_overall": 0.541696727920893,
+        "groups": {
+          "agree": [
+            "CreditScore_max",
+            "CreditScore_mean",
+            "ApplicationType",
+            "OfferedAmount_mean",
+            "month_min"
+          ],
+          "oppose": [
+            "Activity",
+            "NumberOfOffers",
+            "FirstWithdrawalAmount_max",
+            "event_nr_mean"
+          ],
+          "independent": [
+            "MonthlyCost_max",
+            "timesincelastevent_max",
+            "RequestedAmount",
+            "lifecycle:transition"
+          ],
+          "one_level_only": [
+            "CreditScore_std",
+            "CreditScore_sum",
+            "Action"
+          ]
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_shipped_act_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_shipped_act_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_shipped_wait_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_shipped_wait_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_rebuilt_act_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_rebuilt_act_composed_top.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_rebuilt_wait_composed_top.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/compose/BPIC2017/BPIC2017_rebuilt_wait_composed_top.png"
+      ],
+      "seconds": 45.01041511099993
+    }
+  ]
+}

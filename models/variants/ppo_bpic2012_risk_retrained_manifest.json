@@ -1,0 +1,39 @@
+{
+  "seed": 42,
+  "total_timesteps": 300000,
+  "args": {
+    "timesteps": 300000,
+    "seed": 42,
+    "resources": 3,
+    "csv": "data/retrained_state_bpic2012.csv",
+    "out": "models/variants/ppo_bpic2012_risk_retrained",
+    "extra_features": [],
+    "random_start": false,
+    "episode": "case",
+    "ent_coef": 0.3,
+    "reward_scale": 0.01,
+    "learning_rate": 0.0003,
+    "n_steps": 512
+  },
+  "n_episodes": 34283,
+  "mean_episode_reward_last_50": 3.435,
+  "elapsed_seconds": 1026.4671621322632,
+  "timestamp": "2026-09-10T01:11:57Z",
+  "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/retrained_state_bpic2012.csv",
+  "csv_mtime": "2026-09-09T22:44:27Z",
+  "env": "PPMEnvFast",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "state_features": [
+    "relative_position",
+    "reliability",
+    "deviation",
+    "available_resources"
+  ],
+  "random_start": false,
+  "episode": "case",
+  "ent_coef": 0.3,
+  "reward_scale": 0.01,
+  "learning_rate": 0.0003,
+  "n_steps": 512
+}

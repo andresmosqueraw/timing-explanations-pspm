@@ -1,0 +1,312 @@
+[
+  {
+    "log": "BPIC2012",
+    "model": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/models/variants/ppo_bpic2012_risk_retrained.zip",
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "n_pool_states": 500,
+    "n_wait_states": 434,
+    "n_intervene_states": 66,
+    "intervene_rate": 0.132,
+    "reference": [
+      0.5046315789222717,
+      0.4959999918937683,
+      0.4959999918937683,
+      1.5
+    ],
+    "mean_abs_wait_margin": 2.229423761367798,
+    "phi_mean_abs": [
+      0.515811562538147,
+      0.1441180557012558,
+      0.26068687438964844,
+      0.8434245586395264
+    ],
+    "phi_share": [
+      0.29240337014198303,
+      0.08169767260551453,
+      0.1477782279253006,
+      0.47812071442604065
+    ],
+    "top1_feature_counts": {
+      "relative_position": 160,
+      "reliability": 0,
+      "deviation": 7,
+      "available_resources": 267
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.0082570314407349,
+      "abs_random": 0.5768055669379674,
+      "abs_anti": 0.36518433690071106,
+      "gap": 0.4314515161418146,
+      "gap_se": 0.018660219742475184,
+      "flip_guided": 0.04377880184331797,
+      "flip_random": 0.041474654377880185
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 0.8463069796562195,
+      "abs_random": 0.7400454428510457,
+      "abs_anti": 0.474378764629364,
+      "gap": 0.10626157278770126,
+      "gap_se": 0.02164128218761789,
+      "flip_guided": 0.0,
+      "flip_random": 0.034677419354838715
+    },
+    "wait_side": {
+      "n_states": 434,
+      "mean_abs_margin": 2.229423761367798,
+      "phi_mean_abs": [
+        0.515811562538147,
+        0.1441180557012558,
+        0.26068687438964844,
+        0.8434245586395264
+      ],
+      "phi_share": [
+        0.29240337014198303,
+        0.08169767260551453,
+        0.1477782279253006,
+        0.47812071442604065
+      ],
+      "phi_mean_signed": [
+        -0.07266178727149963,
+        -0.05616091191768646,
+        -0.02699875459074974,
+        0.10342811793088913
+      ],
+      "top1_feature_counts": {
+        "relative_position": 160,
+        "reliability": 0,
+        "deviation": 7,
+        "available_resources": 267
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 1.0082570314407349,
+        "abs_random": 0.5768055669379674,
+        "abs_anti": 0.36518433690071106,
+        "gap": 0.4314515161418146,
+        "gap_se": 0.018660219742475184,
+        "flip_guided": 0.04377880184331797,
+        "flip_random": 0.041474654377880185
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 0.8463069796562195,
+        "abs_random": 0.7400454428510457,
+        "abs_anti": 0.474378764629364,
+        "gap": 0.10626157278770126,
+        "gap_se": 0.02164128218761789,
+        "flip_guided": 0.0,
+        "flip_random": 0.034677419354838715
+      }
+    },
+    "intervene_side": {
+      "n_states": 66,
+      "mean_abs_margin": 1.7134850025177002,
+      "phi_mean_abs": [
+        0.926960289478302,
+        0.688880980014801,
+        0.9894618391990662,
+        1.704673409461975
+      ],
+      "phi_share": [
+        0.21507316827774048,
+        0.15983404219150543,
+        0.2295747548341751,
+        0.395518034696579
+      ],
+      "phi_mean_signed": [
+        0.8338689804077148,
+        0.688880980014801,
+        0.9894618391990662,
+        1.46796715259552
+      ],
+      "top1_feature_counts": {
+        "relative_position": 21,
+        "reliability": 0,
+        "deviation": 11,
+        "available_resources": 34
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 2.501986503601074,
+        "abs_random": 1.4201993081605797,
+        "abs_anti": 0.8851343393325806,
+        "gap": 1.081787186409488,
+        "gap_se": 0.06852762117464702,
+        "flip_guided": 0.803030303030303,
+        "flip_random": 0.4484848484848486
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 3.626732110977173,
+        "abs_random": 2.6288937466388402,
+        "abs_anti": 1.450597882270813,
+        "gap": 0.9978383986561586,
+        "gap_se": 0.06305696173300895,
+        "flip_guided": 1.0,
+        "flip_random": 0.6787878787878789
+      }
+    }
+  },
+  {
+    "log": "BPIC2017",
+    "model": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/models/variants/ppo_bpic2017_risk_retrained.zip",
+    "feature_names": [
+      "relative_position",
+      "reliability",
+      "deviation",
+      "available_resources"
+    ],
+    "n_pool_states": 500,
+    "n_wait_states": 414,
+    "n_intervene_states": 86,
+    "intervene_rate": 0.172,
+    "reference": [
+      0.5271222591400146,
+      0.8508806228637695,
+      0.6060000061988831,
+      1.5
+    ],
+    "mean_abs_wait_margin": 3.462068557739258,
+    "phi_mean_abs": [
+      0.9303755164146423,
+      1.0951073169708252,
+      1.5848588943481445,
+      1.1609283685684204
+    ],
+    "phi_share": [
+      0.19499534368515015,
+      0.22952112555503845,
+      0.3321670889854431,
+      0.2433164119720459
+    ],
+    "top1_feature_counts": {
+      "relative_position": 71,
+      "reliability": 49,
+      "deviation": 217,
+      "available_resources": 77
+    },
+    "k1": {
+      "k": 1,
+      "abs_guided": 1.6356478929519653,
+      "abs_random": 1.0594015156337317,
+      "abs_anti": 0.5243496894836426,
+      "gap": 0.5762462517741509,
+      "gap_se": 0.024514447128785713,
+      "flip_guided": 0.0,
+      "flip_random": 0.04601449275362319
+    },
+    "k2": {
+      "k": 2,
+      "abs_guided": 1.5581297874450684,
+      "abs_random": 1.2893389657913632,
+      "abs_anti": 0.9609482884407043,
+      "gap": 0.2687906968294855,
+      "gap_se": 0.05695400329589722,
+      "flip_guided": 0.0,
+      "flip_random": 0.05543478260869565
+    },
+    "wait_side": {
+      "n_states": 414,
+      "mean_abs_margin": 3.462068557739258,
+      "phi_mean_abs": [
+        0.9303755164146423,
+        1.0951073169708252,
+        1.5848588943481445,
+        1.1609283685684204
+      ],
+      "phi_share": [
+        0.19499534368515015,
+        0.22952112555503845,
+        0.3321670889854431,
+        0.2433164119720459
+      ],
+      "phi_mean_signed": [
+        0.006616624537855387,
+        0.02345534786581993,
+        0.17666620016098022,
+        -0.4340192377567291
+      ],
+      "top1_feature_counts": {
+        "relative_position": 71,
+        "reliability": 49,
+        "deviation": 217,
+        "available_resources": 77
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 1.6356478929519653,
+        "abs_random": 1.0594015156337317,
+        "abs_anti": 0.5243496894836426,
+        "gap": 0.5762462517741509,
+        "gap_se": 0.024514447128785713,
+        "flip_guided": 0.0,
+        "flip_random": 0.04601449275362319
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 1.5581297874450684,
+        "abs_random": 1.2893389657913632,
+        "abs_anti": 0.9609482884407043,
+        "gap": 0.2687906968294855,
+        "gap_se": 0.05695400329589722,
+        "flip_guided": 0.0,
+        "flip_random": 0.05543478260869565
+      }
+    },
+    "intervene_side": {
+      "n_states": 86,
+      "mean_abs_margin": 0.8077287077903748,
+      "phi_mean_abs": [
+        1.0768368244171143,
+        1.2166012525558472,
+        2.502852439880371,
+        1.6608513593673706
+      ],
+      "phi_share": [
+        0.16676679253578186,
+        0.18841172754764557,
+        0.38760995864868164,
+        0.2572115361690521
+      ],
+      "phi_mean_signed": [
+        0.1188167855143547,
+        0.4339241683483124,
+        2.4316649436950684,
+        1.506467580795288
+      ],
+      "top1_feature_counts": {
+        "relative_position": 0,
+        "reliability": 0,
+        "deviation": 81,
+        "available_resources": 5
+      },
+      "k1": {
+        "k": 1,
+        "abs_guided": 2.0185444355010986,
+        "abs_random": 1.16458308794644,
+        "abs_anti": 0.4816919267177582,
+        "gap": 0.8539609857683264,
+        "gap_se": 0.05060678284456032,
+        "flip_guided": 0.872093023255814,
+        "flip_random": 0.5005813953488373
+      },
+      "k2": {
+        "k": 2,
+        "abs_guided": 4.341098785400391,
+        "abs_random": 1.9589219861533924,
+        "abs_anti": 0.4007189869880676,
+        "gap": 2.3821770224178773,
+        "gap_se": 0.07040509782168743,
+        "flip_guided": 1.0,
+        "flip_random": 0.6191860465116278
+      }
+    }
+  }
+]
