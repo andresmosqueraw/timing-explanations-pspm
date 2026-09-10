@@ -21,7 +21,8 @@ a deletion test, and cross-tabulates the decisions by (at risk) × (treatable)
 The paper's policy (`pools.DEFAULT_VARIANT = "cate_retrained"`) observes the
 released four features plus the causal estimate's two counterfactual outcome
 probabilities (`Proba_if_Treated`, `Proba_if_Untreated`) and is trained one
-case per episode with `--reward-scale 0.01 --ent-coef 0.3`
+case per episode with `--reward-scale 0.01 --ent-coef 0.3` (600k steps on
+BPIC2017, where 300k over-intervenes; see `models/variants/*_manifest.json`)
 (`models/variants/ppo_<log>_cate_retrained.zip`) on the *coherent* state:
 `build_retrained_state.py` scores the prepared log's temporal test split with
 the retrained outcome predictor (`risk_model.py`) and effect estimator
@@ -38,14 +39,15 @@ the paper's. `--variant released` evaluates the earlier four-feature design
 retrained estimator's features (`simbank_resources/add_effect_features.py`).
 
 Per decision point (`gain_table_results.json`) the paper's policy earns
-40.3 / 21.4 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
+40.3 / 39.9 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
 -63.3 for always waiting, -49.5 / -49.8 / 16.6 for always intervening and
 -27.6 / -32.0 / -61.4 for the recorded action (oracle 58.3 / 54.4 / 46.5). It
-intervenes on 21.5 % / 33.6 % / 73.2 % of the decision points (precision
-0.66 / 0.38 / 1.00, recall 0.74 / 0.76 / 1.00 against the positive-effect
-rows): on BPIC2017 it over-intervenes, which the composition study traces to
-the timing level reading `Proba_if_Treated` (54 % of its weight) far more
-than `Proba_if_Untreated` (18 %).
+intervenes on 21.5 % / 15.9 % / 73.2 % of the decision points (precision
+0.66 / 0.73 / 1.00, recall 0.74 / 0.69 / 1.00 against the positive-effect
+rows). On BPIC2017 the recipe needs 600k steps: at 300k it over-intervened
+(33.6 %, precision 0.38, gain 21.4), reading `Proba_if_Treated` far more than
+`Proba_if_Untreated`; lower entropy coefficients collapse to never-intervene
+(`models/variants/ppo_bpic2017_cate_retrained_manifest.json`).
 
 ## Layout
 

@@ -91,7 +91,7 @@ def main(argv=None):
     scale = 1.0 / total if total else 1.0
 
     fig, ax = plt.subplots(figsize=(9.0, 4.6))
-    ax.set_xlim(0, 10); ax.set_ylim(-0.2, 1.22); ax.axis("off")
+    ax.set_xlim(0, 10); ax.set_ylim(-0.2, 1.26); ax.axis("off")
     TOPY = 0.9  # top of the usable span; headers sit above it
     X0, X1, X2, W = 2.55, 5.55, 8.55, 0.32
     gap_l, gap_m = 0.02, 0.045
@@ -138,13 +138,13 @@ def main(argv=None):
 
     # nodes and labels
     # left labels: centred on the node, spread to at least MINSEP_L apart (top-down), leader line when moved
-    MINSEP_L = 0.06
+    MINSEP_L = 0.052
     lys = []
     for y0, h in left_pos:
         c = y0 + h / 2
         lys.append(c if not lys else min(c, lys[-1] - MINSEP_L))
-    if lys and lys[-1] < -0.02:
-        shift = -0.02 - lys[-1]
+    if lys and lys[-1] < -0.06:  # bottom overflow: push the stack up, but never above the top node's centre
+        shift = min(-0.06 - lys[-1], (left_pos[0][0] + left_pos[0][1] / 2) - lys[0] + 0.03)
         lys = [y + shift for y in lys]
     for (name, val, c), (y0, h), ly in zip(left, left_pos, lys):
         ax.add_patch(plt.Rectangle((X0, y0), W, h, fc="#f3f4f6", ec=INK, lw=0.6, zorder=2))
@@ -158,7 +158,7 @@ def main(argv=None):
     # labels are at least MINSEP apart and the stack stays inside [0, TOPY]
     MINSEP = 0.13
     centers = [mid_pos[k][0] + mid_pos[k][1] / 2 for k, _, _ in MID]
-    ys = [min(centers[0], TOPY - 0.02)]
+    ys = [min(centers[0], TOPY - 0.06)]
     for c in centers[1:]:
         ys.append(min(c, ys[-1] - MINSEP))
     if ys[-1] < 0.03:
@@ -175,9 +175,9 @@ def main(argv=None):
     ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=8, color=INK, fontweight="bold")
 
     # headers
-    ax.text(X0 + W / 2, 1.13, "prefix attributes\n(risk expl. $\\phi^{r}$, effect expl. $\\phi^{p_T}$, $\\phi^{p_U}$)", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X1 + W / 2, 1.13, "state coordinates, by level", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X2 + W / 2, 1.13, "timing level", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X0 + W / 2, 1.17, "prefix attributes\n(risk expl. $\\phi^{r}$, effect expl. $\\phi^{p_T}$, $\\phi^{p_U}$)", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X2 + W / 2, 1.17, "timing level", ha="center", va="center", fontsize=7.6, color=MUTED)
     side = "toward acting now" if acts else "toward waiting"
     ax.text(0.05, -0.16, f"ribbon width = |contribution| in units of the margin;  orange = {side},  blue = against it.  "
             f"Case {card['case_id']}, event {card['prefix_nr']}; $r$ = {card['r']:.2f}, $\\hat p_T$ = {card['pT']:.2f}, $\\hat p_U$ = {card['pU']:.2f}.",

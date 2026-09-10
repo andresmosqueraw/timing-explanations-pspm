@@ -17,16 +17,16 @@
   "bpic2017": {
     "n": 30000,
     "hist_gain": -32.0375,
-    "policy_gain": 21.36,
-    "delta": 53.3975,
-    "policy_intervene_rate": 0.3358,
+    "policy_gain": 39.915,
+    "delta": 71.9525,
+    "policy_intervene_rate": 0.1588,
     "hist_intervene_rate": 0.6798333333333333,
     "oracle_gain": 54.44583333333333,
     "always_wait_gain": 24.795,
     "always_intervene_gain": -49.795,
     "share_ite_positive": 0.16943333333333332,
-    "policy_precision": 0.38256898947786383,
-    "policy_recall": 0.7582136533543183
+    "policy_precision": 0.734047019311503,
+    "policy_recall": 0.6879795396419437
   },
   "simbank": {
     "n": 28692,

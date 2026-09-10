@@ -276,7 +276,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.png"
       ],
-      "seconds": 11.276840171000003
+      "seconds": 13.808203708999827
     },
     {
       "log": "BPIC2017",
@@ -394,143 +394,143 @@
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "Application_1917918136",
-          "prefix_nr": 44,
+          "case_id": "Application_551630136",
+          "prefix_nr": 13,
           "action": "intervene",
-          "dq": 7.009068965911865,
-          "r": 0.9663614126641781,
-          "pT": 0.9938312768936157,
-          "pU": 0.4129893481731415,
+          "dq": 2.0721850395202637,
+          "r": 0.4761731237151749,
+          "pT": 0.5264590978622437,
+          "pU": 0.44987720251083374,
           "state": {
-            "relative_position": 1.0,
-            "reliability": 0.966361403465271,
-            "deviation": 0.0,
-            "available_resources": 1.0,
-            "Proba_if_Treated": 0.9938312768936157,
-            "Proba_if_Untreated": 0.4129893481731415
-          },
-          "effect_top": [
-            [
-              "ApplicationType",
-              "New credit",
-              1.9379583671689034,
-              2.0013036727905273,
-              0.06334530562162399
-            ],
-            [
-              "MonthlyCost_max",
-              428.6,
-              1.7406623512506485,
-              1.7736605405807495,
-              0.03299818933010101
-            ],
-            [
-              "CreditScore_max",
-              0.0,
-              0.827503502368927,
-              1.6859463453292847,
-              0.8584428429603577
-            ],
-            [
-              "Activity",
-              "W_Validate application",
-              0.31702679861336946,
-              -0.14067710656672716,
-              -0.4577039051800966
-            ],
-            [
-              "RequestedAmount",
-              35000.0,
-              0.30981626734137535,
-              -0.036931488662958145,
-              -0.3467477560043335
-            ],
-            [
-              "NumberOfOffers",
-              1.0,
-              -0.1846398264169693,
-              0.0,
-              0.1846398264169693
-            ]
-          ],
-          "effect_share_top6": 0.8243098142687544,
-          "timing_phi": {
-            "relative_position": -0.8430709838867188,
-            "reliability": -0.2848978042602539,
-            "deviation": -0.2812959551811218,
-            "available_resources": 0.7471648454666138,
-            "Proba_if_Treated": 6.9403300285339355,
-            "Proba_if_Untreated": -0.6594637632369995
-          }
-        },
-        "paper_card_wait": {
-          "case_id": "Application_2064387905",
-          "prefix_nr": 29,
-          "action": "wait",
-          "dq": -6.257122993469238,
-          "r": 1.5204618446376847e-08,
-          "pT": 0.00021843711147084832,
-          "pU": 0.0007739828433841467,
-          "state": {
-            "relative_position": 0.5918367505073547,
-            "reliability": 1.0,
+            "relative_position": 0.5,
+            "reliability": 0.5238268971443176,
             "deviation": 1.0,
             "available_resources": 1.0,
-            "Proba_if_Treated": 0.00021843711147084832,
-            "Proba_if_Untreated": 0.0007739828433841467
+            "Proba_if_Treated": 0.5264590978622437,
+            "Proba_if_Untreated": 0.44987720251083374
           },
           "effect_top": [
             [
-              "CreditScore_max",
-              1061.0,
-              -2.5712761878967285,
-              -9.117191314697266,
-              -6.545915126800537
-            ],
-            [
               "MonthlyCost_max",
-              100.0,
-              0.6824105910491198,
-              0.681179940700531,
-              -0.0012306503485888243
+              0.0,
+              -1.043453948572278,
+              -1.0573608875274658,
+              -0.013906938955187798
             ],
             [
               "ApplicationType",
               "New credit",
-              0.6252454705536366,
-              0.6610279679298401,
-              0.03578249737620354
+              0.4848896786570549,
+              0.5337719917297363,
+              0.04888231307268143
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              0.4544409513473511,
+              1.2864965200424194,
+              0.8320555686950684
+            ],
+            [
+              "event_nr_mean",
+              7.0,
+              0.25918781757354736,
+              0.06821262836456299,
+              -0.19097518920898438
             ],
             [
               "FirstWithdrawalAmount_max",
               0.0,
-              0.16497755469754338,
-              0.003226627130061388,
-              -0.161750927567482
+              0.20495100831612945,
+              -0.007530669216066599,
+              -0.21248167753219604
             ],
             [
               "NumberOfOffers",
               1.0,
-              -0.13155211508274078,
+              -0.1557762771844864,
               0.0,
-              0.13155211508274078
-            ],
-            [
-              "CreditScore_mean",
-              475.62068965517244,
-              -0.11973796784877777,
-              -0.11973796784877777,
-              0.0
+              0.1557762771844864
             ]
           ],
-          "effect_share_top6": 0.8102175344871387,
+          "effect_share_top6": 0.7874933864611982,
           "timing_phi": {
-            "relative_position": -0.07998121529817581,
-            "reliability": 0.363667756319046,
-            "deviation": 0.36264604330062866,
-            "available_resources": -1.2500531673431396,
-            "Proba_if_Treated": 11.560819625854492,
-            "Proba_if_Untreated": -3.305511236190796
+            "relative_position": -0.006448103580623865,
+            "reliability": 0.7457480430603027,
+            "deviation": 0.681727945804596,
+            "available_resources": 0.3439500033855438,
+            "Proba_if_Treated": 0.6635971665382385,
+            "Proba_if_Untreated": -1.1379220485687256
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "Application_184677584",
+          "prefix_nr": 3,
+          "action": "wait",
+          "dq": -1.5169610977172852,
+          "r": 0.5808379972014598,
+          "pT": 0.5266086459159851,
+          "pU": 0.5110001564025879,
+          "state": {
+            "relative_position": 0.1304347813129425,
+            "reliability": 0.5808380246162415,
+            "deviation": 0.0,
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.5266086459159851,
+            "Proba_if_Untreated": 0.5110001564025879
+          },
+          "effect_top": [
+            [
+              "MonthlyCost_max",
+              0.0,
+              -1.0210417676717043,
+              -1.034948706626892,
+              -0.013906938955187798
+            ],
+            [
+              "ApplicationType",
+              "New credit",
+              0.4435858093202114,
+              0.4923401474952698,
+              0.048754338175058365
+            ],
+            [
+              "CreditScore_max",
+              0.0,
+              0.43668973445892334,
+              1.279491662979126,
+              0.8428019285202026
+            ],
+            [
+              "FirstWithdrawalAmount_max",
+              0.0,
+              0.2134278011508286,
+              -0.006194870453327894,
+              -0.2196226716041565
+            ],
+            [
+              "NumberOfOffers",
+              1.0,
+              -0.15323828160762787,
+              0.0,
+              0.15323828160762787
+            ],
+            [
+              "event_nr_mean",
+              2.0,
+              0.13718340545892715,
+              -0.04153894633054733,
+              -0.1787223517894745
+            ]
+          ],
+          "effect_share_top6": 0.7749796613196922,
+          "timing_phi": {
+            "relative_position": -0.0649886429309845,
+            "reliability": -0.8516125679016113,
+            "deviation": 1.5260206460952759,
+            "available_resources": 0.3303025960922241,
+            "Proba_if_Treated": -0.7806991934776306,
+            "Proba_if_Untreated": 2.1293182373046875
           }
         }
       },
@@ -542,7 +542,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.png"
       ],
-      "seconds": 25.328025343000036
+      "seconds": 29.020906838000883
     },
     {
       "log": "SimBank",
@@ -806,7 +806,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.png"
       ],
-      "seconds": 30.653761006999957
+      "seconds": 35.040315184000065
     }
   ]
 }

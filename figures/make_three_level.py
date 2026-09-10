@@ -83,7 +83,9 @@ for ax, items, title, sub, xlabel, is_state in panels:
 # --- one sentence -------------------------------------------------------------
 acts = rc["dq"] > 0
 risk_s = "the loan looks likely to fail" if rc["r"] >= 0.5 else "the loan looks likely to go through"
-effect_s = "a call is expected to help" if cate > mean_cate else "a call is not expected to help much"
+# the reward's own rule: the call pays where the thresholded outcome flips (p_T > 0.5 and p_U <= 0.5)
+positive_rule = ec["pT"] > 0.5 and ec["pU"] <= 0.5
+effect_s = "a call is expected to change the outcome" if positive_rule else ("a call is expected to help" if cate > mean_cate else "a call is not expected to help much")
 native = [(k, rc["timing_phi"][k]) for k in ("available_resources", "relative_position")]
 top_native = max(native, key=lambda kv: abs(kv[1]))
 reason = label(top_native[0], rc["state"][top_native[0]])
