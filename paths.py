@@ -37,7 +37,7 @@ def retrained_csv(log: str):
 def bpic_csv(log: str, variant: str = "cate_retrained"):
     """The RL CSV a BPIC policy variant reads: the coherent-pipeline CSV for
     ``cate_retrained``, Shoush & Dumas's shipped CSV for every other variant."""
-    if variant == "cate_retrained":
+    if variant in ("cate_retrained", "risk_retrained"):
         return retrained_csv(log)
     return {"BPIC2012": BPIC2012_CSV, "BPIC2017": BPIC2017_CSV}[log]
 

@@ -114,11 +114,14 @@ if __name__ == "__main__":
     results["bpic2017"] = bpic_gain("BPIC2017", paths.bpic_csv("BPIC2017", args.variant), paths.variant_model("BPIC2017", args.variant),
                                     pools.treatment_col("BPIC2017", args.variant), sample=30000, variant=args.variant)
     n_match = results["bpic2012"]["n"]
-    results["simbank"] = simbank_gain(args.simbank_rows, sample=n_match, variant=args.variant)
-    results["simbank"]["rows"] = args.simbank_rows
-    other = "all" if args.simbank_rows == "decision" else "decision"
-    results[f"simbank_{other}_rows"] = simbank_gain(other, sample=n_match, variant=args.variant)
-    results[f"simbank_{other}_rows"]["rows"] = other
+    if paths.variant_model("SimBank", args.variant).exists():
+        results["simbank"] = simbank_gain(args.simbank_rows, sample=n_match, variant=args.variant)
+        results["simbank"]["rows"] = args.simbank_rows
+        other = "all" if args.simbank_rows == "decision" else "decision"
+        results[f"simbank_{other}_rows"] = simbank_gain(other, sample=n_match, variant=args.variant)
+        results[f"simbank_{other}_rows"]["rows"] = other
+    else:
+        print(f"\nSimBank: no checkpoint for variant {args.variant}, skipped")
     out_path = paths.GAIN_JSON if args.variant == pools.DEFAULT_VARIANT else paths.REPO / f"gain_table_results_{args.variant}.json"
 
     out_path.write_text(json.dumps(results, indent=2))

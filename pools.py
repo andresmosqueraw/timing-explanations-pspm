@@ -87,13 +87,19 @@ VARIANTS: dict[str, list[str]] = {
     # (build_retrained_state.py, paths.retrained_csv), so the two lower
     # levels explain exactly the numbers the policy reads. The paper's policy.
     "cate_retrained": ["Proba_if_Treated", "Proba_if_Untreated"],
+    # the same recipe on the coherent state *without* the effect features:
+    # the released four-feature state, so the risk coordinates are the only
+    # lower-level outputs the policy reads (the composition with a live risk
+    # channel). Always-wait is optimal for it, so it only has a wait side.
+    "risk_retrained": [],
 }
+COHERENT_VARIANTS = ("cate_retrained", "risk_retrained")
 # Column holding the historically recorded action in each BPIC CSV
 TREATMENT_COL = {"released": {"BPIC2012": "Treatment", "BPIC2017": "treatment"}}
 
 
 def treatment_col(log: str, variant: str) -> str:
-    return "treatment" if variant == "cate_retrained" else TREATMENT_COL["released"][log]
+    return "treatment" if variant in COHERENT_VARIANTS else TREATMENT_COL["released"][log]
 
 
 # The policy the paper explains: the "cate" variant on all three logs. On

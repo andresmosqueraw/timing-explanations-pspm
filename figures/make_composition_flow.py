@@ -56,6 +56,8 @@ def main(argv=None):
     ap.add_argument("--log", default="BPIC2017")
     ap.add_argument("--card", default="paper_card_act")
     ap.add_argument("--reading", default="rebuilt", choices=["shipped", "rebuilt"])
+    ap.add_argument("--source", default="propagated", choices=["propagated", "anchored"],
+                    help="propagated = Eq. 1 (aggregate operator); anchored = the per-decision variant (direct ranking of F, propagated channel split)")
     ap.add_argument("--stem", default="fig6_composition_flow")
     a = ap.parse_args(argv)
 
@@ -63,7 +65,7 @@ def main(argv=None):
     card = res["readings"][a.reading]["cards"][a.card]
     acts = card["action"] == "intervene"
     tphi = card["timing_phi"]
-    flows = card["flows"]
+    flows = card["anchored_flows"] if a.source == "anchored" else card["flows"]
 
     # --- flows attribute -> middle node, and middle node -> margin ------------
     left = [(f["input"], f.get("value"), {"risk": f["risk"], "effect_T": f["effect_T"], "effect_U": f["effect_U"]}) for f in flows]
@@ -73,6 +75,17 @@ def main(argv=None):
                "relative_position": abs(tphi["relative_position"]), "available_resources": abs(tphi["available_resources"])}
     # node heights: middle = total |flow| through the node (attribute side for propagated ones)
     mid_h = {k: sum(abs(c[k]) for _, _, c in left) if k in ("risk", "effect_T", "effect_U") else mid_abs[k] for k, _, _ in MID}
+    if a.source == "anchored":
+        # the anchored card lives on the direct attribution of F: the channel sums
+        # over *all* attributes (the flows include the aggregated rest) replace the
+        # timing coordinates' phi, and the natives come from the direct attribution
+        for k in ("risk", "effect_T", "effect_U"):
+            tot = sum(f[k] for f in flows)
+            mid_in[k], mid_abs[k] = tot, abs(tot)
+        direct = dict(card["direct_top"])
+        for k in ("relative_position", "available_resources"):
+            v = direct.get(k, 0.0)
+            mid_in[k], mid_abs[k], mid_h[k] = v, abs(v), abs(v)
     left_h = [sum(abs(v) for v in c.values()) for _, _, c in left]
     total = sum(mid_h.values())
     scale = 1.0 / total if total else 1.0

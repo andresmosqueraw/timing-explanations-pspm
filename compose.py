@@ -85,16 +85,20 @@ def risk_features_from_r(log: str, r: np.ndarray) -> tuple[np.ndarray, np.ndarra
     return reliability, deviation
 
 
-def build_state(log: str, rel: np.ndarray, r: np.ndarray, res: np.ndarray, pT: np.ndarray, pU: np.ndarray) -> np.ndarray:
+def build_state(log: str, rel: np.ndarray, r: np.ndarray, res: np.ndarray, pT: np.ndarray, pU: np.ndarray,
+                feats: list[str] = STATE_FEATS) -> np.ndarray:
+    """The state in the order of ``feats`` (the six-feature state by default;
+    the released four-feature state when the effect features are absent)."""
     reliability, deviation = risk_features_from_r(log, r)
-    return np.stack([np.asarray(rel, float), reliability, deviation, np.asarray(res, float),
-                     np.asarray(pT, float), np.asarray(pU, float)], axis=1).astype(np.float32)
+    cols = {"relative_position": np.asarray(rel, float), "reliability": reliability, "deviation": deviation,
+            "available_resources": np.asarray(res, float), "Proba_if_Treated": np.asarray(pT, float), "Proba_if_Untreated": np.asarray(pU, float)}
+    return np.stack([cols[f] for f in feats], axis=1).astype(np.float32)
 
 
-def rebuild_state(log: str, states: np.ndarray, r: np.ndarray, pT: np.ndarray, pU: np.ndarray) -> np.ndarray:
-    """The shipped state with its four lower-level coordinates replaced by the
+def rebuild_state(log: str, states: np.ndarray, r: np.ndarray, pT: np.ndarray, pU: np.ndarray, feats: list[str] = STATE_FEATS) -> np.ndarray:
+    """The shipped state with its lower-level coordinates replaced by the
     retrained models' outputs on the same prefix; the natives are kept."""
-    return build_state(log, states[:, 0], r, states[:, 3], pT, pU)
+    return build_state(log, states[:, feats.index("relative_position")], r, states[:, feats.index("available_resources")], pT, pU, feats)
 
 
 def margin_of(policy, states: np.ndarray) -> np.ndarray:
@@ -174,6 +178,25 @@ def propagate(phi_timing: np.ndarray, lower: dict[str, np.ndarray], feats: list[
     return {"channels": chan, "native": native, "composed": composed, "fallbacks": fallbacks}
 
 
+def anchor_to_direct(phi_direct: np.ndarray, prop: dict) -> dict:
+    """The per-decision variant of the composition: the attribution over the
+    D + 2 inputs is the *direct* one of the composed function F (so its
+    ranking is faithful to F by construction), and the propagation only says
+    through which channel each unit arrives -- phi_direct_j is split among the
+    channels in proportion to the propagated channel masses |ch_c[j]| (by
+    |phi| among the risk/effect coordinates when the propagated channels carry
+    nothing on that input). Returns the same structure as ``propagate``."""
+    D = prop["channels"]["risk"].shape[1]
+    masses = {c: np.abs(prop["channels"][c]) for c in ("risk", "effect_T", "effect_U")}
+    tot = sum(masses.values())
+    chan = {}
+    for c, m in masses.items():
+        w = np.where(tot > 0, m / np.where(tot > 0, tot, 1.0), 1.0 / 3)
+        chan[c] = phi_direct[:, :D] * w
+    native = phi_direct[:, D:]
+    return {"channels": chan, "native": native, "composed": phi_direct.copy(), "fallbacks": {}}
+
+
 def completeness_gap(phi_timing: np.ndarray, composed: np.ndarray) -> float:
     return float(np.abs(phi_timing.sum(axis=1) - composed.sum(axis=1)).max())
 
@@ -193,8 +216,9 @@ class EndToEndBox:
     state scores each state on the side the policy chose.
     """
 
-    def __init__(self, log: str, risk_box, effect_box, policy):
+    def __init__(self, log: str, risk_box, effect_box, policy, feats: list[str] = STATE_FEATS):
         self.log = log
+        self.feats = list(feats)
         self.rbox, self.ebox, self.policy = risk_box, effect_box, policy
         if list(risk_box.columns) != list(effect_box.raw_columns):
             raise ValueError("risk and effect models must share the prefix vocabulary")
@@ -204,8 +228,8 @@ class EndToEndBox:
 
     def inputs(self, X: pd.DataFrame, states: np.ndarray) -> pd.DataFrame:
         Z = X[self.raw_columns].copy().reset_index(drop=True)
-        Z["relative_position"] = states[:, 0].astype(float)
-        Z["available_resources"] = states[:, 3].astype(float)
+        Z["relative_position"] = states[:, self.feats.index("relative_position")].astype(float)
+        Z["available_resources"] = states[:, self.feats.index("available_resources")].astype(float)
         return Z
 
     def reference(self, Z: pd.DataFrame) -> pd.Series:
@@ -219,7 +243,7 @@ class EndToEndBox:
 
     def state(self, Z: pd.DataFrame) -> np.ndarray:
         r, pT, pU = self.lower(Z)
-        return build_state(self.log, Z["relative_position"].to_numpy(float), r, Z["available_resources"].to_numpy(float), pT, pU)
+        return build_state(self.log, Z["relative_position"].to_numpy(float), r, Z["available_resources"].to_numpy(float), pT, pU, self.feats)
 
     def f(self, Z: pd.DataFrame, sign: np.ndarray | float = 1.0) -> np.ndarray:
         return np.asarray(sign, float) * margin_of(self.policy, self.state(Z))
@@ -234,20 +258,29 @@ class EndToEndBox:
         return out
 
 
-def shapley_sampling(box: EndToEndBox, Z: pd.DataFrame, ref: pd.Series, sign: np.ndarray, n_perm: int = 20, seed: int = 123) -> np.ndarray:
-    """Shapley values of f(Z, sign) w.r.t. the single baseline ``ref`` by
-    permutation sampling (Castro et al.); every permutation is shared across
-    the rows and evaluated as one batch of D + 1 frames, and telescopes to
-    f(Z) - f(ref) exactly, so the mean over permutations does too."""
+def shapley_sampling(box: EndToEndBox, Z: pd.DataFrame, ref: pd.Series, sign: np.ndarray, n_perm: int = 20, seed: int = 123,
+                     background: pd.DataFrame | None = None) -> np.ndarray:
+    """Shapley values of f(Z, sign) by permutation sampling (Castro et al.).
+
+    With ``background`` (rows in ``box.columns``), the interventional
+    (pool-referenced) value: every permutation draws one background row per
+    state and masks to it, so the mean over permutations telescopes to
+    f(Z) - E_background f, the same reference the effect arms' TreeSHAP and,
+    up to the Jensen gap, the timing level's mean state use. Without it, the
+    single baseline ``ref`` (f(Z) - f(ref) exactly). Every permutation is
+    shared across the rows and evaluated as one batch of D + 1 frames."""
     rng = np.random.default_rng(seed)
     n, D = len(Z), len(box.columns)
     phi = np.zeros((n, D))
     for _ in range(n_perm):
         perm = rng.permutation(D)
+        if background is not None:
+            B = background.iloc[rng.integers(0, len(background), size=n)].reset_index(drop=True)
         frames, cur = [Z.copy()], Z.copy()
         for j in perm:
             cur = cur.copy()
-            cur[box.columns[j]] = ref[box.columns[j]]
+            col = box.columns[j]
+            cur[col] = B[col].to_numpy() if background is not None else ref[col]
             frames.append(cur)
         vals = box.f(pd.concat(frames, ignore_index=True), np.tile(sign, D + 1)).reshape(D + 1, n)
         for step, j in enumerate(perm):

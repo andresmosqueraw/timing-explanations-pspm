@@ -101,6 +101,9 @@ if __name__ == "__main__":
     args = ap.parse_args()
     results = []
     for name in args.logs:
+        if not paths.variant_model(name, args.variant).exists():
+            print(f"\n{name}: no checkpoint for variant {args.variant}, skipped")
+            continue
         states, _rows, feats = pools.evaluation_pool(name, args.variant)
         results.append(run_one(name, paths.variant_model(name, args.variant), states, feats, min_states=args.min_states))
     out_path = paths.Path(args.out) if args.out else (paths.FIDELITY_JSON if args.variant == pools.DEFAULT_VARIANT
