@@ -17,3 +17,4 @@ zenodo_upload/
 catboost_info/
 *.log
 !models/**/*.log
+models/variants/sweep/
