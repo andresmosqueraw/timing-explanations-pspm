@@ -39,15 +39,16 @@ the paper's. `--variant released` evaluates the earlier four-feature design
 retrained estimator's features (`simbank_resources/add_effect_features.py`).
 
 Per decision point (`gain_table_results.json`) the paper's policy earns
-40.3 / 39.9 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
+42.3 / 39.9 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
 -63.3 for always waiting, -49.5 / -49.8 / 16.6 for always intervening and
 -27.6 / -32.0 / -61.4 for the recorded action (oracle 58.3 / 54.4 / 46.5). It
-intervenes on 21.5 % / 15.9 % / 73.2 % of the decision points (precision
-0.66 / 0.73 / 1.00, recall 0.74 / 0.69 / 1.00 against the positive-effect
-rows). On BPIC2017 the recipe needs 600k steps: at 300k it over-intervened
-(33.6 %, precision 0.38, gain 21.4), reading `Proba_if_Treated` far more than
-`Proba_if_Untreated`; lower entropy coefficients collapse to never-intervene
-(`models/variants/ppo_bpic2017_cate_retrained_manifest.json`).
+intervenes on 11.3 % / 15.9 % / 73.2 % of the decision points (precision
+0.94 / 0.73 / 1.00, recall 0.55 / 0.69 / 1.00 against the positive-effect
+rows). Both BPIC checkpoints are trained for 600k steps: at 300k the
+BPIC2017 agent over-intervened (33.6 %, precision 0.38, gain 21.4), reading
+`Proba_if_Treated` far more than `Proba_if_Untreated`, and lower entropy
+coefficients collapse to never-intervene (`models/variants/*_manifest.json`,
+`*_300k` checkpoints archived).
 
 ## Layout
 
