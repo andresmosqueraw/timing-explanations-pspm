@@ -419,6 +419,11 @@ def deletion_test(
     random averages n_random draws. Displacement is |f(x_masked) - f(x)|
     per state; the gap is guided-minus-random with the SE of the paired
     per-state differences.
+
+    The deletion/perturbation protocol of Samek et al., "Evaluating the
+    Visualization of What a Deep Neural Network Has Learned" (IEEE TNNLS
+    2017): replace the inputs a ranking names with a reference value and
+    check the output moves more than under a random or reversed ranking.
     """
     rng = np.random.default_rng(seed)
     dev = _device(head)

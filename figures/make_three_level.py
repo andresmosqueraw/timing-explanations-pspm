@@ -32,7 +32,7 @@ risk = {x["log"]: x for x in json.loads(paths.RISK_JSON.read_text())["results"]}
 eff = {x["log"]: x for x in json.loads(paths.EFFECT_JSON.read_text())["results"]}[LOG]
 rc, ec = risk["cards"][CARD], eff["cards"][CARD]
 mean_cate = eff["effect"]["mean_cate"]
-cate = ec["pT"] - ec["pU"]
+cate = ec["pU"] - ec["pT"]  # drop in P(undesired) a further offer buys
 
 POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#1f2937", "#6b7280", "#d1d5db"
 plt.rcParams.update({"font.family": "DejaVu Sans", "axes.edgecolor": LINE, "xtick.color": MUTED, "ytick.color": INK})
@@ -47,7 +47,7 @@ eff_items = [(a, v, c) for a, v, c, _, _ in ec["effect_top"]]
 tk = sorted(rc["timing_phi"], key=lambda k: -abs(rc["timing_phi"][k]))
 tim_items = [(k, rc["state"][k], rc["timing_phi"][k]) for k in tk]
 
-fig = plt.figure(figsize=(8.8, 4.2))
+fig = plt.figure(figsize=(12.5, 4.2))
 # three framed panels: [box] title / subtitle / bar chart (tick labels inside the frame)
 COL_W, GAP, X0 = 0.318, 0.013, 0.012
 BOX_Y0, BOX_Y1 = 0.165, 0.985
@@ -58,34 +58,34 @@ for c in cols:
                                               transform=fig.transFigure, fc="white", ec="black", lw=0.8, zorder=-2))
 
 panels = [
-    (axes[0], risk_items, "1  Why is this case at risk?", f"{rc['r']:.0%} chance the loan is not accepted", r"$\phi^{r}$: toward a bad outcome $\rightarrow$", False),
-    (axes[1], eff_items, "2  Why would calling help?", f"estimated effect of the call {cate:.2f}, usual {mean_cate:.2f}", r"$\phi^{\mathrm{CATE}}$: toward a larger effect $\rightarrow$", False),
-    (axes[2], tim_items, "3  Why call now, not later?", f"margin for acting $\\Delta Q$ = {rc['dq']:.2f}", r"$\phi^{\Delta Q}$: toward acting now $\rightarrow$", True),
+    (axes[0], risk_items, "1  Why is this case at risk?", f"{rc['r']:.0%} chance the loan is not accepted", "risk attribution: toward a bad outcome →", False),
+    (axes[1], eff_items, "2  Why would another offer help?", f"estimated effect of the offer {cate:.2f}, usual {mean_cate:.2f}", "effect attribution: toward a larger effect →", False),
+    (axes[2], tim_items, "3  Why make it now, not later?", f"margin for acting = {rc['dq']:.2f}", "timing attribution: toward acting now →", True),
 ]
 for ax, items, title, sub, xlabel, is_state in panels:
     names = [a for a, _, _ in items]
     phi = np.array([c for _, _, c in items])
     ax.barh(range(len(items)), phi, color=[POS if v > 0 else NEG for v in phi], height=0.62)
     labs = [label(a, v) for a, v, _ in items]
-    ax.set_yticks(range(len(items)), labs, fontsize=7.1)
+    ax.set_yticks(range(len(items)), labs, fontsize=9.2)
     ax.set_facecolor("white")
     ax.invert_yaxis(); ax.axvline(0, color=INK, lw=0.8)
-    ax.tick_params(axis="x", labelsize=7); ax.tick_params(axis="y", length=0)
+    ax.tick_params(axis="x", labelsize=9.1); ax.tick_params(axis="y", length=0)
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
     c = cols[axes.index(ax)]
-    fig.text(c + COL_W / 2, 0.195, xlabel, fontsize=7.6, color=INK, ha="center", va="center")  # centred in the panel
-    fig.text(c + 0.014, 0.935, title, fontsize=9.6, fontweight="bold", color=INK, ha="left", va="center")
-    fig.text(c + 0.014, 0.885, sub, fontsize=7.5, color=MUTED, ha="left", va="center")
+    fig.text(c + COL_W / 2, 0.195, xlabel, fontsize=9.9, color=INK, ha="center", va="center")  # centred in the panel
+    fig.text(c + 0.014, 0.935, title, fontsize=12.5, fontweight="bold", color=INK, ha="left", va="center")
+    fig.text(c + 0.014, 0.885, sub, fontsize=9.8, color=MUTED, ha="left", va="center")
 # grey the technical line of each label: draw plain reading in ink, technical in muted via two-line tick labels is
 # not separately colourable, so keep both in ink but different size through the newline (matplotlib limitation).
 
 # --- one sentence -------------------------------------------------------------
 acts = rc["dq"] > 0
 risk_s = "the loan looks likely to fail" if rc["r"] >= 0.5 else "the loan looks likely to go through"
-# the reward's own rule: the call pays where the thresholded outcome flips (p_T > 0.5 and p_U <= 0.5)
-positive_rule = ec["pT"] > 0.5 and ec["pU"] <= 0.5
-effect_s = "a call is expected to change the outcome" if positive_rule else ("a call is expected to help" if cate > mean_cate else "a call is not expected to help much")
+# the reward's own rule: the offer pays where it flips the outcome from bad to good (p_T < 0.5 and p_U >= 0.5)
+positive_rule = ec["pT"] < 0.5 and ec["pU"] >= 0.5
+effect_s = "another offer is expected to turn the outcome around" if positive_rule else ("another offer is expected to help" if cate > mean_cate else "another offer is not expected to help much")
 native = [(k, rc["timing_phi"][k]) for k in ("available_resources", "relative_position")]
 top_native = max(native, key=lambda kv: abs(kv[1]))
 reason = label(top_native[0], rc["state"][top_native[0]])
@@ -97,7 +97,7 @@ else:
 sentence = f"In plain terms:  {risk_s}, {effect_s}, {timing_s}"
 fig.patches.append(patches.FancyBboxPatch((X0, 0.03), 3 * COL_W + 2 * GAP, 0.085, boxstyle="square,pad=0", transform=fig.transFigure,
                                           fc="#fffbeb", ec="#f59e0b", lw=0.9, zorder=3))
-fig.text(X0 + 0.015, 0.0725, sentence, fontsize=8.6, color=INK, va="center", zorder=4)
+fig.text(X0 + 0.015, 0.0725, sentence, fontsize=11.2, color=INK, va="center", zorder=4)
 
 for stem in ("fig5_three_level_card",):
     fig.savefig(OUT / f"{stem}.pdf")

@@ -15,7 +15,8 @@ predictor uses:
     untreated    p_U(x) = P(Y = 1 | T=0, x)  n_estimators=100, learning_rate=0.1,
                                              random_state=0), each fitted on its
                                              arm's rows with weights w
-    CATE(x) = p_T(x) - p_U(x);  the reward's y1 = 1[p_T > 0.5], y0 = 1[p_U > 0.5]
+    CATE(x) = p_U(x) - p_T(x)   (the drop in P(undesired) the treatment buys);
+    the reward's y1 = 1[p_T < 0.5], y0 = 1[p_U < 0.5]  (compose.desired_outcome)
 
 with Y = 1 the *deviant* (undesired) outcome and T the case's recorded
 treatment. This module retrains that estimator per BPIC log with the same
@@ -45,10 +46,16 @@ import time
 import numpy as np
 import pandas as pd
 
+import compose as cp
 import paths
 import risk_model as rm
 
-EFFECT_LOGS = ("BPIC2012", "BPIC2017", "SimBank")
+EFFECT_LOGS = ("BPIC2012", "BPIC2017", "SimBank", "Sepsis")
+# Sepsis: t is the dynamic "IV Antibiotics already given" flag built in
+# risk_model.load_sepsis_events, so effect_rows below (default branch, no
+# SimBank-style restriction) fits the T-learner on every prefix of every
+# case, both arms present throughout -- unlike SimBank there is no single
+# fixed decision event to restrict to.
 # SimBank: the log's "normal" policy contacts HQ, when it does, always at
 # event 5 (after the first customer contact) and skips at event 9 or 10, so
 # the only prefixes on which both arms exist are the first four events; the
@@ -156,7 +163,7 @@ def train(log: str, seed: int = 0, max_train_rows: int | None = None) -> dict:
         "treated_share_train": float(ttr.mean()), "propensity_best": {k: (v if isinstance(v, (int, float, str)) else str(v)) for k, v in prop.get_params().items() if k in ("C", "penalty")},
         "auc_treated_arm_on_treated_test": float(roc_auc_score(yte[tte == 1], pT[tte == 1])) if len(set(yte[tte == 1])) > 1 else None,
         "auc_untreated_arm_on_untreated_test": float(roc_auc_score(yte[tte == 0], pU[tte == 0])) if len(set(yte[tte == 0])) > 1 else None,
-        "mean_pT": float(pT.mean()), "mean_pU": float(pU.mean()), "share_cate_positive_rule": float(((pT > 0.5) & (pU <= 0.5)).mean()),
+        "mean_pT": float(pT.mean()), "mean_pU": float(pU.mean()), "share_cate_positive_rule": float(cp.positive_effect_rule(pT, pU).mean()),
         "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a "
                     "LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
         "elapsed_seconds": time.time() - t0, "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -174,7 +181,7 @@ def train(log: str, seed: int = 0, max_train_rows: int | None = None) -> dict:
             "rl_csv_overlap_rows": int(len(j)),
             "corr_pT_with_shipped": float(np.corrcoef(j.pT, j.Proba_if_Treated)[0, 1]),
             "corr_pU_with_shipped": float(np.corrcoef(j.pU, j.Proba_if_Untreated)[0, 1]),
-            "agreement_cate_sign_rule": float((((j.pT > 0.5) & (j.pU <= 0.5)) == ((j.Proba_if_Treated > 0.5) & (j.Proba_if_Untreated <= 0.5))).mean()),
+            "agreement_cate_sign_rule": float((cp.positive_effect_rule(j.pT, j.pU) == cp.positive_effect_rule(j.Proba_if_Treated, j.Proba_if_Untreated)).mean()),
         })
     mp = model_paths(log)
     mp["dir"].mkdir(parents=True, exist_ok=True)

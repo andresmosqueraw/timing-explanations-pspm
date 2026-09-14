@@ -1,0 +1,451 @@
+[
+  {
+    "log": "BPIC2012",
+    "checks": {
+      "decision_points_precede_outcome_and_treatment": true,
+      "later_prefixes_excluded": true,
+      "encoded_prefixes_are_decision_points": true,
+      "no_forbidden_model_inputs": true,
+      "static_attributes_known_so_far": true,
+      "no_near_certain_condition": true,
+      "no_single_feature_above_auc_flag": true,
+      "state_has_no_case_length": true,
+      "state_rows_are_test_decision_points": true,
+      "state_horizon_from_training": true
+    },
+    "decision_points": {
+      "events": 115125,
+      "decision_points": 84647
+    },
+    "model_inputs": [
+      "AMOUNT_REQ",
+      "Activity",
+      "Resource",
+      "event",
+      "event_nr",
+      "hour",
+      "month",
+      "open_cases",
+      "timesincecasestart",
+      "timesincelastevent",
+      "timesincemidnight",
+      "weekday"
+    ],
+    "scan": {
+      "base_rate": 0.49492920015308073,
+      "n_conditions": 76,
+      "near_certain": [],
+      "most_extreme": [
+        [
+          "Resource == '11200.0' seen",
+          219,
+          0.821917808219178
+        ],
+        [
+          "Resource == '10972.0' seen",
+          668,
+          0.17365269461077845
+        ],
+        [
+          "Resource == '10629.0' seen",
+          758,
+          0.21108179419525067
+        ],
+        [
+          "Resource == '10914.0' seen",
+          200,
+          0.76
+        ],
+        [
+          "Resource == '11289.0' seen",
+          496,
+          0.2318548387096774
+        ],
+        [
+          "Resource == '10809.0' seen",
+          735,
+          0.23673469387755103
+        ],
+        [
+          "Activity == 'W_Valideren aanvraag' seen",
+          3139,
+          0.2711054475947754
+        ],
+        [
+          "Resource == '10899.0' seen",
+          1590,
+          0.27169811320754716
+        ],
+        [
+          "Resource == '11049.0' seen",
+          1243,
+          0.2743362831858407
+        ],
+        [
+          "Activity == 'O_SENT_BACK' seen",
+          3729,
+          0.2748726200053634
+        ]
+      ]
+    },
+    "single_feature_auc_top10": [
+      [
+        "Activity",
+        0.5821521281449313
+      ],
+      [
+        "open_cases_mean",
+        0.5454278003067715
+      ],
+      [
+        "open_cases_min",
+        0.5431931702220429
+      ],
+      [
+        "Resource",
+        0.538751223210173
+      ],
+      [
+        "AMOUNT_REQ",
+        0.5374915222558795
+      ],
+      [
+        "open_cases_max",
+        0.5355839268379792
+      ],
+      [
+        "event_nr_max",
+        0.5312153687745913
+      ],
+      [
+        "event_nr_std",
+        0.5311692975610646
+      ],
+      [
+        "event_nr_mean",
+        0.5311492120682721
+      ],
+      [
+        "event_nr_sum",
+        0.5311492120682721
+      ]
+    ],
+    "risk_model_test_auc": 0.6273505473635511,
+    "propensity": {
+      "treated_share_test": 0.2901358591657099,
+      "auc": 0.640157942570954,
+      "share_in_0.05_0.95": 0.8407481821660926,
+      "min": 0.0001221662394077837,
+      "max": 0.8490460166916577,
+      "cases_in_overlap": 1172,
+      "cases": 1172
+    },
+    "warnings": [],
+    "pass": true
+  },
+  {
+    "log": "BPIC2017",
+    "checks": {
+      "decision_points_precede_outcome_and_treatment": true,
+      "later_prefixes_excluded": true,
+      "encoded_prefixes_are_decision_points": true,
+      "no_forbidden_model_inputs": true,
+      "static_attributes_known_so_far": true,
+      "no_near_certain_condition": true,
+      "no_single_feature_above_auc_flag": true,
+      "state_has_no_case_length": true,
+      "state_rows_are_test_decision_points": true,
+      "state_horizon_from_training": true
+    },
+    "decision_points": {
+      "events": 1198319,
+      "decision_points": 898431
+    },
+    "model_inputs": [
+      "Action",
+      "Activity",
+      "ApplicationType",
+      "EventOrigin",
+      "FirstWithdrawalAmount",
+      "LoanGoal",
+      "MonthlyCost",
+      "NumberOfTerms",
+      "OfferedAmount",
+      "RequestedAmount",
+      "event_nr",
+      "hour",
+      "lifecycle:transition",
+      "month",
+      "open_cases",
+      "org:resource",
+      "timesincecasestart",
+      "timesincelastevent",
+      "timesincemidnight",
+      "weekday"
+    ],
+    "scan": {
+      "base_rate": 0.36261444488891487,
+      "n_conditions": 180,
+      "near_certain": [],
+      "most_extreme": [
+        [
+          "org:resource == 'User_86' seen",
+          347,
+          0.06051873198847262
+        ],
+        [
+          "org:resource == 'User_101' seen",
+          1037,
+          0.06460945033751206
+        ],
+        [
+          "org:resource == 'User_100' seen",
+          8219,
+          0.10062051344445797
+        ],
+        [
+          "org:resource == 'User_136' seen",
+          545,
+          0.10642201834862386
+        ],
+        [
+          "org:resource == 'User_90' seen",
+          3194,
+          0.12366938008766437
+        ],
+        [
+          "org:resource == 'User_137' seen",
+          1217,
+          0.1265406737880033
+        ],
+        [
+          "org:resource == 'User_93' seen",
+          5328,
+          0.1371996996996997
+        ],
+        [
+          "org:resource == 'User_109' seen",
+          4382,
+          0.14103149246919214
+        ],
+        [
+          "org:resource == 'User_31' seen",
+          2010,
+          0.14776119402985075
+        ],
+        [
+          "org:resource == 'User_29' seen",
+          4439,
+          0.14913268754223924
+        ]
+      ]
+    },
+    "single_feature_auc_top10": [
+      [
+        "Activity",
+        0.6580755463896157
+      ],
+      [
+        "OfferedAmount_sum",
+        0.6413731336380561
+      ],
+      [
+        "NumberOfTerms_sum",
+        0.6411771859816193
+      ],
+      [
+        "MonthlyCost_sum",
+        0.6361563369117955
+      ],
+      [
+        "NumberOfTerms_mean",
+        0.6319555191856219
+      ],
+      [
+        "OfferedAmount_mean",
+        0.6303156489235862
+      ],
+      [
+        "MonthlyCost_mean",
+        0.6237153451811583
+      ],
+      [
+        "event_nr_mean",
+        0.6228192169656672
+      ],
+      [
+        "event_nr_max",
+        0.6228192169656672
+      ],
+      [
+        "event_nr_sum",
+        0.6228192169656672
+      ]
+    ],
+    "risk_model_test_auc": 0.693352443902295,
+    "propensity": {
+      "treated_share_test": 0.1766080714828282,
+      "auc": 0.6407270865907091,
+      "share_in_0.05_0.95": 0.9538714621528449,
+      "min": 0.00020149628080057624,
+      "max": 0.877365940994567,
+      "cases_in_overlap": 7853,
+      "cases": 7853
+    },
+    "warnings": [],
+    "pass": true
+  },
+  {
+    "log": "Sepsis",
+    "checks": {
+      "decision_points_precede_outcome_and_treatment": true,
+      "later_prefixes_excluded": true,
+      "encoded_prefixes_are_decision_points": true,
+      "no_forbidden_model_inputs": true,
+      "static_attributes_known_so_far": true,
+      "no_near_certain_condition": true,
+      "no_single_feature_above_auc_flag": true,
+      "state_has_no_case_length": true,
+      "state_rows_are_test_decision_points": true,
+      "state_horizon_from_training": true
+    },
+    "decision_points": {
+      "events": 15214,
+      "decision_points": 7088
+    },
+    "model_inputs": [
+      "Age",
+      "CRP",
+      "DiagnosticBlood",
+      "DisfuncOrg",
+      "Hypotensie",
+      "Hypoxie",
+      "InfectionSuspected",
+      "Infusion",
+      "LacticAcid",
+      "Leucocytes",
+      "Oligurie",
+      "SIRSCriteria2OrMore",
+      "activity",
+      "event_nr",
+      "hour",
+      "org:group",
+      "timesincecasestart",
+      "timesincelastevent",
+      "weekday"
+    ],
+    "scan": {
+      "base_rate": 0.27654867256637167,
+      "n_conditions": 46,
+      "near_certain": [],
+      "most_extreme": [
+        [
+          "activity == 'Admission NC' seen",
+          207,
+          0.42028985507246375
+        ],
+        [
+          "weekday never != 0",
+          243,
+          0.19753086419753085
+        ],
+        [
+          "LacticAcid seen != 0",
+          589,
+          0.34295415959252973
+        ],
+        [
+          "activity == 'LacticAcid' seen",
+          589,
+          0.34295415959252973
+        ],
+        [
+          "timesincecasestart never != 0",
+          271,
+          0.23247232472324722
+        ],
+        [
+          "Leucocytes seen != 0",
+          622,
+          0.3183279742765273
+        ],
+        [
+          "activity == 'Leucocytes' seen",
+          622,
+          0.3183279742765273
+        ],
+        [
+          "timesincelastevent never != 0",
+          285,
+          0.23508771929824562
+        ],
+        [
+          "InfectionSuspected == 'False' seen",
+          457,
+          0.31072210065645517
+        ],
+        [
+          "LacticAcid never != 0",
+          1219,
+          0.24446267432321575
+        ]
+      ]
+    },
+    "single_feature_auc_top10": [
+      [
+        "event_nr_std",
+        0.5775313455657494
+      ],
+      [
+        "event_nr_max",
+        0.5750282874617737
+      ],
+      [
+        "event_nr_mean",
+        0.573467125382263
+      ],
+      [
+        "event_nr_sum",
+        0.5733914373088684
+      ],
+      [
+        "timesincelastevent_max",
+        0.568184250764526
+      ],
+      [
+        "timesincelastevent_std",
+        0.567072629969419
+      ],
+      [
+        "hour_sum",
+        0.5661337920489297
+      ],
+      [
+        "timesincecasestart_sum",
+        0.5652469418960245
+      ],
+      [
+        "timesincecasestart_mean",
+        0.5648906727828746
+      ],
+      [
+        "timesincecasestart_std",
+        0.5616689602446483
+      ]
+    ],
+    "risk_model_test_auc": 0.582461009174312,
+    "propensity": {
+      "treated_share_test": 0.7029867256637168,
+      "auc": 0.9956851523822501,
+      "share_in_0.05_0.95": 0.0868362831858407,
+      "min": 4.845772364076232e-122,
+      "max": 0.9986638282593208,
+      "cases_in_overlap": 36,
+      "cases": 263
+    },
+    "warnings": [
+      "weak positivity: only 8.7% of test decision points have a propensity in [0.05, 0.95]"
+    ],
+    "pass": true
+  }
+]

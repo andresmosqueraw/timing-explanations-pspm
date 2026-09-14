@@ -30,11 +30,28 @@ POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#1f2937", "#6b7280", "#d1d5d
 LEVEL_COLOR = {"risk": "#e0e7ff", "effect": "#ffedd5", "native": "#dcfce7"}
 MID = [  # (node key, label, level)
     ("risk", "reliability, deviation (risk)", "risk"),
-    ("effect_T", "$\\hat p_{\\mathrm{treated}}$ (effect)", "effect"),
-    ("effect_U", "$\\hat p_{\\mathrm{untreated}}$ (effect)", "effect"),
+    ("effect_T", "Treated-arm probability (effect)", "effect"),
+    ("effect_U", "Untreated-arm probability (effect)", "effect"),
     ("relative_position", "relative_position (native)", "native"),
     ("available_resources", "available_resources (native)", "native"),
 ]
+
+
+def _collapse_to_top(flows, keep):
+    """Keep the `keep` largest-magnitude named inputs and fold everything else -- including
+    the JSON's own "(other attributes)" bucket -- into one aggregated row, so the figure
+    names only what matters and does not try to label every input individually."""
+    def mag(f):
+        return abs(f["risk"]) + abs(f["effect_T"]) + abs(f["effect_U"])
+
+    named = [f for f in flows if f["input"] != "(other attributes)"]
+    top = sorted(named, key=mag, reverse=True)[:keep]
+    top_names = {f["input"] for f in top}
+    rest = [f for f in flows if f["input"] not in top_names]
+    agg = {"input": "(other attributes)", "value": None,
+           "risk": sum(f["risk"] for f in rest), "effect_T": sum(f["effect_T"] for f in rest),
+           "effect_U": sum(f["effect_U"] for f in rest)}
+    return sorted(top, key=mag, reverse=True) + [agg]
 
 
 def fmt(v):
@@ -43,7 +60,7 @@ def fmt(v):
     return f"{v:.3g}" if abs(v - round(v)) > 1e-9 else f"{int(round(v))}"
 
 
-def ribbon(ax, x0, y0, h0, x1, y1, h1, color, alpha=0.55):
+def ribbon(ax, x0, y0, h0, x1, y1, h1, color, alpha=0.32):
     """A band from (x0, y0..y0+h0) to (x1, y1..y1+h1) with cubic ends."""
     cx = (x0 + x1) / 2
     verts = [(x0, y0), (cx, y0), (cx, y1), (x1, y1), (x1, y1 + h1), (cx, y1 + h1), (cx, y0 + h0), (x0, y0 + h0), (x0, y0)]
@@ -66,6 +83,7 @@ def main(argv=None):
     acts = card["action"] == "intervene"
     tphi = card["timing_phi"]
     flows = card["anchored_flows"] if a.source == "anchored" else card["flows"]
+    flows = _collapse_to_top(flows, keep=4)  # keep the figure legible: name only the largest inputs, group the rest
 
     # --- flows attribute -> middle node, and middle node -> margin ------------
     left = [(f["input"], f.get("value"), {"risk": f["risk"], "effect_T": f["effect_T"], "effect_U": f["effect_U"]}) for f in flows]
@@ -90,10 +108,10 @@ def main(argv=None):
     total = sum(mid_h.values())
     scale = 1.0 / total if total else 1.0
 
-    fig, ax = plt.subplots(figsize=(9.0, 4.6))
-    ax.set_xlim(0, 10); ax.set_ylim(-0.2, 1.26); ax.axis("off")
+    fig, ax = plt.subplots(figsize=(13.0, 4.0))
+    ax.set_xlim(0, 10); ax.set_ylim(-0.28, 1.26); ax.axis("off")
     TOPY = 0.9  # top of the usable span; headers sit above it
-    X0, X1, X2, W = 2.55, 5.55, 8.55, 0.32
+    X0, X1, X2, W = 1.3, 5.15, 9.0, 0.34
     gap_l, gap_m = 0.02, 0.045
 
     # left column layout (top to bottom in the order of the flows list)
@@ -138,25 +156,24 @@ def main(argv=None):
 
     # nodes and labels
     # left labels: centred on the node, spread to at least MINSEP_L apart (top-down), leader line when moved
-    MINSEP_L = 0.052
+    MINSEP_L = 0.095
     lys = []
     for y0, h in left_pos:
         c = y0 + h / 2
         lys.append(c if not lys else min(c, lys[-1] - MINSEP_L))
-    if lys and lys[-1] < -0.06:  # bottom overflow: push the stack up, but never above the top node's centre
-        shift = min(-0.06 - lys[-1], (left_pos[0][0] + left_pos[0][1] / 2) - lys[0] + 0.03)
+    if lys and lys[-1] < -0.05:  # bottom overflow: push the whole stack up (leader lines absorb the offset)
+        shift = min(-0.05 - lys[-1], 1.05 - lys[0])
         lys = [y + shift for y in lys]
     for (name, val, c), (y0, h), ly in zip(left, left_pos, lys):
         ax.add_patch(plt.Rectangle((X0, y0), W, h, fc="#f3f4f6", ec=INK, lw=0.6, zorder=2))
-        tot = sum(c.values())
-        lab = name if val is None else f"{name} = {fmt(val)}"
+        # categorical aggregates are the running lexicographic maximum (risk_model.encode_prefixes), not the last value
+        lab = name if val is None else (f"{name} (max so far) = {fmt(val)}" if isinstance(val, str) and name != "(other attributes)" else f"{name} = {fmt(val)}")
         if abs(ly - (y0 + h / 2)) > 1e-6:
             ax.plot([X0 - 0.06, X0], [ly, y0 + h / 2], color=MUTED, lw=0.5, zorder=2)
-        ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=7.0, color=INK)
-        ax.text(X0 + W + 0.06, ly, f"{tot:+.2f}", ha="left", va="center", fontsize=6.4, color=MUTED)
+        ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=10.2, color=INK)
     # middle labels: centred on their node, then spread so that consecutive
     # labels are at least MINSEP apart and the stack stays inside [0, TOPY]
-    MINSEP = 0.13
+    MINSEP = 0.1
     centers = [mid_pos[k][0] + mid_pos[k][1] / 2 for k, _, _ in MID]
     ys = [min(centers[0], TOPY - 0.06)]
     for c in centers[1:]:
@@ -168,20 +185,19 @@ def main(argv=None):
         y0, h = mid_pos[k]
         ax.add_patch(plt.Rectangle((X1, y0), W, h, fc=LEVEL_COLOR[lvl], ec=INK, lw=0.6, zorder=2))
         ax.plot([X1 + W, X1 + W + 0.06], [y0 + h / 2, ly], color=MUTED, lw=0.5, zorder=2)
-        ax.text(X1 + W + 0.08, ly, f"{lab}\n$\\phi^{{\\Delta Q}}$ = {mid_in[k]:+.2f}", ha="left", va="center", fontsize=6.9, color=INK)
+        ax.text(X1 + W + 0.08, ly, lab, ha="left", va="center", fontsize=10.1, color=INK)
     y0, h = right_pos
     ax.add_patch(plt.Rectangle((X2, y0), W, h, fc="#fef3c7", ec=INK, lw=0.8, zorder=2))
-    mlabel = f"$\\Delta Q$ = {card['dq']:.2f}\nact now" if acts else f"$\\Delta Q_{{\\mathrm{{wait}}}}$ = {-card['dq']:.2f}\nwait"
-    ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=8, color=INK, fontweight="bold")
+    mlabel = f"margin = {card['dq']:.2f}\nact now" if acts else f"wait margin = {-card['dq']:.2f}\nwait"
+    ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=11.8, color=INK, fontweight="bold")
 
     # headers
-    ax.text(X0 + W / 2, 1.17, "prefix attributes\n(risk expl. $\\phi^{r}$, effect expl. $\\phi^{p_T}$, $\\phi^{p_U}$)", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=7.6, color=MUTED)
-    ax.text(X2 + W / 2, 1.17, "timing level", ha="center", va="center", fontsize=7.6, color=MUTED)
+    ax.text(X0 + W / 2, 1.17, "prefix attributes", ha="center", va="center", fontsize=11.1, color=MUTED)
+    ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=11.1, color=MUTED)
+    ax.text(X2 + W / 2, 1.17, "timing level", ha="center", va="center", fontsize=11.1, color=MUTED)
     side = "toward acting now" if acts else "toward waiting"
-    ax.text(0.05, -0.16, f"ribbon width = |contribution| in units of the margin;  orange = {side},  blue = against it.  "
-            f"Case {card['case_id']}, event {card['prefix_nr']}; $r$ = {card['r']:.2f}, $\\hat p_T$ = {card['pT']:.2f}, $\\hat p_U$ = {card['pU']:.2f}.",
-            ha="left", va="center", fontsize=6.8, color=MUTED)
+    ax.text((X0 + X2 + W) / 2, -0.23, f"ribbon width = |contribution|;  orange = {side},  blue = against it.",
+            ha="center", va="center", fontsize=9.9, color=MUTED)
 
     out = paths.PAPER_FIGURES
     out.mkdir(parents=True, exist_ok=True)

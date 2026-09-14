@@ -1,6 +1,5 @@
 {
   "columns": [
-    "NumberOfOffers",
     "AMOUNT_REQ",
     "timesincelastevent_mean",
     "timesincelastevent_max",
@@ -63,7 +62,6 @@
     "Resource"
   ],
   "raw_columns": [
-    "NumberOfOffers",
     "AMOUNT_REQ",
     "event",
     "Activity",
@@ -154,7 +152,6 @@
       "open_cases_std"
     ],
     "case": [
-      "NumberOfOffers",
       "AMOUNT_REQ",
       "event"
     ],

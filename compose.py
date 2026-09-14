@@ -85,6 +85,24 @@ def risk_features_from_r(log: str, r: np.ndarray) -> tuple[np.ndarray, np.ndarra
     return reliability, deviation
 
 
+# The reward's counterfactual outcomes. p_T, p_U are P(undesired | treated /
+# untreated) (effect_model.py: Y = 1 the deviant outcome), so the reward's
+# y1 / y0 are the *desired* outcome, y = 1[p < 0.5], and the positive-effect
+# rule y1 - y0 > 0 reads "the case ends well if treated and badly if not" --
+# the convention SimBank's add_effect_features.py already used. Shoush &
+# Dumas's released prepare_data_for_RL_V2.py thresholds p > 0.5 on the same
+# P(deviant) columns (CausalLift treats Y = 1 as the conversion to raise),
+# which pays the policy for intervening where the treatment is predicted to
+# *cause* the undesired outcome; every coherent state here uses the corrected rule.
+def desired_outcome(p: np.ndarray) -> np.ndarray:
+    return (np.asarray(p, dtype=np.float64) < 0.5).astype(int)
+
+
+def positive_effect_rule(pT: np.ndarray, pU: np.ndarray) -> np.ndarray:
+    """y1 - y0 > 0: predicted to end well if treated and badly if untreated."""
+    return (desired_outcome(pT) - desired_outcome(pU)) > 0
+
+
 def build_state(log: str, rel: np.ndarray, r: np.ndarray, res: np.ndarray, pT: np.ndarray, pU: np.ndarray,
                 feats: list[str] = STATE_FEATS) -> np.ndarray:
     """The state in the order of ``feats`` (the six-feature state by default;
@@ -97,8 +115,13 @@ def build_state(log: str, rel: np.ndarray, r: np.ndarray, res: np.ndarray, pT: n
 
 def rebuild_state(log: str, states: np.ndarray, r: np.ndarray, pT: np.ndarray, pU: np.ndarray, feats: list[str] = STATE_FEATS) -> np.ndarray:
     """The shipped state with its lower-level coordinates replaced by the
-    retrained models' outputs on the same prefix; the natives are kept."""
-    return build_state(log, states[:, feats.index("relative_position")], r, states[:, feats.index("available_resources")], pT, pU, feats)
+    retrained models' outputs on the same prefix; the natives are kept.
+    ``available_resources`` is optional (Sepsis's 5-feature state has no live
+    capacity column, see pools.SEPSIS_FEATS): when absent from ``feats`` a
+    dummy column is passed through build_state, which never reads it back
+    since it is not in ``feats``."""
+    res = states[:, feats.index("available_resources")] if "available_resources" in feats else np.zeros(len(states))
+    return build_state(log, states[:, feats.index("relative_position")], r, res, pT, pU, feats)
 
 
 def margin_of(policy, states: np.ndarray) -> np.ndarray:
@@ -123,7 +146,11 @@ def timing_attribution(policy, states: np.ndarray, reference: np.ndarray, n_step
 
 
 def level_shares(phi: np.ndarray, feats: list[str] = STATE_FEATS) -> dict:
-    """Share of mean |phi| per feature and per level (Table 'card')."""
+    """Share of mean |phi| per feature and per level (Table 'card').
+
+    Grouped Shapley importance over the risk/effect/native partition of the
+    state, in the sense of Au et al., "Grouped Feature Importance and
+    Combined Features Effect Plot" (Data Min. Knowl. Discov. 2022)."""
     g = np.abs(phi).mean(axis=0)
     share = g / g.sum() if g.sum() > 0 else np.zeros_like(g)
     per_feature = {f: float(s) for f, s in zip(feats, share)}
@@ -173,7 +200,11 @@ def propagate(phi_timing: np.ndarray, lower: dict[str, np.ndarray], feats: list[
         fallbacks[f] = int(fb.sum())
         c = "risk" if f in RISK else ("effect_T" if f == "Proba_if_Treated" else "effect_U")
         chan[c] += phi_timing[:, i:i + 1] * w
-    native = np.stack([phi_timing[:, feats.index(f)] for f in NATIVE], axis=1)
+    # NATIVE members not in ``feats`` are simply absent (Sepsis's 5-feature
+    # state has no available_resources, see pools.SEPSIS_FEATS): the native
+    # block below has one column there, not always cp.NATIVE's two.
+    native_feats = [f for f in NATIVE if f in feats]
+    native = np.stack([phi_timing[:, feats.index(f)] for f in native_feats], axis=1)
     composed = np.concatenate([chan["risk"] + chan["effect_T"] + chan["effect_U"], native], axis=1)
     return {"channels": chan, "native": native, "composed": composed, "fallbacks": fallbacks}
 
@@ -224,12 +255,16 @@ class EndToEndBox:
             raise ValueError("risk and effect models must share the prefix vocabulary")
         self.raw_columns = list(risk_box.columns)
         self.cat_cols = set(risk_box.cat_cols)
-        self.columns = self.raw_columns + NATIVE
+        # native columns present in this log's state (Sepsis has no
+        # available_resources, see pools.SEPSIS_FEATS -- one native column,
+        # not cp.NATIVE's two).
+        self.native = [f for f in NATIVE if f in feats]
+        self.columns = self.raw_columns + self.native
 
     def inputs(self, X: pd.DataFrame, states: np.ndarray) -> pd.DataFrame:
         Z = X[self.raw_columns].copy().reset_index(drop=True)
-        Z["relative_position"] = states[:, self.feats.index("relative_position")].astype(float)
-        Z["available_resources"] = states[:, self.feats.index("available_resources")].astype(float)
+        for f in self.native:
+            Z[f] = states[:, self.feats.index(f)].astype(float)
         return Z
 
     def reference(self, Z: pd.DataFrame) -> pd.Series:
@@ -243,7 +278,8 @@ class EndToEndBox:
 
     def state(self, Z: pd.DataFrame) -> np.ndarray:
         r, pT, pU = self.lower(Z)
-        return build_state(self.log, Z["relative_position"].to_numpy(float), r, Z["available_resources"].to_numpy(float), pT, pU, self.feats)
+        res = Z["available_resources"].to_numpy(float) if "available_resources" in self.native else np.zeros(len(Z))
+        return build_state(self.log, Z["relative_position"].to_numpy(float), r, res, pT, pU, self.feats)
 
     def f(self, Z: pd.DataFrame, sign: np.ndarray | float = 1.0) -> np.ndarray:
         return np.asarray(sign, float) * margin_of(self.policy, self.state(Z))
@@ -317,7 +353,11 @@ def deletion_test_e2e(box: EndToEndBox, Z: pd.DataFrame, ref: pd.Series, sign: n
 
 def ranking_agreement(a: np.ndarray, b: np.ndarray, k: int = 5) -> dict:
     """Per-state Spearman of |a| vs |b| (mean, median) and Jaccard of the
-    top-k sets, plus the global Spearman of the mean-|phi| rankings."""
+    top-k sets, plus the global Spearman of the mean-|phi| rankings.
+
+    Rank correlation and top-k feature agreement in the sense of Krishna
+    et al., "The Disagreement Problem in Explainable Machine Learning"
+    (TMLR 2022)."""
     from scipy.stats import spearmanr
 
     rhos, jacc = [], []
@@ -356,7 +396,11 @@ def risk_effect_agreement(phi_r: np.ndarray, phi_cate: np.ndarray, names: list[s
     """How the risk and effect explanations relate on the shared prefix
     vocabulary: global rank agreement, top-k overlap, and per-attribute sign
     agreement (does the attribute push toward a bad outcome and toward a
-    larger effect at the same time?) on the states where both are non-zero."""
+    larger effect at the same time?) on the states where both are non-zero.
+
+    Rank agreement, top-k feature agreement and sign agreement in the sense
+    of Krishna et al., "The Disagreement Problem in Explainable Machine
+    Learning" (TMLR 2022)."""
     from scipy.stats import spearmanr
 
     gr, ge = np.abs(phi_r).mean(axis=0), np.abs(phi_cate).mean(axis=0)
@@ -388,6 +432,14 @@ def cancellation(prop: dict) -> dict:
     Returns the per-state x per-attribute matrix, the mass-weighted index
     per attribute (over states) and per state (over attributes), and the
     global one.
+
+    This is the failure mode DeepLIFT's RevealCancel rule was introduced to
+    catch: the plain Rescale rule of `propagate` (DeepSHAP's rule, Shrikumar
+    et al., "Learning Important Features Through Propagating Activation
+    Differences", ICML 2017) does not separate positive and negative
+    contributions to a shared downstream unit, so opposite-sign channels can
+    net out even though each carried real mass; the index reports how much
+    of that mass Rescale hides.
     """
     chans = [prop["channels"][c] for c in ("risk", "effect_T", "effect_U")]
     net = np.abs(sum(chans))

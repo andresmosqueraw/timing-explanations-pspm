@@ -39,6 +39,9 @@ sys.path.insert(0, str(paths.REPO / "simbank_resources"))
 from train_ppo_fast_rl_prescriptive_monitoring import PPMEnvFast  # noqa: E402
 from train_ppo_simbank import SimBankHQEnvFast  # noqa: E402
 
+sys.path.insert(0, str(paths.REPO / "sepsis_resources"))
+from train_ppo_sepsis import SepsisEnv  # noqa: E402
+
 
 def _report(name: str, r_hist: np.ndarray, r_policy: np.ndarray, hist: np.ndarray, policy: np.ndarray) -> dict:
     out = {
@@ -79,6 +82,26 @@ def bpic_gain(name: str, csv_path, model_path, treatment_col: str, sample: int |
     return out
 
 
+def sepsis_gain(variant: str = pools.DEFAULT_VARIANT) -> dict:
+    """Every decision point of the Sepsis test split under the Sepsis reward (no
+    resource term). Decision points precede the treatment, so the recorded
+    action at each of them is to wait."""
+    states, ite, _hist = pools.sepsis_full(variant=variant)
+    model = PPO.load(str(paths.variant_model("Sepsis", variant)), device="cpu")
+    policy = model.predict(states, deterministic=True)[0].astype(int)
+    r_wait = np.array([SepsisEnv._reward(False, v) for v in ite])
+    r_int = np.array([SepsisEnv._reward(True, v) for v in ite])
+    r_policy = np.where(policy == 1, r_int, r_wait)
+    out = _report("Sepsis", r_wait, r_policy, np.zeros_like(policy), policy)
+    pos = ite > 0
+    out.update({"always_wait_gain": float(r_wait.mean()), "always_intervene_gain": float(r_int.mean()), "oracle_gain": float(np.maximum(r_wait, r_int).mean()),
+                "share_ite_positive": float(pos.mean()), "policy_precision": float(pos[policy == 1].mean()) if (policy == 1).any() else None,
+                "policy_recall": float((policy[pos] == 1).mean()) if pos.any() else None})
+    print(f"oracle gain {out['oracle_gain']:.3f}  always-wait {out['always_wait_gain']:.3f}  always-intervene {out['always_intervene_gain']:.3f}  "
+          f"policy precision {out['policy_precision']}  recall {out['policy_recall']}")
+    return out
+
+
 def simbank_gain(rows: str, sample: int | None, variant: str = pools.DEFAULT_VARIANT) -> dict:
     states, ite, hist, has_res = pools.simbank_full(paths.simbank_pkl(variant), rows=rows, sample=sample, variant=variant)
     model = PPO.load(str(paths.variant_model("SimBank", variant)), device="cpu")
@@ -113,6 +136,8 @@ if __name__ == "__main__":
                                     pools.treatment_col("BPIC2012", args.variant), variant=args.variant)
     results["bpic2017"] = bpic_gain("BPIC2017", paths.bpic_csv("BPIC2017", args.variant), paths.variant_model("BPIC2017", args.variant),
                                     pools.treatment_col("BPIC2017", args.variant), sample=30000, variant=args.variant)
+    if paths.variant_model("Sepsis", args.variant).exists():
+        results["sepsis"] = sepsis_gain(args.variant)
     n_match = results["bpic2012"]["n"]
     if paths.variant_model("SimBank", args.variant).exists():
         results["simbank"] = simbank_gain(args.simbank_rows, sample=n_match, variant=args.variant)

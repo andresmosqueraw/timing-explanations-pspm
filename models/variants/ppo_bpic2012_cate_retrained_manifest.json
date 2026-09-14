@@ -6,24 +6,25 @@
     "seed": 42,
     "resources": 3,
     "csv": "data/retrained_state_bpic2012.csv",
-    "out": "models/variants/sweep/ppo_bpic2012_ent0.3_t600000",
+    "out": "models/variants/ppo_bpic2012_cate_retrained",
     "extra_features": [
       "Proba_if_Treated",
       "Proba_if_Untreated"
     ],
     "random_start": false,
     "episode": "case",
+    "random_resources": true,
     "ent_coef": 0.3,
     "reward_scale": 0.01,
     "learning_rate": 0.0003,
     "n_steps": 512
   },
-  "n_episodes": 52580,
-  "mean_episode_reward_last_50": 4.965,
-  "elapsed_seconds": 1324.1952378749847,
-  "timestamp": "2026-09-10T04:06:45Z",
+  "n_episodes": 124058,
+  "mean_episode_reward_last_50": 1.975,
+  "elapsed_seconds": 2132.4385385513306,
+  "timestamp": "2026-09-14T10:47:57Z",
   "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/retrained_state_bpic2012.csv",
-  "csv_mtime": "2026-09-09T22:44:27Z",
+  "csv_mtime": "2026-09-14T10:10:02Z",
   "env": "PPMEnvFast",
   "sb3_algo": "PPO",
   "policy": "MlpPolicy",
@@ -36,10 +37,10 @@
     "Proba_if_Untreated"
   ],
   "random_start": false,
+  "random_resources": true,
   "episode": "case",
   "ent_coef": 0.3,
   "reward_scale": 0.01,
   "learning_rate": 0.0003,
-  "n_steps": 512,
-  "note": "The paper's BPIC2012 policy: the cate recipe on the coherent state for 600,000 steps (same recipe as BPIC2017). On every decision point it intervenes on 11.3% with precision 0.94 / recall 0.55 and earns 42.3 per decision point (always-wait 24.5, oracle 58.3); the 300k checkpoint (ppo_bpic2012_cate_retrained_300k.zip) intervened on 21.5% with precision 0.66 and earned 40.3."
+  "n_steps": 512
 }

@@ -43,9 +43,10 @@ class PPMEnvFast(gym.Env):
 
     def __init__(self, csv_path: Path | str = CSV_DEFAULT, resources: int = 3,
                  extra_features: tuple[str, ...] = (), random_start: bool = False,
-                 episode: str = "stream", reward_scale: float = 1.0):
-        """``extra_features``, ``random_start`` and ``episode="case"`` are NOT
-        part of the released design (all default off, which reproduces it):
+                 episode: str = "stream", reward_scale: float = 1.0, random_resources: bool = False):
+        """``extra_features``, ``random_start``, ``episode="case"`` and
+        ``random_resources`` are NOT part of the released design (all default
+        off, which reproduces it):
 
         * ``extra_features``: CSV columns appended to the 4-feature state, e.g.
           the causal model's counterfactual outcome probabilities
@@ -72,6 +73,14 @@ class PPMEnvFast(gym.Env):
           effect is positive then costs -100 per remaining event, and
           intervening on it pays +75 once, so a state that can tell such
           cases apart is rewarded for acting on them.
+        * ``random_resources``: draw the episode's free resources uniformly
+          from ``0..resources`` at reset instead of always starting at
+          ``resources``. In the released design a resource is only consumed
+          by the intervention, which ends the episode, so the agent never
+          observes anything but ``resources`` and any attribution to
+          ``available_resources`` on a pool that varies it is extrapolation.
+          The evaluation pool cycles it through ``0..resources``
+          (pools.cycled_resources); this option trains on the same range.
         """
         super().__init__()
         df = pd.read_csv(csv_path, sep=";")
@@ -89,6 +98,7 @@ class PPMEnvFast(gym.Env):
         # and entropy both reach exactly 0 -- and no entropy bonus of a
         # sensible size can compete). Evaluation scripts never use it.
         self._reward_scale = float(reward_scale)
+        self._random_resources = bool(random_resources)
         self._rng = np.random.default_rng(0)
         if episode == "case":
             # per-case row lists, in each case's own event order
@@ -119,7 +129,9 @@ class PPMEnvFast(gym.Env):
     def _state(self, row=None) -> np.ndarray:
         if row is None:
             row = self._row()
-        rel = float(row["prefix_nr"]) / max(float(row["case_length"]), 1.0)
+        # progress_horizon (coherent CSVs, known in advance) or the released case_length
+        denom = row["progress_horizon"] if "progress_horizon" in row.index else row["case_length"]
+        rel = float(row["prefix_nr"]) / max(float(denom), 1.0)
         rel = float(np.clip(rel, 0.0, 1.0))
         base = [rel, float(row["reliability"]), float(row["deviation"]), float(len(self._nr_res))]
         return np.array(base + [float(row[c]) for c in self._extra], dtype=np.float32)
@@ -156,7 +168,8 @@ class PPMEnvFast(gym.Env):
             self._idx = int(self._case_seq[0])
         else:
             self._idx = int(self._rng.integers(0, self._max_idx + 1)) if self._random_start else 0
-        self._nr_res = list(range(1, self._resources_init + 1))
+        n_res = int(self._rng.integers(0, self._resources_init + 1)) if self._random_resources else self._resources_init
+        self._nr_res = list(range(1, n_res + 1))
         return self._state(), {}
 
     def step(self, action):
@@ -216,6 +229,8 @@ def main():
                         help="start episodes at a random row (not in the released design; see PPMEnvFast)")
     parser.add_argument("--episode", choices=["stream", "case"], default="stream",
                         help="'stream' = released episode structure; 'case' = one case per episode (see PPMEnvFast)")
+    parser.add_argument("--random-resources", action="store_true",
+                        help="draw the initial free resources uniformly from 0..--resources at each reset (not in the released design; see PPMEnvFast)")
     parser.add_argument("--ent-coef", type=float, default=0.0,
                         help="PPO entropy coefficient (SB3 default 0.0). With 0 the actor collapses to never-intervene "
                              "within the first few thousand steps -- random interventions are punished on the 81-97%% of "
@@ -240,7 +255,7 @@ def main():
 
     raw_env = PPMEnvFast(csv_path, resources=args.resources,
                          extra_features=tuple(args.extra_features), random_start=args.random_start,
-                         episode=args.episode, reward_scale=args.reward_scale)
+                         episode=args.episode, reward_scale=args.reward_scale, random_resources=args.random_resources)
     check_env(raw_env, warn=True)
     env = Monitor(raw_env, filename=monitor_path)
 
@@ -283,6 +298,7 @@ def main():
         "policy": "MlpPolicy",
         "state_features": ["relative_position", "reliability", "deviation", "available_resources"] + list(args.extra_features),
         "random_start": bool(args.random_start),
+        "random_resources": bool(args.random_resources),
         "episode": args.episode,
         "ent_coef": args.ent_coef,
         "reward_scale": args.reward_scale,

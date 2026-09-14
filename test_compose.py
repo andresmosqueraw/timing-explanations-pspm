@@ -163,3 +163,11 @@ def test_sign_groups_partition_the_attributes():
     per = {"a": {"sign_agreement": 0.95}, "b": {"sign_agreement": 0.1}, "c": {"sign_agreement": 0.5}, "d": {"sign_agreement": None}}
     g = cp.sign_groups(per)
     assert g == {"agree": ["a"], "oppose": ["b"], "independent": ["c"], "one_level_only": ["d"]}
+
+
+def test_positive_effect_rule_pays_where_treatment_helps():
+    # p = P(undesired): treated 0.2 (ends well) vs untreated 0.8 (ends badly) -> positive effect
+    pT = np.array([0.2, 0.8, 0.2, 0.8])
+    pU = np.array([0.8, 0.2, 0.3, 0.9])
+    assert cp.desired_outcome(pT).tolist() == [1, 0, 1, 0]
+    assert cp.positive_effect_rule(pT, pU).tolist() == [True, False, False, False]

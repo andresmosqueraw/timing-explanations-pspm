@@ -1,6 +1,5 @@
 {
   "feature_names": [
-    "NumberOfOffers",
     "AMOUNT_REQ",
     "event",
     "Activity",
@@ -47,9 +46,9 @@
     "open_cases_std"
   ],
   "cat_feature_indices": [
+    1,
     2,
-    3,
-    4
+    3
   ],
   "families": {
     "event": [
@@ -96,7 +95,6 @@
       "open_cases_std"
     ],
     "case": [
-      "NumberOfOffers",
       "AMOUNT_REQ",
       "event"
     ],

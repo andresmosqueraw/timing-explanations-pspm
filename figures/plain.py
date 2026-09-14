@@ -39,7 +39,8 @@ def _position(v):
     x = _num(v)
     if x is None:
         return "progress of the case"
-    return "the case has just started" if x < 0.3 else ("the case is near its end" if x > 0.7 else "the case is midway")
+    # relative_position is prefix_nr over a fixed horizon (a typical case length), not the case's own length
+    return "the case is still early" if x < 0.3 else ("the case is running long" if x > 0.7 else "the case is midway")
 
 
 def _offers(v):
@@ -54,12 +55,15 @@ LABEL = {
     "reliability": lambda v: "prediction confidence",
     "deviation": lambda v: "predicted to end well" if _num(v) == 1 else "predicted to end badly",
     "available_resources": _resources,
-    "Proba_if_Treated": lambda v: "outcome if we call",
-    "Proba_if_Untreated": lambda v: "outcome if we don't call",
+    "Proba_if_Treated": lambda v: "if a further offer is made",
+    "Proba_if_Untreated": lambda v: "if no further offer is made",
     "CreditScore_mean": _credit("mean"), "CreditScore_max": _credit("max"), "CreditScore_std": _credit("spread"),
     "CreditScore_sum": _credit("sum"), "CreditScore_min": _credit("min"),
     "NumberOfOffers": _offers,
-    "Activity": lambda v: f"last activity: {v}" if isinstance(v, str) else "last activity",
+    # the encoding is the running lexicographic maximum of the activities so far, not the last one
+    "Activity": lambda v: f"activities up to {v}" if isinstance(v, str) else "activities so far",
+    "NumberOfTerms_sum": lambda v: "terms offered so far", "NumberOfTerms_max": lambda v: "longest term offered",
+    "org:resource": lambda v: "employee handling it", "open_cases_mean": lambda v: "open cases (mean)",
     "ApplicationType": lambda v: f"it is a {str(v).lower()}" if isinstance(v, str) else "application type",
     "LoanGoal": lambda v: f"loan goal: {str(v).lower()}" if isinstance(v, str) else "loan goal",
     "MonthlyCost_max": lambda v: f"a monthly cost of {_amount(_num(v))}" if _num(v) else "no monthly cost yet",
@@ -77,9 +81,9 @@ LABEL = {
 
 NOUN = {
     "relative_position": "the case's progress", "reliability": "the prediction's confidence", "deviation": "the predicted deviation",
-    "available_resources": "the free staff", "Proba_if_Treated": "the expected effect of calling",
-    "Proba_if_Untreated": "the expected outcome if nobody calls", "CreditScore_mean": "the credit score",
-    "CreditScore_max": "the credit score", "NumberOfOffers": "the number of offers", "Activity": "the last activity",
+    "available_resources": "the free staff", "Proba_if_Treated": "the expected outcome with a further offer",
+    "Proba_if_Untreated": "the expected outcome without a further offer", "CreditScore_mean": "the credit score",
+    "CreditScore_max": "the credit score", "Activity": "the activities so far",
     "MonthlyCost_max": "the monthly cost", "ApplicationType": "the application type",
     "FirstWithdrawalAmount_max": "the first withdrawal amount", "event_nr_mean": "the number of events so far",
     "open_cases_max": "the number of open cases", "AMOUNT_REQ": "the requested amount", "month_mean": "the application month",

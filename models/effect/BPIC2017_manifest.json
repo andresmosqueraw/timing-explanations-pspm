@@ -1,24 +1,24 @@
 {
   "log": "BPIC2017",
   "seed": 0,
-  "n_train": 575329,
-  "n_test": 293559,
-  "n_features": 201,
-  "treated_share_train": 0.6554753888644584,
+  "n_train": 435433,
+  "n_test": 222487,
+  "n_features": 191,
+  "treated_share_train": 0.20002158770694917,
   "propensity_best": {
-    "C": 0.1,
-    "penalty": "l1"
+    "C": 10,
+    "penalty": "l2"
   },
-  "auc_treated_arm_on_treated_test": 0.9653928539172184,
-  "auc_untreated_arm_on_untreated_test": 0.8707976882670311,
-  "mean_pT": 0.40719276666641235,
-  "mean_pU": 0.2782634198665619,
-  "share_cate_positive_rule": 0.16935266845847002,
+  "auc_treated_arm_on_treated_test": 0.6181950725234441,
+  "auc_untreated_arm_on_untreated_test": 0.7184281357544822,
+  "mean_pT": 0.2714999318122864,
+  "mean_pU": 0.36067813634872437,
+  "share_cate_positive_rule": 0.20205674938311002,
   "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
-  "elapsed_seconds": 4562.337912797928,
-  "timestamp": "2026-09-07T03:32:18Z",
-  "rl_csv_overlap_rows": 293559,
-  "corr_pT_with_shipped": 0.01533572547392152,
-  "corr_pU_with_shipped": -0.027372801880002365,
-  "agreement_cate_sign_rule": 0.8033887566042942
+  "elapsed_seconds": 1248.9717836380005,
+  "timestamp": "2026-09-14T10:09:06Z",
+  "rl_csv_overlap_rows": 222487,
+  "corr_pT_with_shipped": 0.008506245311915763,
+  "corr_pU_with_shipped": -0.011130904152891722,
+  "agreement_cate_sign_rule": 0.7087290493377141
 }

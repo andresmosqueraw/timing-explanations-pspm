@@ -5,7 +5,11 @@ the deletion test (Section 7) and the gain recomputation (Section 5.3) all
 read the same states, built the same way:
 
 * **Evaluation pool** (``bpic_pool`` / ``simbank_pool``): one random prefix
-  per case, ``N_CASES`` cases, seed ``POOL_SEED``. This is the pool the
+  per case, up to ``N_CASES`` cases (``sample_one_prefix_per_case`` caps at
+  whatever the split actually has, so ``N_CASES`` set above every log's test
+  case count -- the current default -- means "every test case", not a
+  subsample; earlier drafts used a 500/200-case subsample, seed ``POOL_SEED``
+  still fixes which prefix is picked per case). This is the pool the
   Section 6 cards were drawn from; Section 7 runs the deletion test on the
   same pool.
 
@@ -108,7 +112,29 @@ def treatment_col(log: str, variant: str) -> str:
 # is the earlier 4-feature checkpoint whose effect signal was the uncertainty
 # proxy.
 DEFAULT_VARIANT = "cate_retrained"
-LOGS = ("BPIC2012", "BPIC2017", "SimBank")
+LOGS = ("BPIC2012", "BPIC2017", "SimBank", "Sepsis")
+
+# Sepsis (IV Antibiotics -> Return ER) has no live-capacity column, and
+# unlike the BPIC logs it has no shipped RL CSV to cycle a fake one through
+# either: the log records no hospital-capacity variable at all. Design
+# decision (documented in the task/PR that added Sepsis): OMIT
+# available_resources rather than synthesize one the way
+# simbank_resources/build_resources.py does for SimBank (a Poisson-arrival
+# server-assignment model) -- that would fabricate a constraint this data
+# does not support, whereas the repo already has a precedent for a
+# resource-less state (the 4-feature "released"/"risk_retrained" design minus
+# its own resources column would just be 3 features; here the 2 effect
+# features are added back). So Sepsis's state is the risk core
+# (relative_position, reliability, deviation) plus the effect features when
+# the variant calls for them -- 3 or 5 features, never 4 or 6.
+SEPSIS_FEATS = ["relative_position", "reliability", "deviation"]
+# Sepsis has ~1,050 cases total, ~262 in the temporal test split that
+# build_sepsis_state.py scores (see its docstring); far short of the BPIC
+# logs. Set above that count so sample_one_prefix_per_case's cap never
+# triggers: every Sepsis test case is used. Estimates on this pool still
+# carry visibly more sampling noise than the two BPIC logs' (262 cases vs.
+# thousands) -- report this alongside any number computed from it.
+SEPSIS_N_CASES = 1000
 
 
 def extra_cols(log: str, variant: str = DEFAULT_VARIANT) -> list[str]:
@@ -116,7 +142,8 @@ def extra_cols(log: str, variant: str = DEFAULT_VARIANT) -> list[str]:
 
 
 def feature_names(log: str = "BPIC2017", variant: str = DEFAULT_VARIANT) -> list[str]:
-    return FEATS + extra_cols(log, variant)
+    base = SEPSIS_FEATS if log == "Sepsis" else FEATS
+    return base + extra_cols(log, variant)
 
 
 def evaluation_pool(log: str, variant: str = DEFAULT_VARIANT):
@@ -125,13 +152,18 @@ def evaluation_pool(log: str, variant: str = DEFAULT_VARIANT):
         states, rows = bpic_pool(paths.bpic_csv(log, variant), variant=variant)
     elif log == "SimBank":
         states, rows = simbank_pool(paths.simbank_pkl(variant), variant=variant)
+    elif log == "Sepsis":
+        states, rows = sepsis_pool(variant=variant)
     else:
         raise ValueError(log)
     return states, rows, feature_names(log, variant)
 
 
 POOL_SEED = 123
-N_CASES = 500
+# Set above BPIC2017's 7,853 test cases (the largest split any log using
+# N_CASES has) so sample_one_prefix_per_case's cap never triggers for
+# BPIC2012 (1,172 cases) or BPIC2017 either: every test case is used.
+N_CASES = 10_000
 N_RESOURCES = 3  # Shoush & Dumas's initial resource pool, as trained
 DECISION_ACTIVITIES = ("skip_contact", "contact_headquarters")
 SIMBANK_TREATMENT_ACTIVITY = "contact_headquarters"
@@ -184,14 +216,21 @@ def paper_card_indices(states: np.ndarray, margin: np.ndarray, rows: pd.DataFram
     return picks
 
 
+def relative_position(rows: pd.DataFrame) -> np.ndarray:
+    """prefix_nr over the fixed ``progress_horizon`` of the coherent CSVs
+    (build_retrained_state.py: known in advance); the released CSVs only have
+    ``case_length``, the case's full length, and keep that legacy reading."""
+    denom = rows["progress_horizon"] if "progress_horizon" in rows.columns else rows["case_length"]
+    return (rows["prefix_nr"].astype(float) / denom.astype(float).clip(lower=1)).clip(0, 1).to_numpy()
+
+
 def cycled_resources(n_rows: int, n_resources: int = N_RESOURCES) -> np.ndarray:
     """0, 1, ..., n_resources, 0, 1, ... across the rows (mean = n_resources / 2)."""
     return (np.arange(n_rows) % (n_resources + 1)).astype(np.float64)
 
 
 def bpic_states(rows: pd.DataFrame, resources: np.ndarray, extra: list[str] | tuple[str, ...] = ()) -> np.ndarray:
-    rel = (rows["prefix_nr"].astype(float) / rows["case_length"].astype(float).clip(lower=1)).clip(0, 1)
-    cols = [rel.to_numpy(), rows["reliability"].astype(float).to_numpy(),
+    cols = [relative_position(rows), rows["reliability"].astype(float).to_numpy(),
             rows["deviation"].astype(float).to_numpy(), resources]
     cols += [rows[c].astype(float).to_numpy() for c in extra]
     return np.stack(cols, axis=1).astype(np.float32)
@@ -275,3 +314,55 @@ def simbank_full(pkl_path=None, rows: str = "all", sample: int | None = None, se
         idx = np.random.default_rng(seed).choice(len(states), size=sample, replace=False)
         states, ite, hist, has_res = states[idx], ite[idx], hist[idx], has_res[idx]
     return states, ite, hist, has_res
+
+
+# ---------------------------------------------------------------------------
+# Sepsis Cases - Event Log (IV Antibiotics -> Return ER)
+# ---------------------------------------------------------------------------
+# Built entirely from scratch for this repo (risk_model.py / effect_model.py
+# / build_sepsis_state.py / sepsis_resources/train_ppo_sepsis.py): there is
+# no shipped RL CSV and no prior checkpoint, so unlike the BPIC logs' "cate"
+# vs "cate_retrained" split there is only ever one coherent state here (see
+# paths.variant_model). ``load_sepsis_state`` reads exactly the CSV the
+# policy was trained on, in the BPIC RL-CSV column format (case_id,
+# prefix_nr, case_length, reliability, deviation, Proba_if_Treated,
+# Proba_if_Untreated, y1, y0, treatment, ...), so bpic_pool's row schema and
+# machinery translate directly; only the *state* (no available_resources)
+# differs, hence the separate ``sepsis_states``.
+
+
+def load_sepsis_state(csv_path=None) -> pd.DataFrame:
+    # keep_default_na=False: one of this log's real case ids is the literal
+    # string "NA" (a two-letter Sepsis trace id, not a missing value), which
+    # pandas' default na_values would otherwise silently turn into NaN and
+    # break every case-id join downstream (verified: 24 rows/1 case affected).
+    return pd.read_csv(csv_path or paths.SEPSIS_STATE_CSV, sep=";", dtype={"case_id": str}, keep_default_na=False, na_values=[])
+
+
+def sepsis_states(rows: pd.DataFrame, extra: list[str] | tuple[str, ...] = ()) -> np.ndarray:
+    cols = [relative_position(rows), rows["reliability"].astype(float).to_numpy(), rows["deviation"].astype(float).to_numpy()]
+    cols += [rows[c].astype(float).to_numpy() for c in extra]
+    return np.stack(cols, axis=1).astype(np.float32)
+
+
+def sepsis_pool(csv_path=None, n_cases: int = SEPSIS_N_CASES, seed: int = POOL_SEED,
+                variant: str = DEFAULT_VARIANT) -> tuple[np.ndarray, pd.DataFrame]:
+    """Evaluation pool: one prefix per case, up to ``n_cases`` cases (see
+    SEPSIS_N_CASES for why this is smaller than the BPIC/SimBank pools)."""
+    rows = sample_one_prefix_per_case(load_sepsis_state(csv_path), "case_id", n_cases, seed)
+    return sepsis_states(rows, VARIANTS[variant]), rows
+
+
+def sepsis_full(csv_path=None, sample: int | None = None, seed: int = 42, variant: str = DEFAULT_VARIANT):
+    """Full pool: every prefix of the scored test split. Returns
+    (states, ite, historical_action); ``ite = y1 - y0``, ``historical_action``
+    the dynamic treatment flag (1 if IV Antibiotics had already been given by
+    this prefix)."""
+    df = load_sepsis_state(csv_path)
+    states = sepsis_states(df, VARIANTS[variant])
+    ite = (df["y1"].astype(float) - df["y0"].astype(float)).to_numpy()
+    hist = df["treatment"].astype(int).to_numpy()
+    if sample is not None and len(states) > sample:
+        idx = np.random.default_rng(seed).choice(len(states), size=sample, replace=False)
+        states, ite, hist = states[idx], ite[idx], hist[idx]
+    return states, ite, hist

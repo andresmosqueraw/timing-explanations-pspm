@@ -2,7 +2,8 @@
 to change this case's outcome?* -- on the same decision points as the risk
 and timing explanations, plus the three-level card that puts them together.
 
-Effect score: CATE(x_t) = p_T(x_t) - p_U(x_t) from the retrained two-model
+Effect score: CATE(x_t) = p_U(x_t) - p_T(x_t) (the drop in P(undesired) the
+treatment buys) from the retrained two-model
 estimator (effect_model.py), whose two probabilities the policy reads as
 its state features Proba_if_Treated / Proba_if_Untreated. Attribution:
 TreeSHAP on each arm's log-odds, summed back from the one-hot columns to the
@@ -12,12 +13,12 @@ recommendation's before/after KPI; here the two arms are the two
 counterfactual outcomes of one prefix):
 
     phi^{p_T}, phi^{p_U} : TreeSHAP of logit p_T, logit p_U
-    phi^{CATE}           : phi^{p_T} - phi^{p_U}   (sums to the log-odds-ratio
+    phi^{CATE}           : phi^{p_U} - phi^{p_T}   (sums to the log-odds-ratio
                             difference between the two arms, minus its pool mean)
 
 Fidelity: the paper's deletion test on the *effect* -- mask the k prefix
 attributes phi^{CATE} ranks highest to the pool reference and measure how
-far logit p_T - logit p_U moves, against random and anti-guided masking.
+far logit p_U - logit p_T moves, against random and anti-guided masking.
 
 Per BPIC log this writes to paths.EFFECT_JSON / paths.EFFECT_FIGURES/<log>/:
 global shares per attribute and family, the deletion test (k = 1, 3), the
@@ -45,6 +46,7 @@ import pandas as pd  # noqa: E402
 import torch  # noqa: E402
 from stable_baselines3 import PPO  # noqa: E402
 
+import compose as cp  # noqa: E402
 import effect_model as em  # noqa: E402
 import paths  # noqa: E402
 import pools  # noqa: E402
@@ -76,7 +78,7 @@ class EffectBox:
     def logodds_effect(self, X: pd.DataFrame) -> np.ndarray:
         pT, pU = self.probs(X)
         pT, pU = np.clip(pT, 1e-6, 1 - 1e-6), np.clip(pU, 1e-6, 1 - 1e-6)
-        return np.log(pT / (1 - pT)) - np.log(pU / (1 - pU))
+        return np.log(pU / (1 - pU)) - np.log(pT / (1 - pT))
 
     def reference(self, X: pd.DataFrame) -> pd.Series:
         return pd.Series({c: (X[c].mode().iloc[0] if c in self.cat_cols else float(X[c].astype(float).mean())) for c in self.raw_columns})
@@ -139,14 +141,10 @@ def deletion_test_effect(box: EffectBox, X: pd.DataFrame, phi: np.ndarray, ref: 
     # does masking flip the reward's positive-effect rule y1 - y0 > 0 ?
     pT0, pU0 = box.probs(X)
     pTg, pUg = box.probs(box.mask(X, order[:, :k], ref))
-    rule0, ruleg = (pT0 > 0.5) & (pU0 <= 0.5), (pTg > 0.5) & (pUg <= 0.5)
-    # ... and the good-outcome reading of the same rule, y = 1[p < 0.5], the
-    # one SimBank's reward uses (add_effect_features.py)
-    good0, goodg = (pT0 < 0.5) & (pU0 >= 0.5), (pTg < 0.5) & (pUg >= 0.5)
+    rule0, ruleg = cp.positive_effect_rule(pT0, pU0), cp.positive_effect_rule(pTg, pUg)
     return {"k": k, "abs_guided": float(dg.mean()), "abs_random": float(dr.mean()), "abs_anti": float(da.mean()),
             "gap": float(paired.mean()), "gap_se": se, "z": float(paired.mean() / se) if se > 0 else None,
-            "flip_positive_effect_rule": float((rule0 != ruleg).mean()),
-            "flip_good_outcome_rule": float((good0 != goodg).mean())}
+            "flip_positive_effect_rule": float((rule0 != ruleg).mean())}
 
 
 def three_level_card(risk_phi, risk_names, risk_vals, r, eff_phi, eff_names, eff_vals, pT, pU,
@@ -195,23 +193,23 @@ def run_log(name: str, args) -> dict:
 
     pT, pU = box.probs(X)
     phiT, phiU, ev = box.shap_raw(X)
-    phi = phiT - phiU
+    phi = phiU - phiT
     g = np.abs(phi).mean(axis=0)
     share = g / g.sum()
     fam_share = {f: float(sum(share[box.raw_columns.index(c)] for c in cols if c in box.raw_columns)) for f, cols in box.families.items()}
     top10 = [(box.raw_columns[i], float(share[i])) for i in np.argsort(-g)[:10]]
-    out["effect"] = {"mean_pT": float(pT.mean()), "mean_pU": float(pU.mean()), "mean_cate": float((pT - pU).mean()),
-                     "share_positive_rule": float(((pT > 0.5) & (pU <= 0.5)).mean()), "expected_value_logodds": ev,
+    out["effect"] = {"mean_pT": float(pT.mean()), "mean_pU": float(pU.mean()), "mean_cate": float((pU - pT).mean()),
+                     "share_positive_rule": float(cp.positive_effect_rule(pT, pU).mean()), "expected_value_logodds": ev,
                      "global_share_top10": top10, "family_share": fam_share}
-    print(f"  pT={pT.mean():.3f} pU={pU.mean():.3f} positive-rule share={((pT > 0.5) & (pU <= 0.5)).mean():.3f}; top: "
+    print(f"  pT={pT.mean():.3f} pU={pU.mean():.3f} positive-rule share={cp.positive_effect_rule(pT, pU).mean():.3f}; top: "
           + ", ".join(f"{k}={v:.1%}" for k, v in top10[:5]) + f"; families {fam_share}")
 
     # link with the shipped probabilities the policy actually reads
     if "Proba_if_Treated" in rows_m.columns:
         sT, sU = rows_m["Proba_if_Treated"].to_numpy(), rows_m["Proba_if_Untreated"].to_numpy()
         out["link_to_state"] = {"corr_pT": float(np.corrcoef(pT, sT)[0, 1]), "corr_pU": float(np.corrcoef(pU, sU)[0, 1]),
-                                "corr_cate": float(np.corrcoef(pT - pU, sT - sU)[0, 1]),
-                                "positive_rule_agreement": float((((pT > 0.5) & (pU <= 0.5)) == ((sT > 0.5) & (sU <= 0.5))).mean())}
+                                "corr_cate": float(np.corrcoef(pU - pT, sU - sT)[0, 1]),
+                                "positive_rule_agreement": float((cp.positive_effect_rule(pT, pU) == cp.positive_effect_rule(sT, sU)).mean())}
         print(f"  link: {out['link_to_state']}")
 
     ref = box.reference(X)

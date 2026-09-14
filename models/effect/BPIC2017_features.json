@@ -1,6 +1,5 @@
 {
   "columns": [
-    "NumberOfOffers",
     "RequestedAmount",
     "FirstWithdrawalAmount_mean",
     "FirstWithdrawalAmount_max",
@@ -22,11 +21,6 @@
     "OfferedAmount_min",
     "OfferedAmount_sum",
     "OfferedAmount_std",
-    "CreditScore_mean",
-    "CreditScore_max",
-    "CreditScore_min",
-    "CreditScore_sum",
-    "CreditScore_std",
     "timesincelastevent_mean",
     "timesincelastevent_max",
     "timesincelastevent_min",
@@ -98,8 +92,6 @@
     "org:resource_User_110",
     "org:resource_User_112",
     "org:resource_User_113",
-    "org:resource_User_114",
-    "org:resource_User_115",
     "org:resource_User_116",
     "org:resource_User_118",
     "org:resource_User_119",
@@ -198,9 +190,7 @@
     "lifecycle:transition_schedule",
     "lifecycle:transition_start",
     "lifecycle:transition_suspend",
-    "lifecycle:transition_withdraw",
-    "Accepted_missing",
-    "Selected_missing"
+    "lifecycle:transition_withdraw"
   ],
   "cat_cols": [
     "ApplicationType",
@@ -209,12 +199,9 @@
     "org:resource",
     "Action",
     "EventOrigin",
-    "lifecycle:transition",
-    "Accepted",
-    "Selected"
+    "lifecycle:transition"
   ],
   "raw_columns": [
-    "NumberOfOffers",
     "RequestedAmount",
     "ApplicationType",
     "LoanGoal",
@@ -223,8 +210,6 @@
     "Action",
     "EventOrigin",
     "lifecycle:transition",
-    "Accepted",
-    "Selected",
     "FirstWithdrawalAmount_mean",
     "FirstWithdrawalAmount_max",
     "FirstWithdrawalAmount_min",
@@ -245,11 +230,6 @@
     "OfferedAmount_min",
     "OfferedAmount_sum",
     "OfferedAmount_std",
-    "CreditScore_mean",
-    "CreditScore_max",
-    "CreditScore_min",
-    "CreditScore_sum",
-    "CreditScore_std",
     "timesincelastevent_mean",
     "timesincelastevent_max",
     "timesincelastevent_min",
@@ -297,8 +277,6 @@
       "Action",
       "EventOrigin",
       "lifecycle:transition",
-      "Accepted",
-      "Selected",
       "FirstWithdrawalAmount_mean",
       "FirstWithdrawalAmount_max",
       "FirstWithdrawalAmount_min",
@@ -319,11 +297,6 @@
       "OfferedAmount_min",
       "OfferedAmount_sum",
       "OfferedAmount_std",
-      "CreditScore_mean",
-      "CreditScore_max",
-      "CreditScore_min",
-      "CreditScore_sum",
-      "CreditScore_std",
       "timesincelastevent_mean",
       "timesincelastevent_max",
       "timesincelastevent_min",
@@ -366,7 +339,6 @@
       "open_cases_std"
     ],
     "case": [
-      "NumberOfOffers",
       "RequestedAmount",
       "ApplicationType",
       "LoanGoal"

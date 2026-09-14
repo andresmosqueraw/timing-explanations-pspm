@@ -62,14 +62,31 @@ sys.path.insert(0, str(paths.REPO / "foreign/common_files"))
 # Per-log configuration (Shoush & Dumas's dataset_confs, plus SimBank)
 # ---------------------------------------------------------------------------
 
-LEAK_NOTE = """One deliberate departure from Shoush & Dumas's feature configuration:
-their dynamic categorical columns include ``time_to_event_m``, the time
-remaining until the case's treatment event, computed from the case's future.
-With it the retrained BPIC2017 predictor reaches a test AUC of 0.94 and that
-single column carries 71% of the model's importance, so a risk explanation
-would mostly say "the treatment is N minutes away" -- information no process
-actor has at the prefix. The risk models here exclude it (AUC drops
-accordingly; see each manifest). Everything else follows their configuration.
+LEAK_NOTE = """Departures from Shoush & Dumas's configuration, all to keep the future
+of a case out of its prefix (``leakage_audit.py`` checks every one):
+
+* ``time_to_event_m``: the time remaining until the case's outcome event.
+* ``NumberOfOffers`` (BPIC2012/2017): the number of offers of the *whole*
+  case, copied onto every event; it reveals offers not yet made on 35-53%
+  of the test prefixes, and it is the very column the released treatment is
+  a function of (``treat`` iff the case gets at most one offer).
+* ``CreditScore`` (BPIC2017): non-zero only on the offer the applicant ends
+  up accepting (P(deviant | CreditScore != 0 seen) = 0.00006 on 474k
+  prefixes), so it announces the outcome at offer creation. ``Accepted`` and
+  ``Selected`` are attributes of the same offer object whose recording time
+  is not documented; they are dropped with it. The offer's terms
+  (OfferedAmount, MonthlyCost, NumberOfTerms, FirstWithdrawalAmount) are set
+  when the offer is created and carry no such signal, and are kept.
+* Outcome-revealing prefixes: a case's decision points end before its first
+  ``outcome_activities`` event (e.g. O_Accepted: P(deviant) = 0 afterwards),
+  and the models are trained on those prefixes only.
+* Treatment: ``treatment_activity`` occurring for the ``treatment_nth`` time
+  before the outcome (BPIC: a further offer, the 2nd one; Sepsis: IV
+  Antibiotics) makes the case treated (T = 1), and its decision points end
+  before that event, so every covariate is pre-treatment. The released
+  treatment column (BPIC: "treat" = at most one offer) is replaced.
+* Static attributes take the value known so far in the prefix, never a value
+  first recorded at a later event.
 """
 
 RISK_LOGS: dict[str, dict] = {
@@ -80,17 +97,24 @@ RISK_LOGS: dict[str, dict] = {
         "dynamic_cat": ["Activity", "Resource"],  # released config also has time_to_event_m; see LEAK_NOTE
         "static_cat": ["event"],
         "dynamic_num": ["timesincelastevent", "timesincecasestart", "timesincemidnight", "event_nr", "month", "weekday", "hour", "open_cases"],
-        "static_num": ["NumberOfOffers", "AMOUNT_REQ"],
+        "static_num": ["AMOUNT_REQ"],  # released config also has NumberOfOffers; see LEAK_NOTE
+        # decision points end before the first event that reveals the outcome ...
+        "outcome_activities": ["A_APPROVED", "A_REGISTERED", "A_ACTIVATED", "A_CANCELLED", "A_DECLINED", "O_ACCEPTED"],
+        # ... and before the intervention: a further offer, the case's 2nd O_SENT
+        "treatment_activity": "O_SENT", "treatment_nth": 2,
         "rl_csv": paths.BPIC2012_CSV, "rl_case_col": "case_id",
     },
     "BPIC2017": {
         "shoush_name": "bpic2017",
         "case_col": "Case ID", "ts_col": "time:timestamp", "activity_col": "Activity",
         "label_col": "label", "pos_label": "deviant",
-        "dynamic_cat": ["Activity", "org:resource", "Action", "EventOrigin", "lifecycle:transition", "Accepted", "Selected"],  # + time_to_event_m in the released config; see LEAK_NOTE
+        # released config also has time_to_event_m, Accepted, Selected, CreditScore and NumberOfOffers; see LEAK_NOTE
+        "dynamic_cat": ["Activity", "org:resource", "Action", "EventOrigin", "lifecycle:transition"],
         "static_cat": ["ApplicationType", "LoanGoal"],
-        "dynamic_num": ["FirstWithdrawalAmount", "MonthlyCost", "NumberOfTerms", "OfferedAmount", "CreditScore", "timesincelastevent", "timesincecasestart", "timesincemidnight", "event_nr", "month", "weekday", "hour", "open_cases"],
-        "static_num": ["NumberOfOffers", "RequestedAmount"],
+        "dynamic_num": ["FirstWithdrawalAmount", "MonthlyCost", "NumberOfTerms", "OfferedAmount", "timesincelastevent", "timesincecasestart", "timesincemidnight", "event_nr", "month", "weekday", "hour", "open_cases"],
+        "static_num": ["RequestedAmount"],
+        "outcome_activities": ["A_Pending", "A_Denied", "A_Cancelled", "O_Accepted"],
+        "treatment_activity": "O_Created", "treatment_nth": 2,
         "rl_csv": paths.BPIC2017_CSV, "rl_case_col": "case_id",
     },
     "SimBank": {
@@ -105,6 +129,30 @@ RISK_LOGS: dict[str, dict] = {
         "dynamic_num": ["est_quality", "unc_quality", "cum_cost", "interest_rate", "discount_factor", "noc", "nor", "elapsed_time", "event_nr"],
         "static_num": ["amount"],
         "rl_csv": None, "rl_case_col": "case_nr",
+    },
+    "Sepsis": {
+        # "Sepsis Cases - Event Log" (Mannhardt, 4TU.ResearchData). Outcome
+        # ("risk") = the case revisits the ER (activity "Return ER" occurs
+        # anywhere in the trace; verified to fall at the case's last event in
+        # 99.9% of the 294 occurrences, so it is a genuine case outcome, not a
+        # mid-case waypoint). Intervention = "IV Antibiotics": the case is
+        # treated if it receives them before returning, and its decision
+        # points are the prefixes before that (add_decision_points), as on BPIC.
+        "shoush_name": None,
+        "case_col": "case_id", "ts_col": "timestamp", "activity_col": "activity",
+        "label_col": "label", "pos_label": "deviant",
+        "dynamic_cat": ["activity", "org:group"],
+        # a handful of the SIRS/diagnostic flags recorded once at ER
+        # Registration (case-level; encode_prefixes' "first non-null per
+        # case" static rule picks them up correctly even though every later
+        # event carries None for these columns, see load_events)
+        "static_cat": ["InfectionSuspected", "DiagnosticBlood", "SIRSCriteria2OrMore",
+                       "DisfuncOrg", "Hypotensie", "Infusion", "Oligurie", "Hypoxie"],
+        "dynamic_num": ["Leucocytes", "CRP", "LacticAcid", "timesincelastevent", "timesincecasestart", "hour", "weekday", "event_nr"],
+        "static_num": ["Age"],
+        "outcome_activities": ["Return ER"],
+        "treatment_activity": "IV Antibiotics", "treatment_nth": 1,
+        "rl_csv": None, "rl_case_col": "case_id",
     },
 }
 
@@ -125,8 +173,88 @@ def feature_families(feature_names: list[str], conf: dict) -> dict[str, list[str
 
 
 # ---------------------------------------------------------------------------
+# Sepsis Cases - Event Log
+# ---------------------------------------------------------------------------
+
+
+def load_sepsis_events() -> pd.DataFrame:
+    """The parsed Sepsis log (``paths.SEPSIS_EVENTS_PARQUET``) with the
+    derived columns ``encode_prefixes`` needs: the outcome label, the
+    *dynamic* per-prefix treatment flag, and timestamp-derived dynamic
+    numerics (Shoush & Dumas's own dynamic_num vocabulary has no equivalent
+    of a raw event timestamp column to reuse, so these are computed here,
+    the same way ``dataset_confs``/``DatasetManager`` compute them upstream
+    of the CSVs risk_model reads for BPIC)."""
+    conf = RISK_LOGS["Sepsis"]
+    df = pd.read_parquet(paths.SEPSIS_EVENTS_PARQUET)
+    df = df.sort_values(["case_id", "timestamp"], kind="mergesort").reset_index(drop=True)
+    g = df.groupby("case_id", sort=False)
+    df["event_nr"] = (g.cumcount() + 1).astype(float)
+
+    # label: the case ever revisits the ER. "Return ER" falls at the case's
+    # last event in 99.9% of its 294 occurrences (verified on this log), so
+    # this is a case outcome, not a mid-trace waypoint whose later prefixes
+    # would otherwise trivially "know" the label before it is reached.
+    ever_return = g["activity"].transform(lambda a: (a == "Return ER").any())
+    df["label"] = np.where(ever_return, "deviant", "regular")
+
+    # treatment and decision points: add_decision_points (load_events)
+
+    ts = df["timestamp"]
+    case_start = g["timestamp"].transform("min")
+    prev_ts = g["timestamp"].shift(1)
+    df["timesincecasestart"] = (ts - case_start).dt.total_seconds() / 3600.0
+    df["timesincelastevent"] = (ts - prev_ts).dt.total_seconds().fillna(0.0) / 60.0
+    df["hour"] = ts.dt.hour.astype(float)
+    df["weekday"] = ts.dt.weekday.astype(float)
+
+    for c in conf["dynamic_num"] + conf["static_num"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce").astype(float)
+    df["activity"] = df["activity"].astype(str)
+    df["org:group"] = df["org:group"].astype(str)
+    return df
+
+
+# ---------------------------------------------------------------------------
 # Loading
 # ---------------------------------------------------------------------------
+
+
+def add_decision_points(df: pd.DataFrame, conf: dict) -> pd.DataFrame:
+    """Leak-free treatment flag and decision-point mask, when the log config
+    names its outcome and treatment activities (see LEAK_NOTE).
+
+    In the event order ``encode_prefixes`` uses, an event is a decision point
+    iff it comes strictly before the case's first outcome-revealing event and
+    before the ``treatment_nth`` occurrence of the treatment activity; the
+    case is treated iff that occurrence exists and precedes the outcome."""
+    if "outcome_activities" not in conf:
+        return df
+    case, ts, act = conf["case_col"], conf["ts_col"], conf["activity_col"]
+    order = df.sort_values([case, ts, act], kind="mergesort").index
+    d = df.loc[order]
+    pos = d.groupby(case, sort=False).cumcount().to_numpy()
+    cases = d[case].to_numpy()
+    is_out = d[act].isin(conf["outcome_activities"]).to_numpy()
+    is_tr = (d[act] == conf["treatment_activity"]).to_numpy()
+    tr_count = pd.Series(is_tr.astype(int), index=d.index).groupby(cases, sort=False).cumsum().to_numpy()
+    big = np.iinfo(np.int64).max
+    first_out = pd.Series(np.where(is_out, pos, big), index=d.index).groupby(cases, sort=False).transform("min").to_numpy()
+    nth_tr = pd.Series(np.where(is_tr & (tr_count == conf["treatment_nth"]), pos, big), index=d.index).groupby(cases, sort=False).transform("min").to_numpy()
+    treated = nth_tr < first_out
+    df = df.copy()
+    df.loc[order, "treatment"] = np.where(treated, "treat", "noTreat")
+    df.loc[order, "_decision"] = pos < np.minimum(first_out, nth_tr)
+    df["_decision"] = df["_decision"].astype(bool)
+    return df
+
+
+def progress_horizon(train: pd.DataFrame, conf: dict, q: float = 0.95) -> float:
+    """The fixed denominator of the policy's relative_position: the q-quantile
+    of decision points per case in the training split, so progress needs no
+    knowledge of how long the current case will last."""
+    dec = train["_decision"] if "_decision" in train.columns else pd.Series(True, index=train.index)
+    return float(max(dec.groupby(train[conf["case_col"]]).sum().quantile(q), 1.0))
 
 
 def load_events(log: str) -> tuple[pd.DataFrame, dict]:
@@ -140,6 +268,8 @@ def load_events(log: str) -> tuple[pd.DataFrame, dict]:
             dtypes[c] = "float"
         df = pd.read_csv(dataset_confs.filename[conf["shoush_name"]], sep=";", dtype=dtypes, low_memory=False)
         df[conf["ts_col"]] = pd.to_datetime(df[conf["ts_col"]], format="mixed")
+    elif log == "Sepsis":
+        df = load_sepsis_events()
     else:
         df = pools.load_simbank(paths.SIMBANK_PKL).copy()
         last = df.groupby("case_nr")["activity"].transform("last")
@@ -157,7 +287,7 @@ def load_events(log: str) -> tuple[pd.DataFrame, dict]:
         for c in conf["dynamic_num"] + conf["static_num"]:
             df[c] = pd.to_numeric(df[c], errors="coerce").astype(float)
         df["activity"] = df["activity"].astype(str)
-    return df, conf
+    return add_decision_points(df, conf), conf
 
 
 # ---------------------------------------------------------------------------
@@ -196,11 +326,12 @@ def encode_prefixes(df: pd.DataFrame, conf: dict) -> tuple[pd.DataFrame, pd.Data
     df = df.sort_values([case, ts, act], kind="mergesort").reset_index(drop=True)
     g = df.groupby(case, sort=False)
     out = {}
-    # static: first event's values (StaticTransformer)
+    # static: the value known so far in the prefix (StaticTransformer takes the
+    # case's first non-null value, which can come from a later event)
     for c in conf["static_num"]:
-        out[c] = g[c].transform("first").fillna(0.0).astype(float)
+        out[c] = g[c].ffill().fillna(0.0).astype(float)
     for c in conf["static_cat"]:
-        out[c] = g[c].transform("first").fillna("0").astype(str)
+        out[c] = g[c].ffill().fillna("0").astype(str)
     # aggregate categoricals: running lexicographic max (AggregateTransformer,
     # boolean=True, catboost branch: groupby().max() on the raw strings)
     for c in conf["dynamic_cat"]:
@@ -238,6 +369,10 @@ def encode_prefixes(df: pd.DataFrame, conf: dict) -> tuple[pd.DataFrame, pd.Data
         meta["t"] = (df["treatment"].astype(str) == "treat").astype(int)
     if "decision_prefix" in df.columns:
         meta["decision_prefix"] = df["decision_prefix"].astype(float)
+    if "_decision" in df.columns:  # decision points only (add_decision_points)
+        keep = df["_decision"].to_numpy(bool)
+        X, meta = X[keep].reset_index(drop=True), meta[keep].reset_index(drop=True)
+        meta["case_length"] = meta.groupby("case_id", sort=False)["prefix_nr"].transform("max")  # decision points per case
     return X, meta
 
 
@@ -293,7 +428,9 @@ def train(log: str, iterations: int = 1000, seed: int = 2, max_train_rows: int |
         "elapsed_seconds": time.time() - t0, "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, "
                     "posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
-        "label": conf["pos_label"] if conf["shoush_name"] else "deviant = case ends in cancel_application (SimBank, ours)",
+        "label": conf["pos_label"] if conf["shoush_name"] else (
+            "deviant = case ends in cancel_application (SimBank, ours)" if log == "SimBank"
+            else "deviant = case revisits the ER, activity 'Return ER' (Sepsis, ours)"),
     }
     # agreement with the probabilities Shoush & Dumas shipped in the RL CSV
     if conf["rl_csv"] is not None:

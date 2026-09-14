@@ -1,0 +1,44 @@
+{
+  "seed": 42,
+  "total_timesteps": 600000,
+  "args": {
+    "timesteps": 600000,
+    "seed": 42,
+    "csv": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/retrained_state_sepsis.csv",
+    "out": null,
+    "extra_features": [
+      "Proba_if_Treated",
+      "Proba_if_Untreated"
+    ],
+    "reward_scale": 0.01,
+    "ent_coef": 0.3,
+    "n_steps": 512,
+    "learning_rate": 0.0003
+  },
+  "n_episodes": 154700,
+  "mean_episode_reward_last_50": 0.07,
+  "elapsed_seconds": 2129.4301297664642,
+  "timestamp": "2026-09-14T10:47:57Z",
+  "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/retrained_state_sepsis.csv",
+  "csv_mtime": "2026-09-14T10:10:29Z",
+  "env": "SepsisEnv",
+  "sb3_algo": "PPO",
+  "policy": "MlpPolicy",
+  "state_features": [
+    "relative_position",
+    "reliability",
+    "deviation",
+    "Proba_if_Treated",
+    "Proba_if_Untreated"
+  ],
+  "episode": "case",
+  "ent_coef": 0.3,
+  "reward_scale": 0.01,
+  "n_cases": 263,
+  "n_rows_swept": 1556,
+  "intervention_rate": 0.03534704370179949,
+  "mean_reward_per_case_policy": 33.17490494296578,
+  "mean_reward_per_case_always_wait": 17.870722433460077,
+  "gain_vs_always_wait": 15.304182509505704,
+  "note": "No available_resources term: Sepsis has no live-capacity column (see pools.py). Trained and swept on the same coherent CSV (build_sepsis_state.py's scored temporal test split, 263 cases) -- there is no separate shipped/rebuilt state to compare against for this log."
+}

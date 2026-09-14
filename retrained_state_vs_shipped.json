@@ -1,0 +1,16 @@
+{
+  "BPIC2012": {
+    "overlap_rows": 20904,
+    "corr_r": 0.6089908247158047,
+    "deviation_agreement": 0.6842709529276694,
+    "corr_pT": 0.2635791851122617,
+    "positive_rule_agreement": 0.49861270570225796
+  },
+  "BPIC2017": {
+    "overlap_rows": 222487,
+    "corr_r": -0.012877543200799164,
+    "deviation_agreement": 0.7835244306408914,
+    "corr_pT": 0.008506245311915763,
+    "positive_rule_agreement": 0.7087290493377141
+  }
+}

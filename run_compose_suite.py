@@ -51,7 +51,7 @@ from run_effect_suite import EffectBox  # noqa: E402
 from run_risk_suite import RiskBox, _save  # noqa: E402
 from run_xai_suite import _jsonable  # noqa: E402
 
-LOGS = ("BPIC2012", "BPIC2017")
+LOGS = ("BPIC2012", "BPIC2017", "SimBank", "Sepsis")
 TOP = 8
 
 
@@ -92,23 +92,26 @@ def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP
     masses["native"] = float(np.abs(prop["native"][mask]).sum())
     channel_share = {c: v / sum(masses.values()) for c, v in masses.items()}
     channel_share["cancellation"] = float(1.0 - np.abs(comp).sum() / sum(masses.values()))  # mass lost to opposite-sign channels
+    n_native = prop["native"].shape[1]  # 1 on Sepsis (no available_resources), 2 elsewhere
     return {"n": int(mask.sum()), "top": rows, "channel_share": channel_share, "cancellation_overall": canc["overall"],
             "cancellation_per_state_mean": float(canc["per_state"].mean()),
-            "prefix_share_top5": float(np.sort(share[:-2])[::-1][:5].sum())}
+            "prefix_share_top5": float(np.sort(share[:len(share) - n_native])[::-1][:5].sum())}
 
 
 def _flows(i: int, names: list[str], prop: dict, xrow, top: int = TOP) -> list[dict]:
     """Per top input of state i: its value and its contribution through every channel."""
     comp = prop["composed"][i]
+    n_native = prop["native"].shape[1]
+    n_raw = len(names) - n_native
 
     def val(name):
         v = xrow[name]
         return v if isinstance(v, str) else float(v)
 
-    o = np.argsort(-np.abs(comp[:-2]))[:top]
+    o = np.argsort(-np.abs(comp[:n_raw]))[:top]
     flows = [{"input": names[j], "value": val(names[j]), "risk": float(prop["channels"]["risk"][i, j]), "effect_T": float(prop["channels"]["effect_T"][i, j]),
               "effect_U": float(prop["channels"]["effect_U"][i, j]), "total": float(comp[j])} for j in o]
-    rest = np.setdiff1d(np.arange(len(names) - 2), o)
+    rest = np.setdiff1d(np.arange(n_raw), o)
     flows.append({"input": "(other attributes)", "risk": float(prop["channels"]["risk"][i, rest].sum()),
                   "effect_T": float(prop["channels"]["effect_T"][i, rest].sum()), "effect_U": float(prop["channels"]["effect_U"][i, rest].sum()),
                   "total": float(comp[rest].sum())})
@@ -116,15 +119,18 @@ def _flows(i: int, names: list[str], prop: dict, xrow, top: int = TOP) -> list[d
 
 
 def _card(i: int, names: list[str], prop: dict, phi_t: np.ndarray, state: np.ndarray, meta_row, xrow, r, pT, pU, dq, feats: list[str], top: int = TOP) -> dict:
+    n_native = prop["native"].shape[1]
+    n_raw = len(names) - n_native
+    native_names = [f for f in cp.NATIVE if f in feats]  # order matches compose.propagate's native_feats
     per_chan = {}
     for c in ("risk", "effect_T", "effect_U"):
         v = prop["channels"][c][i]
-        per_chan[c] = _top(names[:-2], v, top)
+        per_chan[c] = _top(names[:n_raw], v, top)
     comp = prop["composed"][i]
     flows = _flows(i, names, prop, xrow, top)
     return {"case_id": str(meta_row.case_id), "prefix_nr": int(meta_row.prefix_nr), "action": "intervene" if dq > 0 else "wait", "dq": float(dq),
             "r": float(r), "pT": float(pT), "pU": float(pU), "state": dict(zip(feats, state.astype(float).tolist())),
-            "timing_phi": dict(zip(feats, phi_t.astype(float).tolist())), "native_phi": dict(zip(cp.NATIVE, prop["native"][i].tolist())),
+            "timing_phi": dict(zip(feats, phi_t.astype(float).tolist())), "native_phi": dict(zip(native_names, prop["native"][i].tolist())),
             "composed_top": _top(names, comp, top), "per_channel_top": per_chan, "flows": flows,
             "completeness": {"timing_sum": float(phi_t.sum()), "composed_sum": float(comp.sum())}}
 
@@ -168,7 +174,7 @@ def run_log(name: str, args) -> dict:
         sel = np.random.default_rng(pools.POOL_SEED).choice(len(X), args.quick, replace=False)
         X, meta, states_m, rows_m = X.iloc[sel].reset_index(drop=True), meta.iloc[sel].reset_index(drop=True), states_m[sel], rows_m.iloc[sel].reset_index(drop=True)
     n = len(X)
-    print(f"\n=== {name}: {n} pool rows matched; {len(box.raw_columns)} prefix attributes + {len(cp.NATIVE)} native")
+    print(f"\n=== {name}: {n} pool rows matched; {len(box.raw_columns)} prefix attributes + {len(box.native)} native")
     out: dict = {"log": name, "n": int(n), "inputs": names, "state_features": sfeats, "variant": args.variant}
     figdir = paths.COMPOSE_FIGURES / name
     files: list[str] = []
@@ -196,7 +202,7 @@ def run_log(name: str, args) -> dict:
     ship = pd.DataFrame(states_m, columns=sfeats)
     shipped_r = rows_m["predicted_proba_1"].to_numpy(float) if "predicted_proba_1" in rows_m else None
     oracle = pools.oracle_acts(rows_m)
-    rule_re = (pT > 0.5) & (pU <= 0.5)
+    rule_re = cp.positive_effect_rule(pT, pU)
     idev, irel = sfeats.index("deviation"), sfeats.index("reliability")
     out["state_agreement"] = {
         "risk": {"deviation_agrees": float((rebuilt[:, idev] == ship.deviation.to_numpy()).mean()),
@@ -290,11 +296,16 @@ def run_log(name: str, args) -> dict:
                          "reference": "pool background" if zbg is not None else "point (pool mean/mode)",
                          "F_reference_mean": float(np.mean(box.f(zbg))) if zbg is not None else float(box.f(pd.DataFrame([zref]))[0]),
                          "completeness_gap": float(np.abs(phi_d.sum(axis=1) - (box.f(Z, sign) - f_ref)).max()),
+                         # sampled Shapley values sum to f(Z) minus the mean of *their own* background draws, so
+                         # against the pool expectation they are complete only on average: report the typical gap too
+                         "completeness_gap_mean": float(np.abs(phi_d.sum(axis=1) - (box.f(Z, sign) - f_ref)).mean()),
+                         "completeness_gap_signed_mean": float((phi_d.sum(axis=1) - (box.f(Z, sign) - f_ref)).mean()),
+                         "margin_abs_mean": float(np.abs(box.f(Z, sign) - f_ref).mean()),
                          "agreement_with_propagated": {"all": cp.ranking_agreement(prop["composed"], phi_d),
                                                        "act": cp.ranking_agreement(prop["composed"][m > 0], phi_d[m > 0]) if (m > 0).any() else None,
                                                        "wait": cp.ranking_agreement(prop["composed"][m <= 0], phi_d[m <= 0]) if (m <= 0).any() else None},
                          "global_top": {side: _top(names, np.abs(phi_d[mask]).mean(axis=0), TOP) for side, mask in (("act", m > 0), ("wait", m <= 0)) if mask.any()},
-                         "native_share_direct": {side: float(np.abs(phi_d[mask][:, -2:]).sum() / np.abs(phi_d[mask]).sum())
+                         "native_share_direct": {side: float(np.abs(phi_d[mask][:, -len(box.native):]).sum() / np.abs(phi_d[mask]).sum())
                                                  for side, mask in (("act", m > 0), ("wait", m <= 0)) if mask.any()}}
         print(f"  direct Shapley sampling ({args.n_perm} perms, {out['direct']['seconds']:.0f}s): agreement", json.dumps({k: round(v, 3) for k, v in out["direct"]["agreement_with_propagated"]["all"].items()}))
     out["deletion_e2e"] = {}
@@ -307,7 +318,7 @@ def run_log(name: str, args) -> dict:
             print(f"  deletion e2e [{side}] k={k}: random={res['abs_random']:.3f} " + " ".join(f"{nm}: guided={res[nm]['abs_guided']:.3f} anti={res[nm]['abs_anti']:.3f} z={res[nm]['z']:.1f}" for nm in rankings))
 
     # --- risk vs effect on the shared vocabulary ----------------------------
-    out["risk_effect"] = cp.risk_effect_agreement(phi_r, phiT - phiU, box.raw_columns)
+    out["risk_effect"] = cp.risk_effect_agreement(phi_r, phiU - phiT, box.raw_columns)  # phi^CATE: toward a larger benefit
     out["risk_effect"]["groups"] = cp.sign_groups(out["risk_effect"]["per_attribute"])
     print("  sign groups:", {k: v for k, v in out["risk_effect"]["groups"].items()})
     print(f"  risk vs effect: global rho={out['risk_effect']['global_spearman']:.2f} jaccard@10={out['risk_effect']['jaccard_top10']:.2f} shared={out['risk_effect']['shared_top']}")

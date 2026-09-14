@@ -11,6 +11,7 @@ __pycache__/
 PeerJ2023/
 simbank_resources/data/
 data/*.csv
+data/*.parquet
 data/loan_log_*
 figures/out/
 zenodo_upload/
@@ -18,3 +19,6 @@ catboost_info/
 *.log
 !models/**/*.log
 models/variants/sweep/
+
+# local snapshots taken before large regenerations
+archive/

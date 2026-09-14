@@ -10,11 +10,15 @@ acting over waiting), the *risk explanation* of the outcome predictor whose
 outputs the policy reads as state, and the *effect explanation* of the
 causal-effect estimator whose outputs it also reads; and asks how they
 compose. `compose.py` propagates the timing justification to the prefix
-attributes through the two lower levels (DeepSHAP's rescale rule, as Chen
-et al. propagate Shapley values through a series of models), checks the
-result against a direct attribution of the whole prefix-to-margin chain with
-a deletion test, and cross-tabulates the decisions by (at risk) × (treatable)
-× (acts).
+attributes through the two lower levels (DeepSHAP's rescale rule, Shrikumar
+et al. 2017, as Chen et al. propagate Shapley values through a series of
+models; opposite-sign channels are diagnosed with a cancellation index, the
+failure mode DeepLIFT's RevealCancel rule targets), checks the result
+against a direct attribution of the whole prefix-to-margin chain with a
+deletion test (Samek et al. 2017's perturbation protocol), reads agreement
+with the rank/feature/sign-agreement metrics of Krishna et al. 2022's
+disagreement-problem study, and cross-tabulates the decisions by (at risk)
+× (treatable) × (acts).
 
 ## The explained policy
 
@@ -38,17 +42,31 @@ the paper's. `--variant released` evaluates the earlier four-feature design
 (`*_released.json`). SimBank keeps its single checkpoint, trained on the
 retrained estimator's features (`simbank_resources/add_effect_features.py`).
 
-Per decision point (`gain_table_results.json`) the paper's policy earns
-42.3 / 39.9 / 46.3 (BPIC2012 / BPIC2017 / SimBank) against 24.5 / 24.8 /
--63.3 for always waiting, -49.5 / -49.8 / 16.6 for always intervening and
--27.6 / -32.0 / -61.4 for the recorded action (oracle 58.3 / 54.4 / 46.5). It
-intervenes on 11.3 % / 15.9 % / 73.2 % of the decision points (precision
-0.94 / 0.73 / 1.00, recall 0.55 / 0.69 / 1.00 against the positive-effect
-rows). Both BPIC checkpoints are trained for 600k steps: at 300k the
-BPIC2017 agent over-intervened (33.6 %, precision 0.38, gain 21.4), reading
-`Proba_if_Treated` far more than `Proba_if_Untreated`, and lower entropy
-coefficients collapse to never-intervene (`models/variants/*_manifest.json`,
-`*_300k` checkpoints archived).
+Per decision point (`gain_table_results.json`, corrected reward) the paper's
+policy earns 55.3 / 36.2 / 7.8 (BPIC2012 / BPIC2017 / Sepsis) against
+-15.5 / 20.2 / -3.8 for always waiting and -9.5 / -45.2 / -21.2 for always
+intervening (oracle 64.8 / 55.7 / 8.1). On the explained pools it acts on
+94 % / 61 % / 100 % of the decision points where the positive-effect rule
+holds and on 8 % / 12 % / 0 % of the rest; on BPIC2017 most of its other
+interventions fall where no employee is free, because the released reward
+pays its waiting bonus only while one is.
+
+## Leakage
+
+The released configuration lets the future of a case into its prefix; the
+pipeline here removes it and `leakage_audit.py` checks it (all three logs
+pass, `leakage_audit.json`): no whole-case `NumberOfOffers` (it also defined
+the released treatment), no BPIC2017 `CreditScore` (filled in only on the
+offer the applicant ends up accepting: P(deviant | seen) = 0.00006) with the
+offer's `Accepted`/`Selected`, no `time_to_event_m`; decision points end
+before the outcome shows (incl. O_Accepted) and before the treatment (a
+second offer; IV Antibiotics), models are trained on those prefixes only,
+static attributes take the value known so far, and the state's
+`relative_position` divides by a fixed training-split horizon instead of the
+case's own length. Without these the BPIC2017 risk model reached AUC 0.94,
+almost all of it on CreditScore; without them it reaches 0.69. The reward's
+sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
+`archive/pre_reward_fix/` (git-ignored).
 
 ## Layout
 

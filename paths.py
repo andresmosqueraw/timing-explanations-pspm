@@ -51,6 +51,18 @@ SIMBANK_PKL = _env_path(
     "TIMING_SIMBANK_PKL", REPO / "simbank_resources/data/simbank_time_contact_hq_with_resources.pkl"
 )
 
+# Sepsis Cases - Event Log (Mannhardt, 4TU.ResearchData, doi:10.4121/uuid:915d2bfb-
+# 7e84-49ad-a286-dc35f063a460) parsed to one row per event (columns case_id,
+# activity, timestamp, org:group and the event attributes; see
+# datasets_eda/README.md); git-ignored like the other logs.
+SEPSIS_EVENTS_PARQUET = _env_path("TIMING_SEPSIS_PARQUET", DATA / "sepsis_events.parquet")
+# The coherent-pipeline RL CSV for Sepsis (build_sepsis_state.py): the
+# prepared log's temporal test split scored by the retrained risk and effect
+# models, in the same format as RETRAINED_CSV above. There is no "shipped"
+# counterpart (see build_sepsis_state.py docstring) -- this is the only state
+# Sepsis's policy ever reads.
+SEPSIS_STATE_CSV = _env_path("TIMING_SEPSIS_STATE_CSV", DATA / "retrained_state_sepsis.csv")
+
 # Shoush & Dumas's *prepared* event logs (inputs of their predictive model;
 # their owncloud archive, PeerJ2023/prepared_data/<log>/prepared_treatment_
 # outcome_time_to_event_<log>.csv). Read by risk_model.py to retrain the
@@ -83,9 +95,12 @@ def variant_model(log: str, variant: str = "cate") -> Path:
     live under models/variants/ppo_<log>_<variant>.zip."""
     if variant == "released":
         return {"BPIC2012": BPIC2012_MODEL, "BPIC2017": BPIC2017_MODEL, "SimBank": SIMBANK_MODEL}[log]
-    if log == "SimBank" and variant == "cate_retrained":
+    if log in ("SimBank", "Sepsis") and variant == "cate_retrained":
         # SimBank's cate checkpoint already reads the retrained estimator's
         # features (add_effect_features.py): its pipeline is coherent as is.
+        # Sepsis is built coherent from scratch (build_sepsis_state.py) and
+        # has a single checkpoint too -- no shipped/rebuilt distinction ever
+        # existed for it, so "cate_retrained" and "cate" name the same file.
         variant = "cate"
     return VARIANT_MODELS / f"ppo_{log.lower()}_{variant}.zip"
 

@@ -1,0 +1,28 @@
+{
+  "log": "Sepsis",
+  "seed": 2,
+  "iterations": 1000,
+  "best_iteration": 50,
+  "n_train": 3521,
+  "n_val": 1754,
+  "n_test": 1808,
+  "n_features": 51,
+  "deviant_share_train": 0.3254757171258165,
+  "test_auc": 0.582461009174312,
+  "feature_importance_top10": {
+    "org:group": 12.748684071059907,
+    "Infusion": 12.293687191616872,
+    "Age": 7.987710830757795,
+    "event_nr_mean": 7.27272015803543,
+    "hour_max": 7.2555009063351195,
+    "event_nr_sum": 7.014202132664408,
+    "DiagnosticBlood": 4.866946915865498,
+    "SIRSCriteria2OrMore": 4.852321514755674,
+    "activity": 3.603117391949272,
+    "event_nr_max": 3.552946246098807
+  },
+  "elapsed_seconds": 68.7998697757721,
+  "timestamp": "2026-09-14T09:50:46Z",
+  "settings": "CatBoostClassifier(iterations, depth=6, border_count=128, random_strength=100, Logloss, Bernoulli, posterior_sampling, eval AUC, use_best_model, langevin) = Shoush & Dumas get_catboost_pred_uncer.py, ensemble size 1",
+  "label": "deviant = case revisits the ER, activity 'Return ER' (Sepsis, ours)"
+}
