@@ -17,7 +17,11 @@ Per log, recomputed from the raw events rather than from the code it audits:
   4. treatment: the propensity's overlap on the test decision points (the
      effect estimator's positivity);
   5. state: the RL CSV holds exactly the test decision points, carries no
-     case length, and its relative_position uses the fixed training horizon.
+     case length, and its relative_position uses the fixed training horizon;
+  6. out-of-sample state: the validation RL CSV (where the policy's gain is
+     reported) holds exactly the validation decision points, shares no case
+     with the test split the agent trains on or with the training split, and
+     starts after the training split ends.
 
 Writes leakage_audit.json; exits non-zero when a hard check fails.
 
@@ -42,9 +46,13 @@ import risk_model as rm
 LOGS = ("BPIC2012", "BPIC2017", "Sepsis")
 FORBIDDEN = {"time_to_event_m", "NumberOfOffers", "CreditScore", "Accepted", "Selected", "case_length"}
 STATE_CSV = {"BPIC2012": paths.retrained_csv("BPIC2012"), "BPIC2017": paths.retrained_csv("BPIC2017"), "Sepsis": paths.SEPSIS_STATE_CSV}
+VAL_STATE_CSV = {"BPIC2012": paths.retrained_csv("BPIC2012", "val"), "BPIC2017": paths.retrained_csv("BPIC2017", "val")}
 NEAR_CERTAIN = 0.01   # a condition whose outcome rate is below this or above 1 - this
 MIN_SUPPORT = 200     # ... on at least this many test prefixes, is a leak
 AUC_FLAG = 0.90       # a single feature separating the outcome better than this is flagged
+# Overlap band of the propensity: [0.1, 0.9] approximates the optimal trimmed
+# set for a wide class of distributions (Crump, Hotz, Imbens & Mitnik 2009).
+OVERLAP_BAND = (0.1, 0.9)
 
 
 def _base(name: str) -> str:
@@ -76,7 +84,7 @@ def audit(log: str) -> dict:
     chk["later_prefixes_excluded"] = bool((ev.decision | ~before).all())
     out["decision_points"] = {"events": int(len(ev)), "decision_points": int(ev.decision.sum())}
 
-    tr, te, _va = rm.temporal_split(df, conf)
+    tr, te, va = rm.temporal_split(df, conf)
     Xtr, mtr = rm.encode_prefixes(tr, conf)
     Xte, mte = rm.encode_prefixes(te, conf)
     keys = ev.loc[ev.decision, ["case_id", "prefix_nr"]]
@@ -143,12 +151,13 @@ def audit(log: str) -> dict:
     Xd = em.one_hot(Xte[ef["raw_columns"]], ef["cat_cols"], ef["columns"])
     e = prop.predict_proba(Xd.to_numpy(dtype=np.float32))[:, 1]
     t = mte["t"].to_numpy()
+    inband = (e >= OVERLAP_BAND[0]) & (e <= OVERLAP_BAND[1])
     out["propensity"] = {"treated_share_test": float(t.mean()), "auc": float(roc_auc_score(t, e)) if np.unique(t).size > 1 else None,
-                         "share_in_0.05_0.95": float(((e >= 0.05) & (e <= 0.95)).mean()), "min": float(e.min()), "max": float(e.max()),
-                         "cases_in_overlap": int(mte.loc[(e >= 0.05) & (e <= 0.95), "case_id"].nunique()), "cases": int(mte.case_id.nunique())}
+                         "overlap_band": list(OVERLAP_BAND), "share_in_overlap": float(inband.mean()), "min": float(e.min()), "max": float(e.max()),
+                         "cases_in_overlap": int(mte.loc[inband, "case_id"].nunique()), "cases": int(mte.case_id.nunique())}
     # not a leak but a limit of the effect level: without overlap the two arms are never compared on similar cases
-    out["warnings"] = [] if out["propensity"]["share_in_0.05_0.95"] >= 0.5 else [
-        f"weak positivity: only {out['propensity']['share_in_0.05_0.95']:.1%} of test decision points have a propensity in [0.05, 0.95]"]
+    out["warnings"] = [] if out["propensity"]["share_in_overlap"] >= 0.5 else [
+        f"weak positivity: only {out['propensity']['share_in_overlap']:.1%} of test decision points have a propensity in {list(OVERLAP_BAND)}"]
 
     # 5. the RL state
     p = STATE_CSV[log]
@@ -158,6 +167,19 @@ def audit(log: str) -> dict:
         k = st[["case_id", "prefix_nr"]].merge(mte[["case_id", "prefix_nr"]], on=["case_id", "prefix_nr"])
         chk["state_rows_are_test_decision_points"] = bool(len(k) == len(st) == len(mte))
         chk["state_horizon_from_training"] = bool(np.allclose(st["progress_horizon"], rm.progress_horizon(tr, conf)))
+
+    # 6. the out-of-sample (validation) state
+    pv = VAL_STATE_CSV.get(log)
+    if pv is not None and pv.exists():
+        sv = pd.read_csv(pv, sep=";", dtype={"case_id": str}, keep_default_na=False, na_values=[], usecols=["case_id", "prefix_nr", "progress_horizon"])
+        _, mva = rm.encode_prefixes(va, conf)
+        mva = mva.assign(case_id=mva["case_id"].astype(str))
+        kv = sv[["case_id", "prefix_nr"]].merge(mva[["case_id", "prefix_nr"]], on=["case_id", "prefix_nr"])
+        chk["val_state_rows_are_val_decision_points"] = bool(len(kv) == len(sv) == len(mva))
+        vcases = set(sv["case_id"])
+        chk["val_cases_disjoint_from_test_and_train"] = not (vcases & set(mte["case_id"].astype(str))) and not (vcases & set(tr[conf["case_col"]].astype(str)))
+        chk["val_starts_after_training"] = bool(va[conf["ts_col"]].min() >= tr[conf["ts_col"]].max())
+        chk["val_horizon_from_training"] = bool(np.allclose(sv["progress_horizon"], rm.progress_horizon(tr, conf)))
     ok = all(chk.values())
     print(f"\n=== {log}: {'PASS' if ok else 'FAIL'}")
     for name, v in chk.items():

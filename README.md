@@ -12,7 +12,7 @@ causal-effect estimator whose outputs it also reads; and asks how they
 compose. `compose.py` propagates the timing justification to the prefix
 attributes through the two lower levels (DeepSHAP's rescale rule, Shrikumar
 et al. 2017, as Chen et al. propagate Shapley values through a series of
-models; opposite-sign channels are diagnosed with a cancellation index, the
+models; opposite-sign channels are diagnosed with the cancellation ratio of Kramár et al. (AtP*, 2024), the
 failure mode DeepLIFT's RevealCancel rule targets), checks the result
 against a direct attribution of the whole prefix-to-margin chain with a
 deletion test (Samek et al. 2017's perturbation protocol), reads agreement
@@ -99,7 +99,9 @@ sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
   `fidelity_results.json`.
 - `compute_gain_table.py` — mean reward per decision point under the
   historically recorded action versus the retrained policy, across all
-  three logs; writes `gain_table_results.json`.
+  three logs, plus the BPIC policies on their validation cases
+  (`bpic2012_val`, `bpic2017_val`: cases the agent never trained on, out of
+  sample); writes `gain_table_results.json`.
 - `figures/make_figures.py` — the paper's figures (MDP timeline diagram,
   training-curve plot, two explanation cards).
 - `run_xai_suite.py`, `xai_methods.py`, `xai_metrics.py`, `xai_plots.py`,
@@ -139,7 +141,7 @@ sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
   The direct attribution of F is Shapley sampling against the pool as
   background (the same reference the levels use); `compose.anchor_to_direct`
   is the per-decision safeguard (direct ranking, propagated channel split),
-  `compose.cancellation` the per-attribute cancellation index,
+  `compose.cancellation` the per-attribute cancellation ratio (Kramár et al. 2024),
   `compose.well_defined` / `baseline_alignment` the two conditions of the
   operator, `sign_groups` the agree / oppose / independent split of the
   risk-vs-effect signs. `--variant risk_retrained` runs it on the four-feature
@@ -147,7 +149,10 @@ sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
   channel (`compose_results_risk_retrained.json`).
 - `build_retrained_state.py` — the coherent-pipeline RL CSVs
   (`data/retrained_state_<log>.csv`) the `cate_retrained` policies are
-  trained and evaluated on.
+  trained and explained on, and the validation-split CSVs
+  (`data/retrained_state_<log>_val.csv`) where their gain is scored out of
+  sample (`leakage_audit.py` checks that these cases are disjoint from the
+  test and training splits).
 - `figures/make_composition_flow.py` — the paper's flow figure: the propagated
   card of one decision, prefix attributes → state coordinates by level →
   margin.
@@ -175,7 +180,7 @@ python risk_model.py               # retrain the outcome (risk) predictors -> mo
 python run_risk_suite.py           # risk explanations + metrics + two-level cards -> risk_results.json
 python effect_model.py             # retrain the causal-effect estimators -> models/effect/ (BPIC2017 takes ~75 min)
 python run_effect_suite.py         # effect explanations + deletion test + three-level cards -> effect_results.json
-python build_retrained_state.py    # coherent-pipeline RL CSVs -> data/retrained_state_<log>.csv (needs the prepared logs)
+python build_retrained_state.py    # coherent-pipeline RL CSVs -> data/retrained_state_<log>.csv and _val.csv (needs the prepared logs)
 python run_compose_suite.py        # composition study -> compose_results.json, figures/out/compose/
 TIMING_PAPER_FIGURES=<paper>/figures python figures/make_three_level.py        # the paper's three-level card (fig5)
 TIMING_PAPER_FIGURES=<paper>/figures python figures/make_composition_flow.py   # the paper's composition flow figure (fig6)

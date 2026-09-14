@@ -11,7 +11,11 @@
       "no_single_feature_above_auc_flag": true,
       "state_has_no_case_length": true,
       "state_rows_are_test_decision_points": true,
-      "state_horizon_from_training": true
+      "state_horizon_from_training": true,
+      "val_state_rows_are_val_decision_points": true,
+      "val_cases_disjoint_from_test_and_train": true,
+      "val_starts_after_training": true,
+      "val_horizon_from_training": true
     },
     "decision_points": {
       "events": 115125,
@@ -134,7 +138,11 @@
     "propensity": {
       "treated_share_test": 0.2901358591657099,
       "auc": 0.640157942570954,
-      "share_in_0.05_0.95": 0.8407481821660926,
+      "overlap_band": [
+        0.1,
+        0.9
+      ],
+      "share_in_overlap": 0.7214408725602756,
       "min": 0.0001221662394077837,
       "max": 0.8490460166916577,
       "cases_in_overlap": 1172,
@@ -155,7 +163,11 @@
       "no_single_feature_above_auc_flag": true,
       "state_has_no_case_length": true,
       "state_rows_are_test_decision_points": true,
-      "state_horizon_from_training": true
+      "state_horizon_from_training": true,
+      "val_state_rows_are_val_decision_points": true,
+      "val_cases_disjoint_from_test_and_train": true,
+      "val_starts_after_training": true,
+      "val_horizon_from_training": true
     },
     "decision_points": {
       "events": 1198319,
@@ -286,7 +298,11 @@
     "propensity": {
       "treated_share_test": 0.1766080714828282,
       "auc": 0.6407270865907091,
-      "share_in_0.05_0.95": 0.9538714621528449,
+      "overlap_band": [
+        0.1,
+        0.9
+      ],
+      "share_in_overlap": 0.7487493651314459,
       "min": 0.00020149628080057624,
       "max": 0.877365940994567,
       "cases_in_overlap": 7853,
@@ -437,14 +453,18 @@
     "propensity": {
       "treated_share_test": 0.7029867256637168,
       "auc": 0.9956851523822501,
-      "share_in_0.05_0.95": 0.0868362831858407,
+      "overlap_band": [
+        0.1,
+        0.9
+      ],
+      "share_in_overlap": 0.07853982300884955,
       "min": 4.845772364076232e-122,
       "max": 0.9986638282593208,
-      "cases_in_overlap": 36,
+      "cases_in_overlap": 33,
       "cases": 263
     },
     "warnings": [
-      "weak positivity: only 8.7% of test decision points have a propensity in [0.05, 0.95]"
+      "weak positivity: only 7.9% of test decision points have a propensity in [0.1, 0.9]"
     ],
     "pass": true
   }

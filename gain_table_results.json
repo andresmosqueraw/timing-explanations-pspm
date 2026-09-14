@@ -28,6 +28,36 @@
     "policy_precision": 0.8801161103047895,
     "policy_recall": 0.4979471177533257
   },
+  "bpic2012_val": {
+    "n": 20675,
+    "hist_gain": -9.073760580411125,
+    "policy_gain": 55.28415961305925,
+    "delta": 64.35792019347038,
+    "policy_intervene_rate": 0.4787424425634825,
+    "hist_intervene_rate": 0.2769528415961306,
+    "oracle_gain": 65.14389359129383,
+    "always_wait_gain": -16.045949214026603,
+    "always_intervene_gain": -8.954050785973397,
+    "share_ite_positive": 0.46394195888754536,
+    "policy_precision": 0.9133158213780562,
+    "policy_recall": 0.9424520433694745,
+    "cases": 1172
+  },
+  "bpic2017_val": {
+    "n": 30000,
+    "hist_gain": 12.2725,
+    "policy_gain": 36.52,
+    "delta": 24.247500000000002,
+    "policy_intervene_rate": 0.12046666666666667,
+    "hist_intervene_rate": 0.17236666666666667,
+    "oracle_gain": 55.740833333333335,
+    "always_wait_gain": 19.498333333333335,
+    "always_intervene_gain": -44.498333333333335,
+    "share_ite_positive": 0.2071,
+    "policy_precision": 0.8876591034864416,
+    "policy_recall": 0.5163367133429905,
+    "cases": 7853
+  },
   "sepsis": {
     "n": 1808,
     "hist_gain": -3.8440265486725664,

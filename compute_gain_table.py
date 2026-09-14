@@ -136,6 +136,13 @@ if __name__ == "__main__":
                                     pools.treatment_col("BPIC2012", args.variant), variant=args.variant)
     results["bpic2017"] = bpic_gain("BPIC2017", paths.bpic_csv("BPIC2017", args.variant), paths.variant_model("BPIC2017", args.variant),
                                     pools.treatment_col("BPIC2017", args.variant), sample=30000, variant=args.variant)
+    # Out of sample: the validation cases, which the agent never trained on.
+    if args.variant == pools.DEFAULT_VARIANT:
+        for lg, key, sample in (("BPIC2012", "bpic2012_val", None), ("BPIC2017", "bpic2017_val", 30000)):
+            if paths.retrained_csv(lg, "val").exists():
+                results[key] = bpic_gain(f"{lg} (validation cases, out of sample)", paths.retrained_csv(lg, "val"), paths.variant_model(lg, args.variant),
+                                         pools.treatment_col(lg, args.variant), sample=sample, variant=args.variant)
+                results[key]["cases"] = int(pools.load_bpic(paths.retrained_csv(lg, "val"))["case_id"].nunique())
     if paths.variant_model("Sepsis", args.variant).exists():
         results["sepsis"] = sepsis_gain(args.variant)
     n_match = results["bpic2012"]["n"]

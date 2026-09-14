@@ -174,19 +174,40 @@ def main():
     # --- Section 6.3: what the timing level inherits (propagated) ---------------
     rd = comp["readings"]["rebuilt"]
     inputs = comp["inputs"]
-    for side in ("act", "wait"):
-        t = rd["propagation"][side]
+    def inherit_rows(table: dict, n: int) -> str:
+        """Table 'inherit': share of the composed timing, share in the risk
+        explanation, how often the attribute moves both effect arms the same
+        way, how often its two effect channels oppose each other in the timing
+        decision, the channel split (risk / treated / untreated) and the
+        weight lost to cancelling -- the chain behind the cancellation."""
         rows = []
-        for d in t["top"][:6]:
+        pc = lambda x: "--" if x is None else f"{100 * x:.0f}\\%"
+        for d in table["top"][:n]:
             ch = d["channel"]
             if "native" in ch:
-                split = "native"
-            else:
-                tot = sum(ch.values()) or 1.0
-                split = ", ".join(f"{CHAN_NAME[c]} {pct(v / tot, 0)}" for c, v in sorted(ch.items(), key=lambda kv: -kv[1]) if v / tot >= 0.05)
-            canc = "--" if d.get("cancellation") is None else pct(d["cancellation"], 0)
-            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {split} & {canc} \\\\ \\hline")
-        out.append(macro(f"INHERIT{side.upper()}ROWS", "\n".join(rows)))
+                rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & -- & -- & -- & native & -- \\\\ \\hline")
+                continue
+            tot = sum(ch.values()) or 1.0
+            split = " / ".join(f"{100 * ch[c] / tot:.0f}" for c in ("risk", "effect_T", "effect_U"))
+            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {pc(d.get('risk_share'))} & {pc(d.get('arms_same_direction'))} & "
+                        f"{pc(d.get('channels_opposed'))} & {split} & {pc(d.get('cancellation'))} \\\\ \\hline")
+        return "\n".join(rows)
+
+    for side in ("act", "wait"):
+        S = side.upper()
+        t = rd["propagation"][side]  # BPIC2017's table, read by the Section 6.3 macros below
+        for c_log, suffix, n in ((comp, "", 6), (comp12, "BPIC", 5)):
+            if not c_log:
+                continue
+            tb = c_log["readings"]["rebuilt"]["propagation"][side]  # not `t`: the macros below still read BPIC2017's table
+            out.append(macro(f"INHERIT{S}ROWS{suffix}", inherit_rows(tb, n)))
+            ba = tb.get("cancellation_by_arm_direction") or {}
+            cs_ = tb["channel_share"]
+            out += [macro(f"LOSTSAME{S}{suffix}", pct(ba["lost_same_direction"], 0) if ba.get("lost_same_direction") is not None else "--"),
+                    macro(f"LOSTDIFF{S}{suffix}", pct(ba["lost_opposite_direction"], 0) if ba.get("lost_opposite_direction") is not None else "--")]
+            if suffix:  # the BPIC2017 channel shares are written with the Section 6.3 macros above
+                out += [macro(f"CHANRISK{S}{suffix}", pct(cs_["risk"])), macro(f"CHANEFFECT{S}{suffix}", pct(cs_["effect_T"] + cs_["effect_U"])),
+                        macro(f"CHANNATIVE{S}{suffix}", pct(cs_["native"]))]
         out.append(macro(f"CANCEL{side.upper()}", pct(t["cancellation_overall"], 0)))
         out.append(macro(f"TOPINPUTCANC{side.upper()}", pct(t["top"][0]["cancellation"], 0) if t["top"][0].get("cancellation") is not None else "--"))
         top_c = [(d["input"], d["cancellation"]) for d in t["top"] if d.get("cancellation") is not None]
@@ -214,7 +235,6 @@ def main():
                 t12 = rd12["propagation"][side]
                 cs12 = t12["channel_share"]
                 out += [macro(f"TOPFIVE{side.upper()}BPIC", pct(t12["prefix_share_top5"], 0)),
-                        macro(f"CHANRISK{side.upper()}BPIC", pct(cs12["risk"])),
                         macro(f"CANCEL{side.upper()}BPIC", pct(t12["cancellation_overall"], 0))]
     if comp_sep and "well_defined" in comp_sep:
         out.append(macro("WDALLSEPSIS", pct(comp_sep["well_defined"]["share_all_defined"], 0)))
@@ -255,10 +275,17 @@ def main():
         for k in ("1", "3"):
             r = comp["deletion_e2e"][side][k]
             rows.append(f"{side} & top-{k} & {num(r['abs_random'])} & {num(r['propagated']['abs_guided'])} & {num(r['propagated']['z'], 0)} & "
-                        f"{num(r['direct']['abs_guided'])} & {num(r['direct']['z'], 0)} & {num(max(r['propagated']['abs_anti'], r['direct']['abs_anti']), 2)} \\\\ \\hline")
+                        f"{num(r['direct']['abs_guided'])} & {num(r['direct']['z'], 0)} \\\\ \\hline")
             for nm in ("propagated", "direct"):
                 out.append(macro(f"ZE{nm.upper()}{side.upper()}K{k}", num(r[nm]["z"], 0)))
     out.append(macro("DELETIONROWS", "\n".join(rows)))
+    if comp12 and "deletion_e2e" in comp12:
+        rows12 = [f"{side} & top-{k} & {num(r['abs_random'])} & {num(r['propagated']['abs_guided'])} & {num(r['propagated']['z'], 0)} & "
+                  f"{num(r['direct']['abs_guided'])} & {num(r['direct']['z'], 0)} \\\\ \\hline"
+                  for side in ("act", "wait") if side in comp12["deletion_e2e"] for k, r in ((k, comp12["deletion_e2e"][side][k]) for k in ("1", "3"))]
+        out.append(macro("DELETIONROWSBPIC", "\n".join(rows12)))
+    both = [c for c in (comp, comp12) if c and "deletion_e2e" in c]
+    out.append(macro("ANTIMAX", num(max(c["deletion_e2e"][sd][k][nm]["abs_anti"] for c in both for sd in c["deletion_e2e"] for k in ("1", "3") for nm in ("propagated", "direct")), 2)))
     if comp12 and "deletion_e2e" in comp12:
         zs = [comp12["deletion_e2e"][s][k]["propagated"]["z"] for s in ("act", "wait") for k in ("1", "3") if s in comp12["deletion_e2e"]]
         out.append(macro("ZEPROPMINBPIC", num(min(zs), 0)))
@@ -396,12 +423,65 @@ def main():
         if "available_resources" in fn:
             free = S[:, fn.index("available_resources")] > 0
             out += [macro(f"ACTNOTPOSNOSTAFF{suffix}", pct(acts[~pos & ~free].mean(), 0)), macro(f"ACTNOTPOSSTAFF{suffix}", pct(acts[~pos & free].mean(), 0))]
-    for key, suffix in (("bpic2012", "BPIC"), ("sepsis", "SEPSIS")):
+    for key, suffix in (("bpic2012", "BPIC"), ("sepsis", "SEPSIS"), ("bpic2017_val", "VAL"), ("bpic2012_val", "VALBPIC")):
         if key in json.loads(paths.GAIN_JSON.read_text()):
             gg = json.loads(paths.GAIN_JSON.read_text())[key]
             out += [macro(f"GAINPOLICY{suffix}", num(gg["policy_gain"], 1)), macro(f"GAINWAIT{suffix}", num(gg["always_wait_gain"], 1)),
                     macro(f"GAININTERVENE{suffix}", num(gg["always_intervene_gain"], 1)), macro(f"GAINORACLE{suffix}", num(gg["oracle_gain"], 1))]
     out.append(macro("GAININTERVENE", num(gain["always_intervene_gain"], 1)))
+
+    # --- RQ3: do the channels and the cancellation hold on the real chain? -----------
+    def ct_cell(key_fn, fmt):
+        cells = []
+        for side in ("act", "wait"):
+            v17 = key_fn(comp.get("channel_test", {}).get(side)) if comp.get("channel_test", {}).get(side) else None
+            v12 = key_fn(comp12.get("channel_test", {}).get(side)) if comp12 and comp12.get("channel_test", {}).get(side) else None
+            txt = "--" if v17 is None else fmt(v17)
+            if v12 is not None:
+                txt += f" [{fmt(v12)}]"
+            cells.append(txt)
+        return cells
+    f2 = lambda x: f"${x:.2f}$"
+    fp = lambda x: f"${100 * x:.0f}\\%$"
+    ct_rows = []
+    for chan, label in (("risk", "Risk channel"), ("effect_T", "Treated-arm channel"), ("effect_U", "Untreated-arm channel")):
+        ct_rows.append(f"{label} & same sign & " + " & ".join(ct_cell(lambda d, c=chan: d["channels"][c]["sign_agreement"], fp)) + " \\\\ \\hline")
+        ct_rows.append(f" & rank correlation & " + " & ".join(ct_cell(lambda d, c=chan: d["channels"][c]["spearman"], f2)) + " \\\\ \\hline")
+    for key, label in (("measured_lost_arms_together", "Cancellation ratio, arms together"), ("measured_lost_arms_apart", "Cancellation ratio, arms apart"),
+                       ("measured_opposed_arms_together", "Channels opposed, arms together"), ("measured_opposed_arms_apart", "Channels opposed, arms apart")):
+        ct_rows.append(f"Cancellation & {label.lower()} & " + " & ".join(ct_cell(lambda d, k=key: d["cancellation"][k], fp)) + " \\\\ \\hline")
+    if comp.get("channel_test"):
+        out.append(macro("CHANNELTESTROWS", "\n".join(ct_rows)))
+        ct = comp["channel_test"]
+        for side in ("act", "wait"):
+            S = side.upper()
+            if side not in ct:
+                continue
+            for c, tag in (("risk", "RISK"), ("effect_T", "T"), ("effect_U", "U")):
+                out += [macro(f"CT{tag}SIGN{S}", pct(ct[side]["channels"][c]["sign_agreement"], 0)), macro(f"CT{tag}RHO{S}", num(ct[side]["channels"][c]["spearman"], 2))]
+            cc = ct[side]["cancellation"]
+            out += [macro(f"CTLOSTTOG{S}", pct(cc["measured_lost_arms_together"], 0)), macro(f"CTLOSTAPART{S}", pct(max(cc["measured_lost_arms_apart"], 0.0), 0)),
+                    macro(f"CTOPPTOG{S}", pct(cc["measured_opposed_arms_together"], 0)), macro(f"CTOPPAPART{S}", pct(cc["measured_opposed_arms_apart"], 0)),
+                    macro(f"CTCANCRHO{S}", num(cc["spearman_traced_vs_measured"], 2))]
+        out.append(macro("CTK", str(ct["act"]["k"])))
+    # Robustness: the proportional weights without the stabiliser, divided as
+    # Chen et al. (2022) do (run_compose_suite.py --fallback-ratio 0).
+    nofb_path = paths.REPO / "compose_results_nofallback.json"
+    if nofb_path.exists():
+        nofb = {x["log"]: x for x in json.loads(nofb_path.read_text())["results"]}
+        for lg, sfx in (("BPIC2017", ""), ("BPIC2012", "BPIC")):
+            if lg not in nofb:
+                continue
+            pr = nofb[lg]["readings"]["rebuilt"]["propagation"]
+            ba = pr["act"]["cancellation_by_arm_direction"]
+            out += [macro(f"NOFBAGREEGLOBAL{sfx}", num(nofb[lg]["direct"]["agreement_with_propagated"]["all"]["global_spearman"], 2)),
+                    macro(f"NOFBLOSTSAMEACT{sfx}", pct(ba["lost_same_direction"], 0)),
+                    macro(f"NOFBLOSTDIFFACT{sfx}", pct(ba["lost_opposite_direction"], 0)),
+                    macro(f"NOFBCHANRISKACT{sfx}", pct(pr["act"]["channel_share"]["risk"], 0)),
+                    macro(f"NOFBCHANEFFECTACT{sfx}", pct(pr["act"]["channel_share"]["effect_T"] + pr["act"]["channel_share"]["effect_U"], 0))]
+    if comp12 and "risk_effect" in comp12:
+        out += [macro("RISKEFFECTRHOBPIC", num(comp12["risk_effect"]["global_spearman"], 2)),
+                macro("RISKEFFECTSIGNBPIC", pct(comp12["risk_effect"]["sign_agreement_overall"], 0))]
 
     audit_path = paths.REPO / "leakage_audit.json"
     if audit_path.exists():
@@ -409,8 +489,10 @@ def main():
         for lg, suffix in (("BPIC2017", ""), ("BPIC2012", "BPIC"), ("Sepsis", "SEPSIS")):
             if lg in audit:
                 pr = audit[lg]["propensity"]
-                out += [macro(f"OVERLAP{suffix}", pct(pr["share_in_0.05_0.95"], 0)), macro(f"OVERLAPCASES{suffix}", str(pr["cases_in_overlap"])),
+                out += [macro(f"OVERLAP{suffix}", pct(pr["share_in_overlap"], 0)), macro(f"OVERLAPCASES{suffix}", str(pr["cases_in_overlap"])),
                         macro(f"AUDITPASS{suffix}", "passes" if audit[lg]["pass"] else "fails")]
+        band = audit["BPIC2017"]["propensity"]["overlap_band"]
+        out += [macro("OVERLAPLO", f"{band[0]:g}"), macro("OVERLAPHI", f"{band[1]:g}")]
 
     target = paths.PAPER_FIGURES.parent / "numbers.tex"
     target.write_text("%% Generated by paper_numbers.py from the committed result JSONs -- do not edit by hand.\n" + "\n".join(out) + "\n")

@@ -27,7 +27,8 @@ sys.path.insert(0, str(HERE))
 import paths  # noqa: E402
 
 POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#1f2937", "#6b7280", "#d1d5db"
-LEVEL_COLOR = {"risk": "#e0e7ff", "effect": "#ffedd5", "native": "#dcfce7"}
+NODE_FC = "#f3f4f6"  # every node the same grey: colour is reserved for the ribbons (direction)
+MIN_NODE = 0.075  # minimum drawn height of a middle node, so its label fits centred beside it
 MID = [  # (node key, label, level)
     ("risk", "reliability, deviation (risk)", "risk"),
     ("effect_T", "Treated-arm probability (effect)", "effect"),
@@ -122,7 +123,7 @@ def main(argv=None):
     for h in hl:
         left_pos.append((y - h, h)); y -= h + gap_l
     # middle column layout
-    hm = [mid_h[k] * scale for k, _, _ in MID]
+    hm = [max(mid_h[k] * scale, MIN_NODE) for k, _, _ in MID]
     span_m = sum(hm) + gap_m * (len(hm) - 1)
     y = TOPY - (TOPY - span_m) / 2
     mid_pos = {}
@@ -134,7 +135,8 @@ def main(argv=None):
 
     # ribbons attribute -> middle, stacked inside both nodes
     cursor_l = [p[0] + p[1] for p in left_pos]
-    cursor_m = {k: p[0] + p[1] for k, p in mid_pos.items()}
+    # incoming ribbons stack from the top of their content, centred in the (possibly taller) node
+    cursor_m = {k: mid_pos[k][0] + (mid_pos[k][1] + mid_h[k] * scale) / 2 for k in mid_pos}
     for i, (name, val, c) in enumerate(left):
         for k in ("risk", "effect_T", "effect_U"):
             h = abs(c[k]) * scale
@@ -150,7 +152,7 @@ def main(argv=None):
         if h <= 0:
             continue
         color = POS if mid_in[k] > 0 else NEG
-        y0 = mid_pos[k][0]  # native nodes: whole node; lower-level nodes: same height as the node
+        y0 = mid_pos[k][0] + (mid_pos[k][1] - h) / 2  # outgoing ribbon centred in its node
         ribbon(ax, X1 + W, y0, h, X2, cursor_r - h, h, color)
         cursor_r -= h
 
@@ -171,23 +173,14 @@ def main(argv=None):
         if abs(ly - (y0 + h / 2)) > 1e-6:
             ax.plot([X0 - 0.06, X0], [ly, y0 + h / 2], color=MUTED, lw=0.5, zorder=2)
         ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=10.2, color=INK)
-    # middle labels: centred on their node, then spread so that consecutive
-    # labels are at least MINSEP apart and the stack stays inside [0, TOPY]
-    MINSEP = 0.1
-    centers = [mid_pos[k][0] + mid_pos[k][1] / 2 for k, _, _ in MID]
-    ys = [min(centers[0], TOPY - 0.06)]
-    for c in centers[1:]:
-        ys.append(min(c, ys[-1] - MINSEP))
-    if ys[-1] < 0.03:
-        shift = 0.03 - ys[-1]
-        ys = [y + shift for y in ys]
-    for (k, lab, lvl), ly in zip(MID, ys):
+    # middle labels: centred on their node (MIN_NODE keeps consecutive labels apart)
+    for k, lab, lvl in MID:
         y0, h = mid_pos[k]
-        ax.add_patch(plt.Rectangle((X1, y0), W, h, fc=LEVEL_COLOR[lvl], ec=INK, lw=0.6, zorder=2))
-        ax.plot([X1 + W, X1 + W + 0.06], [y0 + h / 2, ly], color=MUTED, lw=0.5, zorder=2)
-        ax.text(X1 + W + 0.08, ly, lab, ha="left", va="center", fontsize=10.1, color=INK)
+        ax.add_patch(plt.Rectangle((X1, y0), W, h, fc=NODE_FC, ec=INK, lw=0.6, zorder=2))
+        ax.text(X1 + W + 0.08, y0 + h / 2, lab, ha="left", va="center", fontsize=10.1, color=INK, zorder=3,
+                bbox=dict(fc="white", ec="none", pad=0.6, alpha=0.85))
     y0, h = right_pos
-    ax.add_patch(plt.Rectangle((X2, y0), W, h, fc="#fef3c7", ec=INK, lw=0.8, zorder=2))
+    ax.add_patch(plt.Rectangle((X2, y0), W, h, fc=NODE_FC, ec=INK, lw=0.8, zorder=2))
     mlabel = f"margin = {card['dq']:.2f}\nact now" if acts else f"wait margin = {-card['dq']:.2f}\nwait"
     ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=11.8, color=INK, fontweight="bold")
 
@@ -196,7 +189,10 @@ def main(argv=None):
     ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=11.1, color=MUTED)
     ax.text(X2 + W / 2, 1.17, "timing level", ha="center", va="center", fontsize=11.1, color=MUTED)
     side = "toward acting now" if acts else "toward waiting"
-    ax.text((X0 + X2 + W) / 2, -0.23, f"ribbon width = |contribution|;  orange = {side},  blue = against it.",
+    y_low = min([p[0] for p in mid_pos.values()] + [p[0] for p in left_pos] + [right_pos[0]])
+    y_cap = y_low - 0.08
+    ax.set_ylim(min(-0.28, y_cap - 0.05), 1.26)
+    ax.text((X0 + X2 + W) / 2, y_cap, f"ribbon width = |contribution|;  orange = {side},  blue = against it.",
             ha="center", va="center", fontsize=9.9, color=MUTED)
 
     out = paths.PAPER_FIGURES

@@ -30,8 +30,14 @@ RETRAINED_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_CSV", DATA / "
                  "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_CSV", DATA / "retrained_state_bpic2017.csv")}
 
 
-def retrained_csv(log: str):
-    return RETRAINED_CSV[log]
+# The validation split scored the same way: cases the agent never trained on,
+# used only to report the policy's gain out of sample (compute_gain_table.py).
+RETRAINED_VAL_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_VAL_CSV", DATA / "retrained_state_bpic2012_val.csv"),
+                     "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_VAL_CSV", DATA / "retrained_state_bpic2017_val.csv")}
+
+
+def retrained_csv(log: str, split: str = "test"):
+    return {"test": RETRAINED_CSV, "val": RETRAINED_VAL_CSV}[split][log]
 
 
 def bpic_csv(log: str, variant: str = "cate_retrained"):

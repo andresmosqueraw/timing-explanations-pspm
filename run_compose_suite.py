@@ -70,9 +70,15 @@ def _top(names: list[str], phi: np.ndarray, top: int = TOP) -> list[tuple[str, f
     return [(names[j], float(phi[j])) for j in o]
 
 
-def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP) -> dict:
+def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP, lower_attr: dict | None = None) -> dict:
     """Mean |composed phi| per input with the channel split and the
-    cancellation index, on the states in ``mask``."""
+    cancellation index, on the states in ``mask``. With ``lower_attr``
+    ({"risk": phi_r, "effect_T": phi^{p_T}, "effect_U": phi^{p_U}} over the
+    prefix attributes) each non-native row also carries how the cancellation
+    arises: the attribute's share of the risk explanation, the share of
+    decisions where it moves both effect arms in the same direction, and the
+    share where its two effect channels push the timing decision in opposite
+    directions."""
     comp = prop["composed"][mask]
     g = np.abs(comp).mean(axis=0)
     share = g / g.sum()
@@ -85,6 +91,15 @@ def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP
         d = {"input": name, "share": float(share[j]), "mean_abs": float(g[j]), "mean_signed": float(comp[:, j].mean()),
              "channel": {"native": float(g[j])} if name in cp.NATIVE else {c: float(chan[c][j]) for c in chan},
              "cancellation": None if name in cp.NATIVE else float(canc["per_attribute"][j])}
+        if lower_attr is not None and name not in cp.NATIVE:
+            fr, fT, fU = (lower_attr[c][mask] for c in ("risk", "effect_T", "effect_U"))
+            gr = np.abs(fr).mean(axis=0)
+            both = (fT[:, j] != 0) & (fU[:, j] != 0)
+            cT, cU = prop["channels"]["effect_T"][mask][:, j], prop["channels"]["effect_U"][mask][:, j]
+            both_ch = (cT != 0) & (cU != 0)
+            d["risk_share"] = float(gr[j] / gr.sum()) if gr.sum() > 0 else 0.0
+            d["arms_same_direction"] = float((np.sign(fT[both, j]) == np.sign(fU[both, j])).mean()) if both.any() else None
+            d["channels_opposed"] = float((np.sign(cT[both_ch]) != np.sign(cU[both_ch])).mean()) if both_ch.any() else None
         rows.append(d)
     # share of the total channel mass (channels can cancel inside an input, so
     # the masses are normalised among themselves rather than by |composed|)
@@ -93,7 +108,20 @@ def _global_table(names: list[str], prop: dict, mask: np.ndarray, top: int = TOP
     channel_share = {c: v / sum(masses.values()) for c, v in masses.items()}
     channel_share["cancellation"] = float(1.0 - np.abs(comp).sum() / sum(masses.values()))  # mass lost to opposite-sign channels
     n_native = prop["native"].shape[1]  # 1 on Sepsis (no available_resources), 2 elsewhere
-    return {"n": int(mask.sum()), "top": rows, "channel_share": channel_share, "cancellation_overall": canc["overall"],
+    by_arms = None
+    if lower_attr is not None:
+        # weight lost to cancelling over every (decision, attribute) pair, split by whether the
+        # attribute moves both effect arms in the same direction (the risk-like case) or not
+        fT, fU = lower_attr["effect_T"][mask], lower_attr["effect_U"][mask]
+        chs = [prop["channels"][c][mask] for c in ("risk", "effect_T", "effect_U")]
+        net, mass = np.abs(sum(chs)), sum(np.abs(c) for c in chs)
+        both = (fT != 0) & (fU != 0)
+        same = both & (np.sign(fT) == np.sign(fU))
+        diff = both & (np.sign(fT) != np.sign(fU))
+        lost = lambda m: float(1 - net[m].sum() / mass[m].sum()) if mass[m].sum() > 0 else None
+        by_arms = {"lost_same_direction": lost(same), "lost_opposite_direction": lost(diff),
+                   "mass_share_same_direction": float(mass[same].sum() / mass[both].sum()) if mass[both].sum() > 0 else None}
+    return {"n": int(mask.sum()), "top": rows, "cancellation_by_arm_direction": by_arms, "channel_share": channel_share, "cancellation_overall": canc["overall"],
             "cancellation_per_state_mean": float(canc["per_state"].mean()),
             "prefix_share_top5": float(np.sort(share[:len(share) - n_native])[::-1][:5].sum())}
 
@@ -186,6 +214,7 @@ def run_log(name: str, args) -> dict:
     bg = None if args.background == "tree" else X.sample(n=min(args.n_background, len(X)), random_state=args.seed)
     phiT, phiU, ev = ebox.shap_raw(X, background=bg)
     lower = {f: v for f, v in {"reliability": phi_r, "deviation": phi_r, "Proba_if_Treated": phiT, "Proba_if_Untreated": phiU}.items() if f in sfeats}
+    lower_attr = {"risk": phi_r, "effect_T": phiT, "effect_U": phiU}
     lg = lambda p: np.log(np.clip(p, 1e-6, 1 - 1e-6) / (1 - np.clip(p, 1e-6, 1 - 1e-6)))
     out["well_defined"] = cp.well_defined({"risk (r)": phi_r, "Proba_if_Treated": phiT, "Proba_if_Untreated": phiU})
     out["baseline"] = {"background": args.background, "n_background": None if bg is None else int(len(bg)),
@@ -239,8 +268,8 @@ def run_log(name: str, args) -> dict:
               "level_shares": {"act": cp.level_shares(phi_t[acts], sfeats) if acts.any() else None, "wait": cp.level_shares(phi_t[~acts], sfeats) if (~acts).any() else None,
                                "all": cp.level_shares(phi_t, sfeats)},
               "propagation": {"completeness_gap": cp.completeness_gap(phi_t, prop["composed"]), "fallbacks": prop["fallbacks"],
-                              "act": _global_table(names, prop, acts) if acts.any() else None,
-                              "wait": _global_table(names, prop, ~acts) if (~acts).any() else None},
+                              "act": _global_table(names, prop, acts, lower_attr=lower_attr) if acts.any() else None,
+                              "wait": _global_table(names, prop, ~acts, lower_attr=lower_attr) if (~acts).any() else None},
               "typology": cp.typology(risky, treatable, acts, phi_t),
               "cards": {}}
         for tag, i in picks.items():
@@ -317,6 +346,19 @@ def run_log(name: str, args) -> dict:
         for k, res in out["deletion_e2e"][side].items():
             print(f"  deletion e2e [{side}] k={k}: random={res['abs_random']:.3f} " + " ".join(f"{nm}: guided={res[nm]['abs_guided']:.3f} anti={res[nm]['abs_anti']:.3f} z={res[nm]['z']:.1f}" for nm in rankings))
 
+    # --- do the channels and the cancellation hold on the real chain? ---------
+    if has_effect:
+        out["channel_test"] = {}
+        for side, mask in (("act", m > 0), ("wait", m <= 0)):
+            if mask.sum() < 30:
+                continue
+            sub = {"composed": prop["composed"][mask], "channels": {c: prop["channels"][c][mask] for c in ("risk", "effect_T", "effect_U")}}
+            out["channel_test"][side] = cp.channel_test(box, Z[mask].reset_index(drop=True), zref, sign[mask], sub,
+                                                        {c: v[mask] for c, v in lower_attr.items()})
+            ct = out["channel_test"][side]
+            print(f"  channel test [{side}]: " + ", ".join(f"{c} sign={v['sign_agreement']} rho={v['spearman']} (n={v['n']})" for c, v in ct["channels"].items())
+                  + f"; cancellation {json.dumps({k: (round(v, 3) if isinstance(v, float) else v) for k, v in ct['cancellation'].items()})}")
+
     # --- risk vs effect on the shared vocabulary ----------------------------
     out["risk_effect"] = cp.risk_effect_agreement(phi_r, phiU - phiT, box.raw_columns)  # phi^CATE: toward a larger benefit
     out["risk_effect"]["groups"] = cp.sign_groups(out["risk_effect"]["per_attribute"])
@@ -341,8 +383,11 @@ def main(argv=None):
     ap.add_argument("--n-background", type=int, default=100)
     ap.add_argument("--skip-direct", action="store_true")
     ap.add_argument("--skip-plots", action="store_true")
+    ap.add_argument("--fallback-ratio", type=float, default=cp.FALLBACK_RATIO,
+                    help="stabiliser of the proportional weights; 0 divides as Chen et al. (2022) do (robustness run)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args(argv)
+    cp.FALLBACK_RATIO = args.fallback_ratio
     results = [run_log(name, args) for name in args.logs]
     out_path = Path(args.out) if args.out else (paths.COMPOSE_JSON if args.variant == pools.DEFAULT_VARIANT
                                                  else paths.REPO / f"compose_results_{args.variant}.json")

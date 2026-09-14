@@ -29,7 +29,8 @@ decision through the effect level by x and through the risk level by y".
 When a lower-level attribution sums to (almost) nothing -- the model output
 sits at its expected value -- the proportional weights are ill-defined and
 the unit is split by |phi| instead (``FALLBACK_RATIO``); the number of such
-splits is reported.
+splits is reported, and ``run_compose_suite.py --fallback-ratio 0`` repeats
+the analysis with Chen et al.'s plain division.
 
 The rule is exact for a linear lower level and an approximation otherwise,
 so :class:`EndToEndBox` exposes the composed function F(x, n) = Delta Q(s(x,
@@ -348,6 +349,77 @@ def deletion_test_e2e(box: EndToEndBox, Z: pd.DataFrame, ref: pd.Series, sign: n
         se = float(paired.std(ddof=1) / np.sqrt(len(paired)))
         out[name] = {"abs_guided": float(dg.mean()), "abs_anti": float(da.mean()), "gap": float(paired.mean()), "gap_se": se,
                      "z": float(paired.mean() / se) if se > 0 else None, "flip_guided": float((np.sign(fg) != np.sign(f0)).mean())}
+    return out
+
+
+def channel_test(box: EndToEndBox, Z: pd.DataFrame, ref: pd.Series, sign: np.ndarray, prop: dict, lower_attr: dict,
+                 k: int = 5, min_share: float = 0.05) -> dict:
+    """Do the channels and the cancellation of `propagate` hold on the real chain?
+
+    For each decision and each of its ``k`` prefix attributes with the largest
+    composed weight, the attribute is set to the pool reference in the input
+    of *one* lower-level model only (risk, treated arm or untreated arm) while
+    the other two models still see the case as it is; the resulting drop of
+    the margin, on the side the policy chose, is that channel's measured
+    effect (path patching, Goldowsky-Dill et al. 2023). The traced channel
+    contribution should agree with it in sign and rank. The cancellation
+    ratio 1 - |sum_c effect_c| / sum_c |effect_c| (Kramar et al. 2024) of the
+    measured effects is compared with that of the traced channels, overall
+    and split by whether the attribute moves the two effect arms in the same
+    direction.
+    """
+    from scipy.stats import spearmanr
+
+    D = len(box.raw_columns)
+    comp = np.abs(prop["composed"][:, :D])
+    top = np.argsort(-comp, axis=1)[:, :k]
+    rows = np.repeat(np.arange(len(Z)), k)
+    cols = top.reshape(-1)
+    Zb = Z.iloc[rows].reset_index(drop=True)
+    Zm = Zb.copy()
+    for j in np.unique(cols):
+        sel = np.where(cols == j)[0]
+        Zm.iloc[sel, Zm.columns.get_loc(box.raw_columns[j])] = ref[box.raw_columns[j]]
+    r0, pT0, pU0 = box.lower(Zb)
+    rM, pTM, pUM = box.lower(Zm)
+    rel = Zb["relative_position"].to_numpy(float)
+    res = Zb["available_resources"].to_numpy(float) if "available_resources" in box.native else np.zeros(len(Zb))
+    sg = np.asarray(sign, float)[rows]
+
+    def margin(r, pT, pU):
+        return sg * margin_of(box.policy, build_state(box.log, rel, r, res, pT, pU, box.feats))
+
+    m0 = margin(r0, pT0, pU0)
+    measured = {"risk": m0 - margin(rM, pT0, pU0), "effect_T": m0 - margin(r0, pTM, pU0), "effect_U": m0 - margin(r0, pT0, pUM)}
+    traced = {c: prop["channels"][c][rows, cols] for c in ("risk", "effect_T", "effect_U")}
+    tmass = sum(np.abs(v) for v in traced.values())
+    out = {"k": k, "n_pairs": int(len(rows)), "channels": {}}
+    for c in traced:
+        keep = (tmass > 0) & (np.abs(traced[c]) >= min_share * tmass) & (np.abs(measured[c]) > 1e-9)
+        out["channels"][c] = {
+            "n": int(keep.sum()),
+            "sign_agreement": float((np.sign(traced[c][keep]) == np.sign(measured[c][keep])).mean()) if keep.any() else None,
+            "spearman": float(spearmanr(traced[c][keep], measured[c][keep])[0]) if keep.sum() > 2 else None,
+        }
+    mmass = sum(np.abs(v) for v in measured.values())
+    msum = sum(measured.values())
+    ok = mmass > 1e-9
+    # Cancellation ratio of Kramar et al. (AtP*, 2024), 1 - |sum| / sum |.|,
+    # over the three path-patched effects -- the same formula as the traced one.
+    measured_canc = np.where(ok, 1 - np.abs(msum) / np.where(ok, mmass, 1.0), np.nan)
+    traced_canc = np.where(tmass > 0, 1 - np.abs(sum(traced.values())) / np.where(tmass > 0, tmass, 1.0), np.nan)
+    fT, fU = lower_attr["effect_T"][rows, cols], lower_attr["effect_U"][rows, cols]
+    together = (fT != 0) & (fU != 0) & (np.sign(fT) == np.sign(fU))
+    apart = (fT != 0) & (fU != 0) & (np.sign(fT) != np.sign(fU))
+    both = ok & np.isfinite(traced_canc)
+    wmean = lambda m: float((1 - np.abs(msum[m]).sum() / mmass[m].sum())) if m.any() and mmass[m].sum() > 0 else None
+    out["cancellation"] = {
+        "spearman_traced_vs_measured": float(spearmanr(traced_canc[both], measured_canc[both])[0]) if both.sum() > 2 else None,
+        "measured_lost_arms_together": wmean(ok & together), "measured_lost_arms_apart": wmean(ok & apart),
+        "measured_opposed_arms_together": float((np.sign(measured["effect_T"][ok & together]) != np.sign(measured["effect_U"][ok & together])).mean()) if (ok & together).any() else None,
+        "measured_opposed_arms_apart": float((np.sign(measured["effect_T"][ok & apart]) != np.sign(measured["effect_U"][ok & apart])).mean()) if (ok & apart).any() else None,
+        "n_together": int((ok & together).sum()), "n_apart": int((ok & apart).sum()),
+    }
     return out
 
 

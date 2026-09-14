@@ -30,7 +30,12 @@ evaluated on (risk_model.temporal_split), i.e. out-of-sample scores, as in
 the released pipeline; on BPIC2012 it is row-for-row the shipped CSV's case
 set. Writes paths.retrained_csv(log) (git-ignored like the shipped CSVs).
 
-Usage: python build_retrained_state.py [--logs BPIC2012 BPIC2017]
+The validation split (the other half of the later cases) is scored the same
+way into paths.retrained_csv(log, "val"). The agent never trains on it and
+the effect estimator never sees it; the risk model uses it only to pick its
+number of trees. compute_gain_table.py scores the policy there out of sample.
+
+Usage: python build_retrained_state.py [--logs BPIC2012 BPIC2017] [--splits test val]
 """
 
 from __future__ import annotations
@@ -49,10 +54,10 @@ import risk_model as rm
 LOGS = ("BPIC2012", "BPIC2017")
 
 
-def build(log: str) -> pd.DataFrame:
+def build(log: str, split: str = "test") -> pd.DataFrame:
     df, conf = rm.load_events(log)
-    tr, te, _va = rm.temporal_split(df, conf)
-    X, meta = rm.encode_prefixes(te, conf)
+    tr, te, va = rm.temporal_split(df, conf)
+    X, meta = rm.encode_prefixes({"test": te, "val": va}[split], conf)
     horizon = rm.progress_horizon(tr, conf)
     clf, rfeats = rm.load_model(log)
     arms, efeats = em.load_model(log)
@@ -86,18 +91,21 @@ def compare_with_shipped(log: str, new: pd.DataFrame) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--logs", nargs="+", default=list(LOGS), choices=list(LOGS))
+    ap.add_argument("--splits", nargs="+", default=["test", "val"], choices=["test", "val"])
     a = ap.parse_args()
     vs_path = paths.REPO / "retrained_state_vs_shipped.json"
     vs = json.loads(vs_path.read_text()) if vs_path.exists() else {}
     for lg in a.logs:
-        out = build(lg)
-        p = paths.retrained_csv(lg)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        out.to_csv(p, sep=";", index=False)
-        ite = out.y1 - out.y0
-        print(f"{lg}: {len(out)} prefixes of {out.case_id.nunique()} cases -> {p}")
-        print(f"  r mean {out.predicted_proba_1.mean():.3f}, predicted deviant {out.predicted.mean():.3f}, actual deviant {out.actual.mean():.3f}; "
-              f"p_T mean {out.Proba_if_Treated.mean():.3f}, p_U mean {out.Proba_if_Untreated.mean():.3f}, ite>0 share {(ite > 0).mean():.3f}, treated cases {out.treatment.mean():.3f}")
-        vs[lg] = compare_with_shipped(lg, out)
-        print("  vs shipped:", vs[lg])
+        for split in a.splits:
+            out = build(lg, split)
+            p = paths.retrained_csv(lg, split)
+            p.parent.mkdir(parents=True, exist_ok=True)
+            out.to_csv(p, sep=";", index=False)
+            ite = out.y1 - out.y0
+            print(f"{lg} [{split}]: {len(out)} prefixes of {out.case_id.nunique()} cases -> {p}")
+            print(f"  r mean {out.predicted_proba_1.mean():.3f}, predicted deviant {out.predicted.mean():.3f}, actual deviant {out.actual.mean():.3f}; "
+                  f"p_T mean {out.Proba_if_Treated.mean():.3f}, p_U mean {out.Proba_if_Untreated.mean():.3f}, ite>0 share {(ite > 0).mean():.3f}, treated cases {out.treatment.mean():.3f}")
+            if split == "test":
+                vs[lg] = compare_with_shipped(lg, out)
+                print("  vs shipped:", vs[lg])
     vs_path.write_text(json.dumps(vs, indent=2))
