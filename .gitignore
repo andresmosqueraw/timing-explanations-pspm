@@ -23,3 +23,5 @@ models/variants/sweep/
 # local snapshots taken before large regenerations
 archive/
 models/variants/sweep_oof/
+data/*.tar.gz
+data/retrained_states_sha256.txt

@@ -2474,7 +2474,7 @@
       },
       "direct": {
         "n_perm": 20,
-        "seconds": 9.248951151006622,
+        "seconds": 8.230174393997004,
         "agreement_vs_cancellation": {
           "spearman_rho_vs_cancellation": 0.1445355730273087,
           "median_cancellation": 0.2865181666263013,
@@ -2875,7 +2875,7 @@
         }
       },
       "figures": [],
-      "seconds": 28.82863689900114
+      "seconds": 22.976173183000355
     },
     {
       "log": "BPIC2017",
@@ -3026,13 +3026,13 @@
           "mean_abs_diff_pU": 0.0
         },
         "decision": {
-          "intervene_rate_shipped": 0.3943715777409907,
-          "intervene_rate_rebuilt": 0.3943715777409907,
+          "intervene_rate_shipped": 0.4096523621545906,
+          "intervene_rate_rebuilt": 0.4096523621545906,
           "flip_rate": 0.0,
           "corr_margin": 1.0,
-          "agreement_with_oracle_shipped": 0.7766458678212148,
-          "agreement_with_oracle_rebuilt": 0.7766458678212148,
-          "agreement_with_rebuilt_rule_rebuilt": 0.7766458678212148
+          "agreement_with_oracle_shipped": 0.7835222208073348,
+          "agreement_with_oracle_rebuilt": 0.7835222208073348,
+          "agreement_with_rebuilt_rule_rebuilt": 0.7835222208073348
         }
       },
       "readings": {
@@ -3045,57 +3045,57 @@
             "Proba_if_Treated": 0.30596157908439636,
             "Proba_if_Untreated": 0.39344489574432373
           },
-          "n_act": 3097,
-          "n_wait": 4756,
+          "n_act": 3217,
+          "n_wait": 4636,
           "level_shares": {
             "act": {
               "per_feature": {
-                "relative_position": 0.04420074054932757,
-                "reliability": 0.09213647248998204,
-                "deviation": 0.03025280533314405,
-                "available_resources": 0.28221389789433887,
-                "Proba_if_Treated": 0.1438925422519872,
-                "Proba_if_Untreated": 0.40730354148122033
+                "relative_position": 0.0323744507995487,
+                "reliability": 0.06462349126450294,
+                "deviation": 0.09484353536628132,
+                "available_resources": 0.19904468141854953,
+                "Proba_if_Treated": 0.16843669705585848,
+                "Proba_if_Untreated": 0.4406771440952591
               },
               "per_level": {
-                "native": 0.32641463844366647,
-                "risk": 0.12238927782312609,
-                "effect": 0.5511960837332075
+                "native": 0.23141913221809823,
+                "risk": 0.15946702663078427,
+                "effect": 0.6091138411511176
               }
             },
             "wait": {
               "per_feature": {
-                "relative_position": 0.17163218488131624,
-                "reliability": 0.11332025350894862,
-                "deviation": 0.062231553607382424,
-                "available_resources": 0.1257846552291611,
-                "Proba_if_Treated": 0.24486567944265494,
-                "Proba_if_Untreated": 0.28216567333053666
+                "relative_position": 0.14657131035747764,
+                "reliability": 0.07184692563176101,
+                "deviation": 0.06254242319458689,
+                "available_resources": 0.1547166252803786,
+                "Proba_if_Treated": 0.2855599784685287,
+                "Proba_if_Untreated": 0.27876273706726723
               },
               "per_level": {
-                "native": 0.2974168401104773,
-                "risk": 0.17555180711633103,
-                "effect": 0.5270313527731916
+                "native": 0.3012879356378563,
+                "risk": 0.1343893488263479,
+                "effect": 0.5643227155357959
               }
             },
             "all": {
               "per_feature": {
-                "relative_position": 0.10235002607675632,
-                "reliability": 0.10180301701892287,
-                "deviation": 0.04484528973882902,
-                "available_resources": 0.2108323896311271,
-                "Proba_if_Treated": 0.18996842105787837,
-                "Proba_if_Untreated": 0.3502008564764864
+                "relative_position": 0.07133696285147383,
+                "reliability": 0.06708803494530192,
+                "deviation": 0.0838228078510749,
+                "available_resources": 0.1839205140096746,
+                "Proba_if_Treated": 0.20839766692199815,
+                "Proba_if_Untreated": 0.38543401342047673
               },
               "per_level": {
-                "native": 0.3131824157078834,
-                "risk": 0.1466483067577519,
-                "effect": 0.5401692775343647
+                "native": 0.2552574768611484,
+                "risk": 0.15091084279637684,
+                "effect": 0.5938316803424749
               }
             }
           },
           "propagation": {
-            "completeness_gap": 1.2505552149377763e-12,
+            "completeness_gap": 9.947598300641403e-14,
             "fallbacks": {
               "reliability": 0,
               "deviation": 0,
@@ -3103,506 +3103,501 @@
               "Proba_if_Untreated": 0
             },
             "act": {
-              "n": 3097,
+              "n": 3217,
               "top": [
                 {
-                  "input": "available_resources",
-                  "share": 0.15797870423160917,
-                  "mean_abs": 1.9297499461768601,
-                  "mean_signed": 1.9103957689063509,
+                  "input": "Activity",
+                  "share": 0.1630099641025211,
+                  "mean_abs": 0.7060954160491543,
+                  "mean_signed": 0.6104150133865032,
                   "channel": {
-                    "native": 1.9297499461768601
+                    "risk": 0.186546029518425,
+                    "effect_T": 0.29068302187146683,
+                    "effect_U": 0.6384703861991791
+                  },
+                  "cancellation": 0.36712756835751026,
+                  "risk_share": 0.20042116528985457,
+                  "arms_same_direction": 0.8669567920422754,
+                  "channels_opposed": 0.8666459434255518
+                },
+                {
+                  "input": "available_resources",
+                  "share": 0.13724561404092156,
+                  "mean_abs": 0.5944943272682273,
+                  "mean_signed": 0.5829094528737723,
+                  "channel": {
+                    "native": 0.5944943272682273
                   },
                   "cancellation": null
                 },
                 {
-                  "input": "Activity",
-                  "share": 0.14245672862439202,
-                  "mean_abs": 1.740145076721344,
-                  "mean_signed": 1.167543232920754,
+                  "input": "FirstWithdrawalAmount_max",
+                  "share": 0.06304954268543853,
+                  "mean_abs": 0.27310596207594096,
+                  "mean_signed": 0.13374044345327207,
                   "channel": {
-                    "risk": 0.38219803332210944,
-                    "effect_T": 0.8249861093341624,
-                    "effect_U": 1.4202845051848443
+                    "risk": 0.014697317154003684,
+                    "effect_T": 0.08352221696211024,
+                    "effect_U": 0.19704846565562203
                   },
-                  "cancellation": 0.33771043161594083,
-                  "risk_share": 0.20039132034526247,
-                  "arms_same_direction": 0.8630933161123668,
-                  "channels_opposed": 0.8488860187278011
+                  "cancellation": 0.07505736386241513,
+                  "risk_share": 0.012687500916782772,
+                  "arms_same_direction": 0.12340690083929126,
+                  "channels_opposed": 0.18153559216661486
                 },
                 {
                   "input": "RequestedAmount",
-                  "share": 0.06012771212507767,
-                  "mean_abs": 0.734475256025617,
-                  "mean_signed": 0.11426107627236615,
+                  "share": 0.04991109933077663,
+                  "mean_abs": 0.21619536352557445,
+                  "mean_signed": 0.01601974257465428,
                   "channel": {
-                    "risk": 0.09280663302848813,
-                    "effect_T": 0.5698902000524858,
-                    "effect_U": 0.3358974514911252
+                    "risk": 0.0354920784298576,
+                    "effect_T": 0.16583384670198212,
+                    "effect_U": 0.16232696162185198
                   },
-                  "cancellation": 0.2644908273830733,
-                  "risk_share": 0.03339233460256289,
-                  "arms_same_direction": 0.5631256054246044,
-                  "channels_opposed": 0.5682918953826284
-                },
-                {
-                  "input": "FirstWithdrawalAmount_max",
-                  "share": 0.058013729869055404,
-                  "mean_abs": 0.7086524265207174,
-                  "mean_signed": 0.2744965445947458,
-                  "channel": {
-                    "risk": 0.03874268045029082,
-                    "effect_T": 0.29746669375625984,
-                    "effect_U": 0.44419216526528066
-                  },
-                  "cancellation": 0.0919387127294361,
-                  "risk_share": 0.012959340013727977,
-                  "arms_same_direction": 0.1317403939296093,
-                  "channels_opposed": 0.17371649983855345
+                  "cancellation": 0.40548976400122094,
+                  "risk_share": 0.033597300643967924,
+                  "arms_same_direction": 0.5598383587193037,
+                  "channels_opposed": 0.5613926018029219
                 },
                 {
                   "input": "LoanGoal",
-                  "share": 0.0382669075139411,
-                  "mean_abs": 0.46743998233533635,
-                  "mean_signed": 0.2663063395665074,
+                  "share": 0.046775388457496285,
+                  "mean_abs": 0.2026126903075972,
+                  "mean_signed": 0.10651056712798893,
                   "channel": {
-                    "risk": 0.1941691259903479,
-                    "effect_T": 0.0798709663590214,
-                    "effect_U": 0.29161270646959697
+                    "risk": 0.08679517755615786,
+                    "effect_T": 0.029197809860119557,
+                    "effect_U": 0.13154943459500204
                   },
-                  "cancellation": 0.1736273853655269,
-                  "risk_share": 0.07436571373420668,
-                  "arms_same_direction": 0.6480464966096222,
-                  "channels_opposed": 0.6306102680012916
+                  "cancellation": 0.18150315949334517,
+                  "risk_share": 0.07649590934975839,
+                  "arms_same_direction": 0.6512278520360585,
+                  "channels_opposed": 0.6210755362138638
+                },
+                {
+                  "input": "lifecycle:transition",
+                  "share": 0.039954912867795324,
+                  "mean_abs": 0.17306905734210468,
+                  "mean_signed": 0.014333979983910899,
+                  "channel": {
+                    "risk": 0.02740905985906543,
+                    "effect_T": 0.0002007906537596981,
+                    "effect_U": 0.1508604193050428
+                  },
+                  "cancellation": 0.030263934050613783,
+                  "risk_share": 0.02521082087219514,
+                  "arms_same_direction": 1.0,
+                  "channels_opposed": 0.8333333333333334
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.037421137495544335,
-                  "mean_abs": 0.45710868701665636,
-                  "mean_signed": -0.18120981319758728,
+                  "share": 0.03570848763675014,
+                  "mean_abs": 0.15467520389428283,
+                  "mean_signed": -0.05318703235978372,
                   "channel": {
-                    "risk": 0.016497855863085685,
-                    "effect_T": 0.45701169287602855,
-                    "effect_U": 0.00786430598129089
+                    "risk": 0.005511795102062063,
+                    "effect_T": 0.1551374367980518,
+                    "effect_U": 0.0033359749452278433
                   },
-                  "cancellation": 0.05040815463034176,
-                  "risk_share": 0.0066671026178378055,
-                  "arms_same_direction": 0.34162092347433,
-                  "channels_opposed": 0.36745237326444946
+                  "cancellation": 0.05677343176351002,
+                  "risk_share": 0.006491213151185464,
+                  "arms_same_direction": 0.346596207646876,
+                  "channels_opposed": 0.3817221013366491
                 },
                 {
                   "input": "OfferedAmount_max",
-                  "share": 0.03587657610693681,
-                  "mean_abs": 0.4382414778505246,
-                  "mean_signed": 0.02795531045671459,
+                  "share": 0.0338740455898741,
+                  "mean_abs": 0.14672911834400099,
+                  "mean_signed": 0.04911311749952762,
                   "channel": {
-                    "risk": 0.047277143389866376,
-                    "effect_T": 0.2603212063380981,
-                    "effect_U": 0.2577881416971746
+                    "risk": 0.01464820716896301,
+                    "effect_T": 0.07116305400000042,
+                    "effect_U": 0.11111282217259892
                   },
-                  "cancellation": 0.22488159074003788,
-                  "risk_share": 0.010929151012957683,
-                  "arms_same_direction": 0.9347755892799483,
-                  "channels_opposed": 0.8798837584759445
-                },
-                {
-                  "input": "open_cases_max",
-                  "share": 0.03540659605471478,
-                  "mean_abs": 0.4325005522941913,
-                  "mean_signed": -0.10944986855679265,
-                  "channel": {
-                    "risk": 0.008645954805561351,
-                    "effect_T": 0.4361718736415234,
-                    "effect_U": 0.028225535759844336
-                  },
-                  "cancellation": 0.08570633261225669,
-                  "risk_share": 0.004471677526189668,
-                  "arms_same_direction": 0.46561188246690344,
-                  "channels_opposed": 0.46690345495640945
+                  "cancellation": 0.25489500393153297,
+                  "risk_share": 0.010525584584976324,
+                  "arms_same_direction": 0.9378302766552689,
+                  "channels_opposed": 0.8641591544917625
                 }
               ],
               "cancellation_by_arm_direction": {
-                "lost_same_direction": 0.3039330417983771,
-                "lost_opposite_direction": 0.0672392360032339,
-                "mass_share_same_direction": 0.7265613835974389
+                "lost_same_direction": 0.35190794210381804,
+                "lost_opposite_direction": 0.07107773135484885,
+                "mass_share_same_direction": 0.7498335485098878
               },
               "channel_share": {
-                "risk": 0.16691420240447155,
-                "effect_T": 0.3455604545624457,
-                "effect_U": 0.3393243974657032,
-                "native": 0.14820094556737956,
-                "cancellation": 0.1889246596366374
+                "risk": 0.18046631992990386,
+                "effect_T": 0.29170665311419247,
+                "effect_U": 0.40463446680344933,
+                "native": 0.12319256015245428,
+                "cancellation": 0.22796440719810585
               },
-              "cancellation_overall": 0.2217948689347623,
-              "cancellation_per_state_mean": 0.2983768751783911,
-              "prefix_share_top5": 0.33628621562801053
+              "cancellation_overall": 0.25999369626441904,
+              "cancellation_per_state_mean": 0.3130141042423579,
+              "prefix_share_top5": 0.3627009074440279
             },
             "wait": {
-              "n": 4756,
+              "n": 4636,
               "top": [
                 {
                   "input": "Activity",
-                  "share": 0.09786253738023029,
-                  "mean_abs": 1.3126663120460975,
-                  "mean_signed": -0.028150874045806913,
+                  "share": 0.09205045653668377,
+                  "mean_abs": 0.3144026658164911,
+                  "mean_signed": 0.033069237899928855,
                   "channel": {
-                    "risk": 0.5007149876612398,
-                    "effect_T": 0.581405873742903,
-                    "effect_U": 0.9613464482357976
+                    "risk": 0.12592320408533414,
+                    "effect_T": 0.13877871496317265,
+                    "effect_U": 0.25979532620731294
                   },
-                  "cancellation": 0.35762793666741544,
-                  "risk_share": 0.17597977896534575,
-                  "arms_same_direction": 0.7022708158116064,
-                  "channels_opposed": 0.7195121951219512
+                  "cancellation": 0.4005637424022226,
+                  "risk_share": 0.17525593506644246,
+                  "arms_same_direction": 0.6954270923209663,
+                  "channels_opposed": 0.6900345125107852
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.07527910867796445,
-                  "mean_abs": 1.0097464526030504,
-                  "mean_signed": 0.6064721866078093,
+                  "share": 0.07917659006116219,
+                  "mean_abs": 0.27043136907820164,
+                  "mean_signed": 0.19152019735327416,
                   "channel": {
-                    "risk": 0.02445333495651536,
-                    "effect_T": 1.0057351350863546,
-                    "effect_U": 0.006509925830514664
+                    "risk": 0.006800478351098438,
+                    "effect_T": 0.26681948252516746,
+                    "effect_U": 0.0017383879194504813
                   },
-                  "cancellation": 0.025997863387865583,
-                  "risk_share": 0.009426895041477652,
-                  "arms_same_direction": 0.383515559293524,
-                  "channels_opposed": 0.41379310344827586
+                  "cancellation": 0.017892973788753097,
+                  "risk_share": 0.009628519485158289,
+                  "arms_same_direction": 0.38114754098360654,
+                  "channels_opposed": 0.4270923209663503
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "share": 0.05711853847570394,
-                  "mean_abs": 0.7661520256628049,
-                  "mean_signed": -0.1965376389001812,
+                  "share": 0.05586543560009267,
+                  "mean_abs": 0.19081102408947828,
+                  "mean_signed": -0.05981143612651609,
                   "channel": {
-                    "risk": 0.06475290948215721,
-                    "effect_T": 0.34202458321444607,
-                    "effect_U": 0.4379749312883108
+                    "risk": 0.01907936905848823,
+                    "effect_T": 0.07536916103335353,
+                    "effect_U": 0.11410817178182438
                   },
-                  "cancellation": 0.09304548420391745,
-                  "risk_share": 0.013397643521715045,
-                  "arms_same_direction": 0.1753574432296047,
-                  "channels_opposed": 0.24222035323801513
+                  "cancellation": 0.08508802462237774,
+                  "risk_share": 0.013599028505545726,
+                  "arms_same_direction": 0.18226919758412424,
+                  "channels_opposed": 0.25798101811906815
                 },
                 {
-                  "input": "ApplicationType",
-                  "share": 0.04893813353306172,
-                  "mean_abs": 0.6564252366936985,
-                  "mean_signed": 0.10123180447210942,
+                  "input": "LoanGoal",
+                  "share": 0.054198895961916085,
+                  "mean_abs": 0.1851188795347931,
+                  "mean_signed": -0.06384138319636466,
                   "channel": {
-                    "risk": 0.22915606448053788,
-                    "effect_T": 0.23537329210457336,
-                    "effect_U": 0.3762892285790815
+                    "risk": 0.09544141519861281,
+                    "effect_T": 0.04489977496019244,
+                    "effect_U": 0.08995572401169331
                   },
-                  "cancellation": 0.21930217971393462,
-                  "risk_share": 0.045011536765291876,
-                  "arms_same_direction": 0.9997897392767031,
-                  "channels_opposed": 0.8955004205214466
+                  "cancellation": 0.19617299171563585,
+                  "risk_share": 0.06067824140233017,
+                  "arms_same_direction": 0.7079378774805867,
+                  "channels_opposed": 0.6447368421052632
                 },
                 {
-                  "input": "relative_position",
-                  "share": 0.04781958847159708,
-                  "mean_abs": 0.6414217791910036,
-                  "mean_signed": -0.10591261014891584,
+                  "input": "available_resources",
+                  "share": 0.0486196997776236,
+                  "mean_abs": 0.1660628724333432,
+                  "mean_signed": -0.16542633299381487,
                   "channel": {
-                    "native": 0.6414217791910036
+                    "native": 0.1660628724333432
                   },
                   "cancellation": null
                 },
                 {
-                  "input": "LoanGoal",
-                  "share": 0.04711681514729211,
-                  "mean_abs": 0.6319952213628991,
-                  "mean_signed": 0.0773410490289801,
+                  "input": "relative_position",
+                  "share": 0.04606003454818903,
+                  "mean_abs": 0.15732021539490368,
+                  "mean_signed": 0.0007463891872155899,
                   "channel": {
-                    "risk": 0.2889855491356682,
-                    "effect_T": 0.12676395857484984,
-                    "effect_U": 0.3581656470170375
+                    "native": 0.15732021539490368
                   },
-                  "cancellation": 0.1833791889171814,
-                  "risk_share": 0.06249920284269979,
-                  "arms_same_direction": 0.7085786375105131,
-                  "channels_opposed": 0.6627417998317914
+                  "cancellation": null
+                },
+                {
+                  "input": "ApplicationType",
+                  "share": 0.04471812718423511,
+                  "mean_abs": 0.1527368676486841,
+                  "mean_signed": 0.02630547273133892,
+                  "channel": {
+                    "risk": 0.0531381918276884,
+                    "effect_T": 0.048419825998363704,
+                    "effect_U": 0.09207521888918807
+                  },
+                  "cancellation": 0.2112053166094573,
+                  "risk_share": 0.04527094083309883,
+                  "arms_same_direction": 0.9997842968075927,
+                  "channels_opposed": 0.857204486626402
                 },
                 {
                   "input": "open_cases_max",
-                  "share": 0.03958246591816534,
-                  "mean_abs": 0.5309342159871777,
-                  "mean_signed": -0.24329991624125938,
+                  "share": 0.038447643749892395,
+                  "mean_abs": 0.13131973641555617,
+                  "mean_signed": -0.06887111961828457,
                   "channel": {
-                    "risk": 0.016105811805148987,
-                    "effect_T": 0.5242595622326309,
-                    "effect_U": 0.01971866218955556
+                    "risk": 0.004560440216807013,
+                    "effect_T": 0.1286447076341338,
+                    "effect_U": 0.005134783253347322
                   },
-                  "cancellation": 0.05204544024590663,
-                  "risk_share": 0.00474560782168167,
-                  "arms_same_direction": 0.5315391084945332,
-                  "channels_opposed": 0.5391084945332212
-                },
-                {
-                  "input": "RequestedAmount",
-                  "share": 0.037609488190935125,
-                  "mean_abs": 0.504469937967389,
-                  "mean_signed": -0.05906641868999224,
-                  "channel": {
-                    "risk": 0.16923591116768924,
-                    "effect_T": 0.26684114776235496,
-                    "effect_U": 0.23979995919907912
-                  },
-                  "cancellation": 0.25360690712076994,
-                  "risk_share": 0.03127345869360227,
-                  "arms_same_direction": 0.5185029436501262,
-                  "channels_opposed": 0.5105130361648444
+                  "cancellation": 0.05074597502466627,
+                  "risk_share": 0.004792968535360225,
+                  "arms_same_direction": 0.5342968075927523,
+                  "channels_opposed": 0.5289042277825712
                 }
               ],
               "cancellation_by_arm_direction": {
-                "lost_same_direction": 0.23275847782035408,
-                "lost_opposite_direction": 0.07217951709418957,
-                "mass_share_same_direction": 0.703666796209511
+                "lost_same_direction": 0.24770820781362812,
+                "lost_opposite_direction": 0.07336487624896548,
+                "mass_share_same_direction": 0.7189109816180153
               },
               "channel_share": {
-                "risk": 0.26055506588545996,
-                "effect_T": 0.39280746883126383,
-                "effect_U": 0.2768628645722264,
-                "native": 0.06977460071104989,
-                "cancellation": 0.1579755516767014
+                "risk": 0.27310152816648575,
+                "effect_T": 0.36600168840352065,
+                "effect_U": 0.2818472562259567,
+                "native": 0.07904952720403692,
+                "cancellation": 0.16508503359323945
               },
-              "cancellation_overall": 0.16982502498583196,
-              "cancellation_per_state_mean": 0.3353344603799314,
-              "prefix_share_top5": 0.3263151332142525
+              "cancellation_overall": 0.17925506144977466,
+              "cancellation_per_state_mean": 0.3311184965588879,
+              "prefix_share_top5": 0.32600950534408984
             }
           },
           "typology": {
             "risky|treatable|act": {
-              "n": 1066,
+              "n": 1149,
               "level_share": {
-                "native": 0.09558882323218802,
-                "risk": 0.1430417833370629,
-                "effect": 0.761369393430749
+                "native": 0.06437578206323047,
+                "risk": 0.1953002206985658,
+                "effect": 0.7403239972382036
               }
             },
             "risky|treatable|wait": {
-              "n": 111,
+              "n": 28,
               "level_share": {
-                "native": 0.06948120927086684,
-                "risk": 0.17075078760245327,
-                "effect": 0.7597680031266798
+                "native": 0.029114888977952842,
+                "risk": 0.14134851199292228,
+                "effect": 0.829536599029125
               }
             },
             "risky|untreatable|act": {
-              "n": 247,
+              "n": 355,
               "level_share": {
-                "native": 0.144095994821503,
-                "risk": 0.11273435458827176,
-                "effect": 0.7431696505902252
+                "native": 0.09560548894716588,
+                "risk": 0.13130204699738943,
+                "effect": 0.7730924640554449
               }
             },
             "risky|untreatable|wait": {
-              "n": 403,
+              "n": 295,
               "level_share": {
-                "native": 0.12374472123327447,
-                "risk": 0.1840584400350816,
-                "effect": 0.692196838731644
+                "native": 0.08397670180235832,
+                "risk": 0.07694944691474243,
+                "effect": 0.8390738512828992
               }
             },
             "safe|treatable|act": {
-              "n": 502,
+              "n": 506,
               "level_share": {
-                "native": 0.19304159139095778,
-                "risk": 0.18406811299249332,
-                "effect": 0.6228902956165489
+                "native": 0.1706563489539854,
+                "risk": 0.2226831264027403,
+                "effect": 0.6066605246432744
               }
             },
             "safe|treatable|wait": {
-              "n": 114,
+              "n": 110,
               "level_share": {
-                "native": 0.07945403850582397,
-                "risk": 0.19837631677671833,
-                "effect": 0.7221696447174578
+                "native": 0.0745347979253694,
+                "risk": 0.22388682481660271,
+                "effect": 0.7015783772580279
               }
             },
             "safe|untreatable|act": {
-              "n": 1282,
+              "n": 1207,
               "level_share": {
-                "native": 0.6688615927870827,
-                "risk": 0.0803217903798252,
-                "effect": 0.25081661683309203
+                "native": 0.7360387504613408,
+                "risk": 0.058129739253475574,
+                "effect": 0.20583151028518373
               }
             },
             "safe|untreatable|wait": {
-              "n": 4128,
+              "n": 4203,
               "level_share": {
-                "native": 0.3563055675198802,
-                "risk": 0.1730385211233642,
-                "effect": 0.4706559113567555
+                "native": 0.39785980257264203,
+                "risk": 0.14862132415979545,
+                "effect": 0.45351887326756257
               }
             }
           },
           "cards": {
             "paper_card_act": {
-              "case_id": "Application_243887576",
-              "prefix_nr": 8,
+              "case_id": "Application_760306173",
+              "prefix_nr": 3,
               "action": "intervene",
-              "dq": 1.4393671751022339,
-              "r": 0.5673454648012725,
-              "pT": 0.40788254141807556,
-              "pU": 0.5656343102455139,
+              "dq": 1.232023000717163,
+              "r": 0.5326985998686206,
+              "pT": 0.4418976306915283,
+              "pU": 0.5745863318443298,
               "state": {
-                "relative_position": 0.145454540848732,
-                "reliability": 0.5673454403877258,
+                "relative_position": 0.05454545468091965,
+                "reliability": 0.5326985716819763,
                 "deviation": 0.0,
-                "available_resources": 3.0,
-                "Proba_if_Treated": 0.40788254141807556,
-                "Proba_if_Untreated": 0.5656343102455139
+                "available_resources": 1.0,
+                "Proba_if_Treated": 0.4418976306915283,
+                "Proba_if_Untreated": 0.5745863318443298
               },
               "timing_phi": {
-                "relative_position": 0.0013982352102175355,
-                "reliability": 0.8904615044593811,
-                "deviation": -0.14235050976276398,
-                "available_resources": 0.16859853267669678,
-                "Proba_if_Treated": -1.185837745666504,
-                "Proba_if_Untreated": 4.605357646942139
+                "relative_position": 0.10792582482099533,
+                "reliability": 0.367193341255188,
+                "deviation": 0.33498942852020264,
+                "available_resources": -0.05181281268596649,
+                "Proba_if_Treated": -1.1128395795822144,
+                "Proba_if_Untreated": 2.524946928024292
               },
               "native_phi": {
-                "relative_position": 0.0013982352102175355,
-                "available_resources": 0.16859853267669678
+                "relative_position": 0.10792582482099533,
+                "available_resources": -0.05181281268596649
               },
               "composed_top": [
                 [
                   "Activity",
-                  2.1850821540326786
-                ],
-                [
-                  "FirstWithdrawalAmount_max",
-                  0.7102195853661897
-                ],
-                [
-                  "LoanGoal",
-                  0.44509940133510106
+                  1.0585242683354532
                 ],
                 [
                   "RequestedAmount",
-                  -0.42043223777788286
+                  0.3852792927388625
+                ],
+                [
+                  "FirstWithdrawalAmount_max",
+                  0.3811574328608058
+                ],
+                [
+                  "LoanGoal",
+                  0.27030916147800726
+                ],
+                [
+                  "open_cases_min",
+                  -0.22298019908799369
+                ],
+                [
+                  "org:resource",
+                  0.21285159687962513
+                ],
+                [
+                  "timesincecasestart_mean",
+                  -0.19897098105114183
                 ],
                 [
                   "ApplicationType",
-                  0.35310836808288537
-                ],
-                [
-                  "NumberOfTerms_sum",
-                  0.2974153566537544
-                ],
-                [
-                  "OfferedAmount_max",
-                  0.28302895675161294
-                ],
-                [
-                  "NumberOfTerms_max",
-                  -0.24642828047099935
+                  0.1936077701427302
                 ]
               ],
               "per_channel_top": {
                 "risk": [
                   [
                     "Activity",
-                    0.3696281980982041
+                    0.3018371838158763
                   ],
                   [
                     "LoanGoal",
-                    0.11089398399102632
+                    0.10084482441869455
                   ],
                   [
                     "NumberOfTerms_sum",
-                    0.08961734768540425
-                  ],
-                  [
-                    "lifecycle:transition",
-                    0.07161827939741887
-                  ],
-                  [
-                    "RequestedAmount",
-                    -0.06410021820259172
+                    0.0953495929828877
                   ],
                   [
                     "org:resource",
-                    0.057707023848820246
+                    0.06792411302165989
                   ],
                   [
-                    "timesincelastevent_sum",
-                    0.04216942567601863
+                    "RequestedAmount",
+                    0.050800482581699974
                   ],
                   [
                     "OfferedAmount_std",
-                    0.042059654516432246
+                    0.04610496794418295
+                  ],
+                  [
+                    "ApplicationType",
+                    0.04604725970551191
+                  ],
+                  [
+                    "FirstWithdrawalAmount_std",
+                    -0.04301605630539396
                   ]
                 ],
                 "effect_T": [
                   [
                     "Activity",
-                    -0.4944658735230535
-                  ],
-                  [
-                    "NumberOfTerms_max",
-                    -0.16087390302519636
+                    -0.391836906472562
                   ],
                   [
                     "open_cases_min",
-                    0.15746215863792395
+                    -0.217971075878083
                   ],
                   [
-                    "open_cases_max",
-                    -0.1385048411891543
+                    "NumberOfTerms_max",
+                    -0.11688121123711757
                   ],
                   [
                     "open_cases_sum",
-                    -0.1327519526588629
+                    -0.10620780401002673
                   ],
                   [
                     "FirstWithdrawalAmount_max",
-                    0.10877646858684241
+                    0.08859168589785485
                   ],
                   [
                     "OfferedAmount_mean",
-                    -0.10675735907337423
+                    -0.08109433474283785
+                  ],
+                  [
+                    "month_sum",
+                    -0.0647628268232701
                   ],
                   [
                     "FirstWithdrawalAmount_mean",
-                    -0.0942997423785761
+                    -0.062087728123647545
                   ]
                 ],
                 "effect_U": [
                   [
                     "Activity",
-                    2.309919829457528
-                  ],
-                  [
-                    "FirstWithdrawalAmount_max",
-                    0.5869851666822299
-                  ],
-                  [
-                    "ApplicationType",
-                    0.3726792151889796
+                    1.1485239909921388
                   ],
                   [
                     "RequestedAmount",
-                    -0.3605540181754484
+                    0.37630039731426335
                   ],
                   [
-                    "LoanGoal",
-                    0.3413599054831368
+                    "FirstWithdrawalAmount_max",
+                    0.2772504169937357
+                  ],
+                  [
+                    "ApplicationType",
+                    0.19299578893692784
+                  ],
+                  [
+                    "timesincecasestart_mean",
+                    -0.1820764495040261
                   ],
                   [
                     "OfferedAmount_max",
-                    0.3296880526005029
+                    0.17290408171868024
                   ],
                   [
-                    "NumberOfTerms_sum",
-                    0.2220837377857312
+                    "LoanGoal",
+                    0.15707900640047098
                   ],
                   [
-                    "OfferedAmount_mean",
-                    0.14888329211028442
+                    "org:resource",
+                    0.13771733898934582
                   ]
                 ]
               },
@@ -3610,322 +3605,322 @@
                 {
                   "input": "Activity",
                   "value": "W_Handle leads",
-                  "risk": 0.3696281980982041,
-                  "effect_T": -0.4944658735230535,
-                  "effect_U": 2.309919829457528,
-                  "total": 2.1850821540326786
+                  "risk": 0.3018371838158763,
+                  "effect_T": -0.391836906472562,
+                  "effect_U": 1.1485239909921388,
+                  "total": 1.0585242683354532
+                },
+                {
+                  "input": "RequestedAmount",
+                  "value": 6000.0,
+                  "risk": 0.050800482581699974,
+                  "effect_T": -0.04182158715710079,
+                  "effect_U": 0.37630039731426335,
+                  "total": 0.3852792927388625
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
                   "value": 0.0,
-                  "risk": 0.014457950097117395,
-                  "effect_T": 0.10877646858684241,
-                  "effect_U": 0.5869851666822299,
-                  "total": 0.7102195853661897
+                  "risk": 0.015315329969215237,
+                  "effect_T": 0.08859168589785485,
+                  "effect_U": 0.2772504169937357,
+                  "total": 0.3811574328608058
                 },
                 {
                   "input": "LoanGoal",
-                  "value": "Car",
-                  "risk": 0.11089398399102632,
-                  "effect_T": -0.007154488139062111,
-                  "effect_U": 0.3413599054831368,
-                  "total": 0.44509940133510106
+                  "value": "Existing loan takeover",
+                  "risk": 0.10084482441869455,
+                  "effect_T": 0.012385330658841738,
+                  "effect_U": 0.15707900640047098,
+                  "total": 0.27030916147800726
                 },
                 {
-                  "input": "RequestedAmount",
-                  "value": 15000.0,
-                  "risk": -0.06410021820259172,
-                  "effect_T": 0.004221998600157299,
-                  "effect_U": -0.3605540181754484,
-                  "total": -0.42043223777788286
+                  "input": "open_cases_min",
+                  "value": 2281.0,
+                  "risk": -0.00587774097842905,
+                  "effect_T": -0.217971075878083,
+                  "effect_U": 0.0008686177685183655,
+                  "total": -0.22298019908799369
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_1",
+                  "risk": 0.06792411302165989,
+                  "effect_T": 0.007210144868619422,
+                  "effect_U": 0.13771733898934582,
+                  "total": 0.21285159687962513
+                },
+                {
+                  "input": "timesincecasestart_mean",
+                  "value": 0.0011333333333333334,
+                  "risk": -0.015468154681951733,
+                  "effect_T": -0.001426376865164007,
+                  "effect_U": -0.1820764495040261,
+                  "total": -0.19897098105114183
                 },
                 {
                   "input": "ApplicationType",
                   "value": "New credit",
-                  "risk": 0.04024282985141539,
-                  "effect_T": -0.05981367695750965,
-                  "effect_U": 0.3726792151889796,
-                  "total": 0.35310836808288537
-                },
-                {
-                  "input": "NumberOfTerms_sum",
-                  "value": 0.0,
-                  "risk": 0.08961734768540425,
-                  "effect_T": -0.014285728817381074,
-                  "effect_U": 0.2220837377857312,
-                  "total": 0.2974153566537544
-                },
-                {
-                  "input": "OfferedAmount_max",
-                  "value": 0.0,
-                  "risk": 0.003851270989357245,
-                  "effect_T": -0.0505103668382472,
-                  "effect_U": 0.3296880526005029,
-                  "total": 0.28302895675161294
-                },
-                {
-                  "input": "NumberOfTerms_max",
-                  "value": 0.0,
-                  "risk": 0.014744579091456744,
-                  "effect_T": -0.16087390302519636,
-                  "effect_U": -0.10029895653725972,
-                  "total": -0.24642828047099935
+                  "risk": 0.04604725970551191,
+                  "effect_T": -0.04543527849970956,
+                  "effect_U": 0.19299578893692784,
+                  "total": 0.1936077701427302
                 },
                 {
                   "input": "(other attributes)",
-                  "risk": 0.16877505309522733,
-                  "effect_T": -0.511732175553054,
-                  "effect_U": 0.9034947144567383,
-                  "total": 0.5605375919989118
+                  "risk": 0.1407594719231134,
+                  "effect_T": -0.522535516134911,
+                  "effect_U": 0.41628782013291743,
+                  "total": 0.03451177592111979
                 }
               ],
               "completeness": {
-                "timing_sum": 4.337627663859166,
-                "composed_sum": 4.337627663859165
+                "timing_sum": 2.170403130352497,
+                "composed_sum": 2.1704031303524967
               }
             },
             "paper_card_wait": {
-              "case_id": "Application_291332257",
-              "prefix_nr": 24,
+              "case_id": "Application_362042856",
+              "prefix_nr": 7,
               "action": "wait",
-              "dq": -1.996292233467102,
-              "r": 0.21767109695281475,
-              "pT": 0.13245053589344025,
-              "pU": 0.25786975026130676,
+              "dq": -0.8785020112991333,
+              "r": 0.2872288900444549,
+              "pT": 0.24187332391738892,
+              "pU": 0.4541778266429901,
               "state": {
-                "relative_position": 0.4363636374473572,
-                "reliability": 0.7823289036750793,
+                "relative_position": 0.12727272510528564,
+                "reliability": 0.7127711176872253,
                 "deviation": 1.0,
                 "available_resources": 2.0,
-                "Proba_if_Treated": 0.13245053589344025,
-                "Proba_if_Untreated": 0.25786975026130676
+                "Proba_if_Treated": 0.24187332391738892,
+                "Proba_if_Untreated": 0.4541778266429901
               },
               "timing_phi": {
-                "relative_position": -0.8566548824310303,
-                "reliability": 0.32884687185287476,
-                "deviation": -0.20238861441612244,
-                "available_resources": 0.0633782148361206,
-                "Proba_if_Treated": -0.9053861498832703,
-                "Proba_if_Untreated": 0.6464501023292542
+                "relative_position": 0.10652899742126465,
+                "reliability": 0.08663880079984665,
+                "deviation": 0.11274406313896179,
+                "available_resources": -0.06261410564184189,
+                "Proba_if_Treated": -0.113313227891922,
+                "Proba_if_Untreated": -0.21264182031154633
               },
               "native_phi": {
-                "relative_position": -0.8566548824310303,
-                "available_resources": 0.0633782148361206
+                "relative_position": 0.10652899742126465,
+                "available_resources": -0.06261410564184189
               },
               "composed_top": [
                 [
-                  "relative_position",
-                  -0.8566548824310303
-                ],
-                [
                   "Activity",
-                  0.2683778754614434
-                ],
-                [
-                  "timesincelastevent_max",
-                  -0.2500345005960408
-                ],
-                [
-                  "timesincelastevent_std",
-                  0.24475487447870314
-                ],
-                [
-                  "timesincelastevent_mean",
-                  -0.2267202376972346
+                  0.2653598413137353
                 ],
                 [
                   "FirstWithdrawalAmount_max",
-                  0.22266749919983564
+                  -0.11429692857438487
                 ],
                 [
-                  "FirstWithdrawalAmount_mean",
-                  -0.1693088120301971
+                  "LoanGoal",
+                  0.1093501999454572
                 ],
                 [
-                  "timesincecasestart_mean",
-                  -0.1644711459856899
+                  "relative_position",
+                  0.10652899742126465
+                ],
+                [
+                  "NumberOfTerms_sum",
+                  -0.07968566397786869
+                ],
+                [
+                  "RequestedAmount",
+                  -0.07800813908641745
+                ],
+                [
+                  "timesincelastevent_max",
+                  0.06606114586502432
+                ],
+                [
+                  "available_resources",
+                  -0.06261410564184189
                 ]
               ],
               "per_channel_top": {
                 "risk": [
                   [
+                    "org:resource",
+                    0.2057077871029945
+                  ],
+                  [
                     "Activity",
-                    0.08555722944116928
+                    0.17061648988309902
                   ],
                   [
-                    "timesincecasestart_max",
-                    -0.026812253939599844
+                    "LoanGoal",
+                    0.1468167684243802
                   ],
                   [
-                    "timesincecasestart_mean",
-                    -0.025942449539114378
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    -0.024655932365850147
-                  ],
-                  [
-                    "timesincelastevent_sum",
-                    0.019443119144738945
-                  ],
-                  [
-                    "MonthlyCost_mean",
-                    0.01421070293172123
-                  ],
-                  [
-                    "lifecycle:transition",
-                    -0.013871872733847733
+                    "RequestedAmount",
+                    -0.0625926988307129
                   ],
                   [
                     "NumberOfTerms_sum",
-                    0.013834099684054909
+                    -0.055098626677535546
+                  ],
+                  [
+                    "timesincelastevent_sum",
+                    -0.055095909768429985
+                  ],
+                  [
+                    "weekday_sum",
+                    -0.05023267542095727
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.04452328860607954
                   ]
                 ],
                 "effect_T": [
                   [
+                    "org:resource",
+                    -0.2690812199685563
+                  ],
+                  [
                     "Activity",
-                    -0.6177446743413179
+                    0.0639669786711259
                   ],
                   [
-                    "timesincelastevent_sum",
-                    0.31733653316431437
+                    "NumberOfTerms_mean",
+                    0.06025303270435444
                   ],
                   [
-                    "timesincelastevent_std",
-                    0.243907555310849
+                    "open_cases_min",
+                    -0.054540773484233
+                  ],
+                  [
+                    "open_cases_max",
+                    0.05223723152473668
+                  ],
+                  [
+                    "OfferedAmount_max",
+                    -0.0412854258814529
+                  ],
+                  [
+                    "FirstWithdrawalAmount_max",
+                    -0.034234039088508354
                   ],
                   [
                     "timesincelastevent_max",
-                    -0.2374174562796836
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    0.2069663960006162
-                  ],
-                  [
-                    "FirstWithdrawalAmount_mean",
-                    -0.19969839027459627
-                  ],
-                  [
-                    "open_cases_sum",
-                    -0.1441040317527871
-                  ],
-                  [
-                    "open_cases_std",
-                    -0.10882565114688755
+                    0.032190835556538504
                   ]
                 ],
                 "effect_U": [
                   [
-                    "Activity",
-                    0.800565320361592
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    -0.40903070133200065
-                  ],
-                  [
-                    "timesincelastevent_sum",
-                    -0.19096924400475898
-                  ],
-                  [
-                    "LoanGoal",
-                    0.17316336578714228
-                  ],
-                  [
                     "FirstWithdrawalAmount_max",
-                    0.15501419471051736
-                  ],
-                  [
-                    "timesincecasestart_mean",
-                    -0.1402882099878544
-                  ],
-                  [
-                    "OfferedAmount_mean",
-                    0.09823674520979893
+                    -0.0668730947179832
                   ],
                   [
                     "ApplicationType",
-                    -0.056529192321545005
+                    -0.04168813120702687
+                  ],
+                  [
+                    "LoanGoal",
+                    -0.03930646061830683
+                  ],
+                  [
+                    "Activity",
+                    0.030776372759510385
+                  ],
+                  [
+                    "NumberOfTerms_sum",
+                    -0.029119376303133597
+                  ],
+                  [
+                    "OfferedAmount_max",
+                    0.02693518098936485
+                  ],
+                  [
+                    "OfferedAmount_sum",
+                    -0.021024149303858864
+                  ],
+                  [
+                    "hour_min",
+                    -0.014731992859468938
                   ]
                 ]
               },
               "flows": [
                 {
                   "input": "Activity",
-                  "value": "W_Validate application",
-                  "risk": 0.08555722944116928,
-                  "effect_T": -0.6177446743413179,
-                  "effect_U": 0.800565320361592,
-                  "total": 0.2683778754614434
-                },
-                {
-                  "input": "timesincelastevent_max",
-                  "value": 36139.821866666665,
-                  "risk": 0.0010359665458619161,
-                  "effect_T": -0.2374174562796836,
-                  "effect_U": -0.01365301086221913,
-                  "total": -0.2500345005960408
-                },
-                {
-                  "input": "timesincelastevent_std",
-                  "value": 7419.156607435852,
-                  "risk": 0.0008473191678541189,
-                  "effect_T": 0.243907555310849,
-                  "effect_U": 0.0,
-                  "total": 0.24475487447870314
-                },
-                {
-                  "input": "timesincelastevent_mean",
-                  "value": 1905.351665972222,
-                  "risk": -0.024655932365850147,
-                  "effect_T": 0.2069663960006162,
-                  "effect_U": -0.40903070133200065,
-                  "total": -0.2267202376972346
+                  "value": "W_Complete application",
+                  "risk": 0.17061648988309902,
+                  "effect_T": 0.0639669786711259,
+                  "effect_U": 0.030776372759510385,
+                  "total": 0.2653598413137353
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "value": 9900.0,
-                  "risk": 0.0030859820628923885,
-                  "effect_T": 0.0645673224264259,
-                  "effect_U": 0.15501419471051736,
-                  "total": 0.22266749919983564
+                  "value": 0.0,
+                  "risk": -0.013189794767893307,
+                  "effect_T": -0.034234039088508354,
+                  "effect_U": -0.0668730947179832,
+                  "total": -0.11429692857438487
                 },
                 {
-                  "input": "FirstWithdrawalAmount_mean",
-                  "value": 6600.0,
-                  "risk": 0.0017145396904054535,
-                  "effect_T": -0.19969839027459627,
-                  "effect_U": 0.028675038553993726,
-                  "total": -0.1693088120301971
+                  "input": "LoanGoal",
+                  "value": "Unknown",
+                  "risk": 0.1468167684243802,
+                  "effect_T": 0.0018398921393838136,
+                  "effect_U": -0.03930646061830683,
+                  "total": 0.1093501999454572
                 },
                 {
-                  "input": "timesincecasestart_mean",
-                  "value": 13883.6643875,
-                  "risk": -0.025942449539114378,
-                  "effect_T": 0.0017595135412788688,
-                  "effect_U": -0.1402882099878544,
-                  "total": -0.1644711459856899
+                  "input": "NumberOfTerms_sum",
+                  "value": 112.0,
+                  "risk": -0.055098626677535546,
+                  "effect_T": 0.00453233900280046,
+                  "effect_U": -0.029119376303133597,
+                  "total": -0.07968566397786869
                 },
                 {
-                  "input": "timesincelastevent_sum",
-                  "value": 45728.43998333333,
-                  "risk": 0.019443119144738945,
-                  "effect_T": 0.31733653316431437,
-                  "effect_U": -0.19096924400475898,
-                  "total": 0.14581040830429434
+                  "input": "RequestedAmount",
+                  "value": 0.0,
+                  "risk": -0.0625926988307129,
+                  "effect_T": -0.022755687862091943,
+                  "effect_U": 0.007340247606387399,
+                  "total": -0.07800813908641745
+                },
+                {
+                  "input": "timesincelastevent_max",
+                  "value": 2.11725,
+                  "risk": 0.03301771859027263,
+                  "effect_T": 0.032190835556538504,
+                  "effect_U": 0.0008525917182131772,
+                  "total": 0.06606114586502432
+                },
+                {
+                  "input": "ApplicationType",
+                  "value": "New credit",
+                  "risk": -0.038701357079512166,
+                  "effect_T": 0.01897669096487348,
+                  "effect_U": -0.04168813120702687,
+                  "total": -0.06141279732166556
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_30",
+                  "risk": 0.2057077871029945,
+                  "effect_T": -0.2690812199685563,
+                  "effect_U": 0.0073440934593584,
+                  "total": -0.05602933940620337
                 },
                 {
                   "input": "(other attributes)",
-                  "risk": 0.06537248328879475,
-                  "effect_T": -0.6850629494311569,
-                  "effect_U": 0.41613671488998394,
-                  "total": -0.20355375125237807
+                  "risk": -0.18719342270628397,
+                  "effect_T": 0.09125098269251238,
+                  "effect_U": -0.08196806300856511,
+                  "total": -0.17791050302233677
                 }
               ],
               "completeness": {
-                "timing_sum": -0.9257544577121735,
-                "composed_sum": -0.9257544577121736
+                "timing_sum": -0.08265729248523712,
+                "composed_sum": -0.08265729248523715
               }
             }
           }
@@ -3939,57 +3934,57 @@
             "Proba_if_Treated": 0.30596157908439636,
             "Proba_if_Untreated": 0.39344489574432373
           },
-          "n_act": 3097,
-          "n_wait": 4756,
+          "n_act": 3217,
+          "n_wait": 4636,
           "level_shares": {
             "act": {
               "per_feature": {
-                "relative_position": 0.04420074054932757,
-                "reliability": 0.09213647248998204,
-                "deviation": 0.03025280533314405,
-                "available_resources": 0.28221389789433887,
-                "Proba_if_Treated": 0.1438925422519872,
-                "Proba_if_Untreated": 0.40730354148122033
+                "relative_position": 0.0323744507995487,
+                "reliability": 0.06462349126450294,
+                "deviation": 0.09484353536628132,
+                "available_resources": 0.19904468141854953,
+                "Proba_if_Treated": 0.16843669705585848,
+                "Proba_if_Untreated": 0.4406771440952591
               },
               "per_level": {
-                "native": 0.32641463844366647,
-                "risk": 0.12238927782312609,
-                "effect": 0.5511960837332075
+                "native": 0.23141913221809823,
+                "risk": 0.15946702663078427,
+                "effect": 0.6091138411511176
               }
             },
             "wait": {
               "per_feature": {
-                "relative_position": 0.17163218488131624,
-                "reliability": 0.11332025350894862,
-                "deviation": 0.062231553607382424,
-                "available_resources": 0.1257846552291611,
-                "Proba_if_Treated": 0.24486567944265494,
-                "Proba_if_Untreated": 0.28216567333053666
+                "relative_position": 0.14657131035747764,
+                "reliability": 0.07184692563176101,
+                "deviation": 0.06254242319458689,
+                "available_resources": 0.1547166252803786,
+                "Proba_if_Treated": 0.2855599784685287,
+                "Proba_if_Untreated": 0.27876273706726723
               },
               "per_level": {
-                "native": 0.2974168401104773,
-                "risk": 0.17555180711633103,
-                "effect": 0.5270313527731916
+                "native": 0.3012879356378563,
+                "risk": 0.1343893488263479,
+                "effect": 0.5643227155357959
               }
             },
             "all": {
               "per_feature": {
-                "relative_position": 0.10235002607675632,
-                "reliability": 0.10180301701892287,
-                "deviation": 0.04484528973882902,
-                "available_resources": 0.2108323896311271,
-                "Proba_if_Treated": 0.18996842105787837,
-                "Proba_if_Untreated": 0.3502008564764864
+                "relative_position": 0.07133696285147383,
+                "reliability": 0.06708803494530192,
+                "deviation": 0.0838228078510749,
+                "available_resources": 0.1839205140096746,
+                "Proba_if_Treated": 0.20839766692199815,
+                "Proba_if_Untreated": 0.38543401342047673
               },
               "per_level": {
-                "native": 0.3131824157078834,
-                "risk": 0.1466483067577519,
-                "effect": 0.5401692775343647
+                "native": 0.2552574768611484,
+                "risk": 0.15091084279637684,
+                "effect": 0.5938316803424749
               }
             }
           },
           "propagation": {
-            "completeness_gap": 1.2505552149377763e-12,
+            "completeness_gap": 9.947598300641403e-14,
             "fallbacks": {
               "reliability": 0,
               "deviation": 0,
@@ -3997,506 +3992,501 @@
               "Proba_if_Untreated": 0
             },
             "act": {
-              "n": 3097,
+              "n": 3217,
               "top": [
                 {
-                  "input": "available_resources",
-                  "share": 0.15797870423160917,
-                  "mean_abs": 1.9297499461768601,
-                  "mean_signed": 1.9103957689063509,
+                  "input": "Activity",
+                  "share": 0.1630099641025211,
+                  "mean_abs": 0.7060954160491543,
+                  "mean_signed": 0.6104150133865032,
                   "channel": {
-                    "native": 1.9297499461768601
+                    "risk": 0.186546029518425,
+                    "effect_T": 0.29068302187146683,
+                    "effect_U": 0.6384703861991791
+                  },
+                  "cancellation": 0.36712756835751026,
+                  "risk_share": 0.20042116528985457,
+                  "arms_same_direction": 0.8669567920422754,
+                  "channels_opposed": 0.8666459434255518
+                },
+                {
+                  "input": "available_resources",
+                  "share": 0.13724561404092156,
+                  "mean_abs": 0.5944943272682273,
+                  "mean_signed": 0.5829094528737723,
+                  "channel": {
+                    "native": 0.5944943272682273
                   },
                   "cancellation": null
                 },
                 {
-                  "input": "Activity",
-                  "share": 0.14245672862439202,
-                  "mean_abs": 1.740145076721344,
-                  "mean_signed": 1.167543232920754,
+                  "input": "FirstWithdrawalAmount_max",
+                  "share": 0.06304954268543853,
+                  "mean_abs": 0.27310596207594096,
+                  "mean_signed": 0.13374044345327207,
                   "channel": {
-                    "risk": 0.38219803332210944,
-                    "effect_T": 0.8249861093341624,
-                    "effect_U": 1.4202845051848443
+                    "risk": 0.014697317154003684,
+                    "effect_T": 0.08352221696211024,
+                    "effect_U": 0.19704846565562203
                   },
-                  "cancellation": 0.33771043161594083,
-                  "risk_share": 0.20039132034526247,
-                  "arms_same_direction": 0.8630933161123668,
-                  "channels_opposed": 0.8488860187278011
+                  "cancellation": 0.07505736386241513,
+                  "risk_share": 0.012687500916782772,
+                  "arms_same_direction": 0.12340690083929126,
+                  "channels_opposed": 0.18153559216661486
                 },
                 {
                   "input": "RequestedAmount",
-                  "share": 0.06012771212507767,
-                  "mean_abs": 0.734475256025617,
-                  "mean_signed": 0.11426107627236615,
+                  "share": 0.04991109933077663,
+                  "mean_abs": 0.21619536352557445,
+                  "mean_signed": 0.01601974257465428,
                   "channel": {
-                    "risk": 0.09280663302848813,
-                    "effect_T": 0.5698902000524858,
-                    "effect_U": 0.3358974514911252
+                    "risk": 0.0354920784298576,
+                    "effect_T": 0.16583384670198212,
+                    "effect_U": 0.16232696162185198
                   },
-                  "cancellation": 0.2644908273830733,
-                  "risk_share": 0.03339233460256289,
-                  "arms_same_direction": 0.5631256054246044,
-                  "channels_opposed": 0.5682918953826284
-                },
-                {
-                  "input": "FirstWithdrawalAmount_max",
-                  "share": 0.058013729869055404,
-                  "mean_abs": 0.7086524265207174,
-                  "mean_signed": 0.2744965445947458,
-                  "channel": {
-                    "risk": 0.03874268045029082,
-                    "effect_T": 0.29746669375625984,
-                    "effect_U": 0.44419216526528066
-                  },
-                  "cancellation": 0.0919387127294361,
-                  "risk_share": 0.012959340013727977,
-                  "arms_same_direction": 0.1317403939296093,
-                  "channels_opposed": 0.17371649983855345
+                  "cancellation": 0.40548976400122094,
+                  "risk_share": 0.033597300643967924,
+                  "arms_same_direction": 0.5598383587193037,
+                  "channels_opposed": 0.5613926018029219
                 },
                 {
                   "input": "LoanGoal",
-                  "share": 0.0382669075139411,
-                  "mean_abs": 0.46743998233533635,
-                  "mean_signed": 0.2663063395665074,
+                  "share": 0.046775388457496285,
+                  "mean_abs": 0.2026126903075972,
+                  "mean_signed": 0.10651056712798893,
                   "channel": {
-                    "risk": 0.1941691259903479,
-                    "effect_T": 0.0798709663590214,
-                    "effect_U": 0.29161270646959697
+                    "risk": 0.08679517755615786,
+                    "effect_T": 0.029197809860119557,
+                    "effect_U": 0.13154943459500204
                   },
-                  "cancellation": 0.1736273853655269,
-                  "risk_share": 0.07436571373420668,
-                  "arms_same_direction": 0.6480464966096222,
-                  "channels_opposed": 0.6306102680012916
+                  "cancellation": 0.18150315949334517,
+                  "risk_share": 0.07649590934975839,
+                  "arms_same_direction": 0.6512278520360585,
+                  "channels_opposed": 0.6210755362138638
+                },
+                {
+                  "input": "lifecycle:transition",
+                  "share": 0.039954912867795324,
+                  "mean_abs": 0.17306905734210468,
+                  "mean_signed": 0.014333979983910899,
+                  "channel": {
+                    "risk": 0.02740905985906543,
+                    "effect_T": 0.0002007906537596981,
+                    "effect_U": 0.1508604193050428
+                  },
+                  "cancellation": 0.030263934050613783,
+                  "risk_share": 0.02521082087219514,
+                  "arms_same_direction": 1.0,
+                  "channels_opposed": 0.8333333333333334
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.037421137495544335,
-                  "mean_abs": 0.45710868701665636,
-                  "mean_signed": -0.18120981319758728,
+                  "share": 0.03570848763675014,
+                  "mean_abs": 0.15467520389428283,
+                  "mean_signed": -0.05318703235978372,
                   "channel": {
-                    "risk": 0.016497855863085685,
-                    "effect_T": 0.45701169287602855,
-                    "effect_U": 0.00786430598129089
+                    "risk": 0.005511795102062063,
+                    "effect_T": 0.1551374367980518,
+                    "effect_U": 0.0033359749452278433
                   },
-                  "cancellation": 0.05040815463034176,
-                  "risk_share": 0.0066671026178378055,
-                  "arms_same_direction": 0.34162092347433,
-                  "channels_opposed": 0.36745237326444946
+                  "cancellation": 0.05677343176351002,
+                  "risk_share": 0.006491213151185464,
+                  "arms_same_direction": 0.346596207646876,
+                  "channels_opposed": 0.3817221013366491
                 },
                 {
                   "input": "OfferedAmount_max",
-                  "share": 0.03587657610693681,
-                  "mean_abs": 0.4382414778505246,
-                  "mean_signed": 0.02795531045671459,
+                  "share": 0.0338740455898741,
+                  "mean_abs": 0.14672911834400099,
+                  "mean_signed": 0.04911311749952762,
                   "channel": {
-                    "risk": 0.047277143389866376,
-                    "effect_T": 0.2603212063380981,
-                    "effect_U": 0.2577881416971746
+                    "risk": 0.01464820716896301,
+                    "effect_T": 0.07116305400000042,
+                    "effect_U": 0.11111282217259892
                   },
-                  "cancellation": 0.22488159074003788,
-                  "risk_share": 0.010929151012957683,
-                  "arms_same_direction": 0.9347755892799483,
-                  "channels_opposed": 0.8798837584759445
-                },
-                {
-                  "input": "open_cases_max",
-                  "share": 0.03540659605471478,
-                  "mean_abs": 0.4325005522941913,
-                  "mean_signed": -0.10944986855679265,
-                  "channel": {
-                    "risk": 0.008645954805561351,
-                    "effect_T": 0.4361718736415234,
-                    "effect_U": 0.028225535759844336
-                  },
-                  "cancellation": 0.08570633261225669,
-                  "risk_share": 0.004471677526189668,
-                  "arms_same_direction": 0.46561188246690344,
-                  "channels_opposed": 0.46690345495640945
+                  "cancellation": 0.25489500393153297,
+                  "risk_share": 0.010525584584976324,
+                  "arms_same_direction": 0.9378302766552689,
+                  "channels_opposed": 0.8641591544917625
                 }
               ],
               "cancellation_by_arm_direction": {
-                "lost_same_direction": 0.3039330417983771,
-                "lost_opposite_direction": 0.0672392360032339,
-                "mass_share_same_direction": 0.7265613835974389
+                "lost_same_direction": 0.35190794210381804,
+                "lost_opposite_direction": 0.07107773135484885,
+                "mass_share_same_direction": 0.7498335485098878
               },
               "channel_share": {
-                "risk": 0.16691420240447155,
-                "effect_T": 0.3455604545624457,
-                "effect_U": 0.3393243974657032,
-                "native": 0.14820094556737956,
-                "cancellation": 0.1889246596366374
+                "risk": 0.18046631992990386,
+                "effect_T": 0.29170665311419247,
+                "effect_U": 0.40463446680344933,
+                "native": 0.12319256015245428,
+                "cancellation": 0.22796440719810585
               },
-              "cancellation_overall": 0.2217948689347623,
-              "cancellation_per_state_mean": 0.2983768751783911,
-              "prefix_share_top5": 0.33628621562801053
+              "cancellation_overall": 0.25999369626441904,
+              "cancellation_per_state_mean": 0.3130141042423579,
+              "prefix_share_top5": 0.3627009074440279
             },
             "wait": {
-              "n": 4756,
+              "n": 4636,
               "top": [
                 {
                   "input": "Activity",
-                  "share": 0.09786253738023029,
-                  "mean_abs": 1.3126663120460975,
-                  "mean_signed": -0.028150874045806913,
+                  "share": 0.09205045653668377,
+                  "mean_abs": 0.3144026658164911,
+                  "mean_signed": 0.033069237899928855,
                   "channel": {
-                    "risk": 0.5007149876612398,
-                    "effect_T": 0.581405873742903,
-                    "effect_U": 0.9613464482357976
+                    "risk": 0.12592320408533414,
+                    "effect_T": 0.13877871496317265,
+                    "effect_U": 0.25979532620731294
                   },
-                  "cancellation": 0.35762793666741544,
-                  "risk_share": 0.17597977896534575,
-                  "arms_same_direction": 0.7022708158116064,
-                  "channels_opposed": 0.7195121951219512
+                  "cancellation": 0.4005637424022226,
+                  "risk_share": 0.17525593506644246,
+                  "arms_same_direction": 0.6954270923209663,
+                  "channels_opposed": 0.6900345125107852
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.07527910867796445,
-                  "mean_abs": 1.0097464526030504,
-                  "mean_signed": 0.6064721866078093,
+                  "share": 0.07917659006116219,
+                  "mean_abs": 0.27043136907820164,
+                  "mean_signed": 0.19152019735327416,
                   "channel": {
-                    "risk": 0.02445333495651536,
-                    "effect_T": 1.0057351350863546,
-                    "effect_U": 0.006509925830514664
+                    "risk": 0.006800478351098438,
+                    "effect_T": 0.26681948252516746,
+                    "effect_U": 0.0017383879194504813
                   },
-                  "cancellation": 0.025997863387865583,
-                  "risk_share": 0.009426895041477652,
-                  "arms_same_direction": 0.383515559293524,
-                  "channels_opposed": 0.41379310344827586
+                  "cancellation": 0.017892973788753097,
+                  "risk_share": 0.009628519485158289,
+                  "arms_same_direction": 0.38114754098360654,
+                  "channels_opposed": 0.4270923209663503
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "share": 0.05711853847570394,
-                  "mean_abs": 0.7661520256628049,
-                  "mean_signed": -0.1965376389001812,
+                  "share": 0.05586543560009267,
+                  "mean_abs": 0.19081102408947828,
+                  "mean_signed": -0.05981143612651609,
                   "channel": {
-                    "risk": 0.06475290948215721,
-                    "effect_T": 0.34202458321444607,
-                    "effect_U": 0.4379749312883108
+                    "risk": 0.01907936905848823,
+                    "effect_T": 0.07536916103335353,
+                    "effect_U": 0.11410817178182438
                   },
-                  "cancellation": 0.09304548420391745,
-                  "risk_share": 0.013397643521715045,
-                  "arms_same_direction": 0.1753574432296047,
-                  "channels_opposed": 0.24222035323801513
+                  "cancellation": 0.08508802462237774,
+                  "risk_share": 0.013599028505545726,
+                  "arms_same_direction": 0.18226919758412424,
+                  "channels_opposed": 0.25798101811906815
                 },
                 {
-                  "input": "ApplicationType",
-                  "share": 0.04893813353306172,
-                  "mean_abs": 0.6564252366936985,
-                  "mean_signed": 0.10123180447210942,
+                  "input": "LoanGoal",
+                  "share": 0.054198895961916085,
+                  "mean_abs": 0.1851188795347931,
+                  "mean_signed": -0.06384138319636466,
                   "channel": {
-                    "risk": 0.22915606448053788,
-                    "effect_T": 0.23537329210457336,
-                    "effect_U": 0.3762892285790815
+                    "risk": 0.09544141519861281,
+                    "effect_T": 0.04489977496019244,
+                    "effect_U": 0.08995572401169331
                   },
-                  "cancellation": 0.21930217971393462,
-                  "risk_share": 0.045011536765291876,
-                  "arms_same_direction": 0.9997897392767031,
-                  "channels_opposed": 0.8955004205214466
+                  "cancellation": 0.19617299171563585,
+                  "risk_share": 0.06067824140233017,
+                  "arms_same_direction": 0.7079378774805867,
+                  "channels_opposed": 0.6447368421052632
                 },
                 {
-                  "input": "relative_position",
-                  "share": 0.04781958847159708,
-                  "mean_abs": 0.6414217791910036,
-                  "mean_signed": -0.10591261014891584,
+                  "input": "available_resources",
+                  "share": 0.0486196997776236,
+                  "mean_abs": 0.1660628724333432,
+                  "mean_signed": -0.16542633299381487,
                   "channel": {
-                    "native": 0.6414217791910036
+                    "native": 0.1660628724333432
                   },
                   "cancellation": null
                 },
                 {
-                  "input": "LoanGoal",
-                  "share": 0.04711681514729211,
-                  "mean_abs": 0.6319952213628991,
-                  "mean_signed": 0.0773410490289801,
+                  "input": "relative_position",
+                  "share": 0.04606003454818903,
+                  "mean_abs": 0.15732021539490368,
+                  "mean_signed": 0.0007463891872155899,
                   "channel": {
-                    "risk": 0.2889855491356682,
-                    "effect_T": 0.12676395857484984,
-                    "effect_U": 0.3581656470170375
+                    "native": 0.15732021539490368
                   },
-                  "cancellation": 0.1833791889171814,
-                  "risk_share": 0.06249920284269979,
-                  "arms_same_direction": 0.7085786375105131,
-                  "channels_opposed": 0.6627417998317914
+                  "cancellation": null
+                },
+                {
+                  "input": "ApplicationType",
+                  "share": 0.04471812718423511,
+                  "mean_abs": 0.1527368676486841,
+                  "mean_signed": 0.02630547273133892,
+                  "channel": {
+                    "risk": 0.0531381918276884,
+                    "effect_T": 0.048419825998363704,
+                    "effect_U": 0.09207521888918807
+                  },
+                  "cancellation": 0.2112053166094573,
+                  "risk_share": 0.04527094083309883,
+                  "arms_same_direction": 0.9997842968075927,
+                  "channels_opposed": 0.857204486626402
                 },
                 {
                   "input": "open_cases_max",
-                  "share": 0.03958246591816534,
-                  "mean_abs": 0.5309342159871777,
-                  "mean_signed": -0.24329991624125938,
+                  "share": 0.038447643749892395,
+                  "mean_abs": 0.13131973641555617,
+                  "mean_signed": -0.06887111961828457,
                   "channel": {
-                    "risk": 0.016105811805148987,
-                    "effect_T": 0.5242595622326309,
-                    "effect_U": 0.01971866218955556
+                    "risk": 0.004560440216807013,
+                    "effect_T": 0.1286447076341338,
+                    "effect_U": 0.005134783253347322
                   },
-                  "cancellation": 0.05204544024590663,
-                  "risk_share": 0.00474560782168167,
-                  "arms_same_direction": 0.5315391084945332,
-                  "channels_opposed": 0.5391084945332212
-                },
-                {
-                  "input": "RequestedAmount",
-                  "share": 0.037609488190935125,
-                  "mean_abs": 0.504469937967389,
-                  "mean_signed": -0.05906641868999224,
-                  "channel": {
-                    "risk": 0.16923591116768924,
-                    "effect_T": 0.26684114776235496,
-                    "effect_U": 0.23979995919907912
-                  },
-                  "cancellation": 0.25360690712076994,
-                  "risk_share": 0.03127345869360227,
-                  "arms_same_direction": 0.5185029436501262,
-                  "channels_opposed": 0.5105130361648444
+                  "cancellation": 0.05074597502466627,
+                  "risk_share": 0.004792968535360225,
+                  "arms_same_direction": 0.5342968075927523,
+                  "channels_opposed": 0.5289042277825712
                 }
               ],
               "cancellation_by_arm_direction": {
-                "lost_same_direction": 0.23275847782035408,
-                "lost_opposite_direction": 0.07217951709418957,
-                "mass_share_same_direction": 0.703666796209511
+                "lost_same_direction": 0.24770820781362812,
+                "lost_opposite_direction": 0.07336487624896548,
+                "mass_share_same_direction": 0.7189109816180153
               },
               "channel_share": {
-                "risk": 0.26055506588545996,
-                "effect_T": 0.39280746883126383,
-                "effect_U": 0.2768628645722264,
-                "native": 0.06977460071104989,
-                "cancellation": 0.1579755516767014
+                "risk": 0.27310152816648575,
+                "effect_T": 0.36600168840352065,
+                "effect_U": 0.2818472562259567,
+                "native": 0.07904952720403692,
+                "cancellation": 0.16508503359323945
               },
-              "cancellation_overall": 0.16982502498583196,
-              "cancellation_per_state_mean": 0.3353344603799314,
-              "prefix_share_top5": 0.3263151332142525
+              "cancellation_overall": 0.17925506144977466,
+              "cancellation_per_state_mean": 0.3311184965588879,
+              "prefix_share_top5": 0.32600950534408984
             }
           },
           "typology": {
             "risky|treatable|act": {
-              "n": 1066,
+              "n": 1149,
               "level_share": {
-                "native": 0.09558882323218802,
-                "risk": 0.1430417833370629,
-                "effect": 0.761369393430749
+                "native": 0.06437578206323047,
+                "risk": 0.1953002206985658,
+                "effect": 0.7403239972382036
               }
             },
             "risky|treatable|wait": {
-              "n": 111,
+              "n": 28,
               "level_share": {
-                "native": 0.06948120927086684,
-                "risk": 0.17075078760245327,
-                "effect": 0.7597680031266798
+                "native": 0.029114888977952842,
+                "risk": 0.14134851199292228,
+                "effect": 0.829536599029125
               }
             },
             "risky|untreatable|act": {
-              "n": 247,
+              "n": 355,
               "level_share": {
-                "native": 0.144095994821503,
-                "risk": 0.11273435458827176,
-                "effect": 0.7431696505902252
+                "native": 0.09560548894716588,
+                "risk": 0.13130204699738943,
+                "effect": 0.7730924640554449
               }
             },
             "risky|untreatable|wait": {
-              "n": 403,
+              "n": 295,
               "level_share": {
-                "native": 0.12374472123327447,
-                "risk": 0.1840584400350816,
-                "effect": 0.692196838731644
+                "native": 0.08397670180235832,
+                "risk": 0.07694944691474243,
+                "effect": 0.8390738512828992
               }
             },
             "safe|treatable|act": {
-              "n": 502,
+              "n": 506,
               "level_share": {
-                "native": 0.19304159139095778,
-                "risk": 0.18406811299249332,
-                "effect": 0.6228902956165489
+                "native": 0.1706563489539854,
+                "risk": 0.2226831264027403,
+                "effect": 0.6066605246432744
               }
             },
             "safe|treatable|wait": {
-              "n": 114,
+              "n": 110,
               "level_share": {
-                "native": 0.07945403850582397,
-                "risk": 0.19837631677671833,
-                "effect": 0.7221696447174578
+                "native": 0.0745347979253694,
+                "risk": 0.22388682481660271,
+                "effect": 0.7015783772580279
               }
             },
             "safe|untreatable|act": {
-              "n": 1282,
+              "n": 1207,
               "level_share": {
-                "native": 0.6688615927870827,
-                "risk": 0.0803217903798252,
-                "effect": 0.25081661683309203
+                "native": 0.7360387504613408,
+                "risk": 0.058129739253475574,
+                "effect": 0.20583151028518373
               }
             },
             "safe|untreatable|wait": {
-              "n": 4128,
+              "n": 4203,
               "level_share": {
-                "native": 0.3563055675198802,
-                "risk": 0.1730385211233642,
-                "effect": 0.4706559113567555
+                "native": 0.39785980257264203,
+                "risk": 0.14862132415979545,
+                "effect": 0.45351887326756257
               }
             }
           },
           "cards": {
             "paper_card_act": {
-              "case_id": "Application_243887576",
-              "prefix_nr": 8,
+              "case_id": "Application_760306173",
+              "prefix_nr": 3,
               "action": "intervene",
-              "dq": 1.4393671751022339,
-              "r": 0.5673454648012725,
-              "pT": 0.40788254141807556,
-              "pU": 0.5656343102455139,
+              "dq": 1.232023000717163,
+              "r": 0.5326985998686206,
+              "pT": 0.4418976306915283,
+              "pU": 0.5745863318443298,
               "state": {
-                "relative_position": 0.145454540848732,
-                "reliability": 0.5673454403877258,
+                "relative_position": 0.05454545468091965,
+                "reliability": 0.5326985716819763,
                 "deviation": 0.0,
-                "available_resources": 3.0,
-                "Proba_if_Treated": 0.40788254141807556,
-                "Proba_if_Untreated": 0.5656343102455139
+                "available_resources": 1.0,
+                "Proba_if_Treated": 0.4418976306915283,
+                "Proba_if_Untreated": 0.5745863318443298
               },
               "timing_phi": {
-                "relative_position": 0.0013982352102175355,
-                "reliability": 0.8904615044593811,
-                "deviation": -0.14235050976276398,
-                "available_resources": 0.16859853267669678,
-                "Proba_if_Treated": -1.185837745666504,
-                "Proba_if_Untreated": 4.605357646942139
+                "relative_position": 0.10792582482099533,
+                "reliability": 0.367193341255188,
+                "deviation": 0.33498942852020264,
+                "available_resources": -0.05181281268596649,
+                "Proba_if_Treated": -1.1128395795822144,
+                "Proba_if_Untreated": 2.524946928024292
               },
               "native_phi": {
-                "relative_position": 0.0013982352102175355,
-                "available_resources": 0.16859853267669678
+                "relative_position": 0.10792582482099533,
+                "available_resources": -0.05181281268596649
               },
               "composed_top": [
                 [
                   "Activity",
-                  2.1850821540326786
-                ],
-                [
-                  "FirstWithdrawalAmount_max",
-                  0.7102195853661897
-                ],
-                [
-                  "LoanGoal",
-                  0.44509940133510106
+                  1.0585242683354532
                 ],
                 [
                   "RequestedAmount",
-                  -0.42043223777788286
+                  0.3852792927388625
+                ],
+                [
+                  "FirstWithdrawalAmount_max",
+                  0.3811574328608058
+                ],
+                [
+                  "LoanGoal",
+                  0.27030916147800726
+                ],
+                [
+                  "open_cases_min",
+                  -0.22298019908799369
+                ],
+                [
+                  "org:resource",
+                  0.21285159687962513
+                ],
+                [
+                  "timesincecasestart_mean",
+                  -0.19897098105114183
                 ],
                 [
                   "ApplicationType",
-                  0.35310836808288537
-                ],
-                [
-                  "NumberOfTerms_sum",
-                  0.2974153566537544
-                ],
-                [
-                  "OfferedAmount_max",
-                  0.28302895675161294
-                ],
-                [
-                  "NumberOfTerms_max",
-                  -0.24642828047099935
+                  0.1936077701427302
                 ]
               ],
               "per_channel_top": {
                 "risk": [
                   [
                     "Activity",
-                    0.3696281980982041
+                    0.3018371838158763
                   ],
                   [
                     "LoanGoal",
-                    0.11089398399102632
+                    0.10084482441869455
                   ],
                   [
                     "NumberOfTerms_sum",
-                    0.08961734768540425
-                  ],
-                  [
-                    "lifecycle:transition",
-                    0.07161827939741887
-                  ],
-                  [
-                    "RequestedAmount",
-                    -0.06410021820259172
+                    0.0953495929828877
                   ],
                   [
                     "org:resource",
-                    0.057707023848820246
+                    0.06792411302165989
                   ],
                   [
-                    "timesincelastevent_sum",
-                    0.04216942567601863
+                    "RequestedAmount",
+                    0.050800482581699974
                   ],
                   [
                     "OfferedAmount_std",
-                    0.042059654516432246
+                    0.04610496794418295
+                  ],
+                  [
+                    "ApplicationType",
+                    0.04604725970551191
+                  ],
+                  [
+                    "FirstWithdrawalAmount_std",
+                    -0.04301605630539396
                   ]
                 ],
                 "effect_T": [
                   [
                     "Activity",
-                    -0.4944658735230535
-                  ],
-                  [
-                    "NumberOfTerms_max",
-                    -0.16087390302519636
+                    -0.391836906472562
                   ],
                   [
                     "open_cases_min",
-                    0.15746215863792395
+                    -0.217971075878083
                   ],
                   [
-                    "open_cases_max",
-                    -0.1385048411891543
+                    "NumberOfTerms_max",
+                    -0.11688121123711757
                   ],
                   [
                     "open_cases_sum",
-                    -0.1327519526588629
+                    -0.10620780401002673
                   ],
                   [
                     "FirstWithdrawalAmount_max",
-                    0.10877646858684241
+                    0.08859168589785485
                   ],
                   [
                     "OfferedAmount_mean",
-                    -0.10675735907337423
+                    -0.08109433474283785
+                  ],
+                  [
+                    "month_sum",
+                    -0.0647628268232701
                   ],
                   [
                     "FirstWithdrawalAmount_mean",
-                    -0.0942997423785761
+                    -0.062087728123647545
                   ]
                 ],
                 "effect_U": [
                   [
                     "Activity",
-                    2.309919829457528
-                  ],
-                  [
-                    "FirstWithdrawalAmount_max",
-                    0.5869851666822299
-                  ],
-                  [
-                    "ApplicationType",
-                    0.3726792151889796
+                    1.1485239909921388
                   ],
                   [
                     "RequestedAmount",
-                    -0.3605540181754484
+                    0.37630039731426335
                   ],
                   [
-                    "LoanGoal",
-                    0.3413599054831368
+                    "FirstWithdrawalAmount_max",
+                    0.2772504169937357
+                  ],
+                  [
+                    "ApplicationType",
+                    0.19299578893692784
+                  ],
+                  [
+                    "timesincecasestart_mean",
+                    -0.1820764495040261
                   ],
                   [
                     "OfferedAmount_max",
-                    0.3296880526005029
+                    0.17290408171868024
                   ],
                   [
-                    "NumberOfTerms_sum",
-                    0.2220837377857312
+                    "LoanGoal",
+                    0.15707900640047098
                   ],
                   [
-                    "OfferedAmount_mean",
-                    0.14888329211028442
+                    "org:resource",
+                    0.13771733898934582
                   ]
                 ]
               },
@@ -4504,1036 +4494,1038 @@
                 {
                   "input": "Activity",
                   "value": "W_Handle leads",
-                  "risk": 0.3696281980982041,
-                  "effect_T": -0.4944658735230535,
-                  "effect_U": 2.309919829457528,
-                  "total": 2.1850821540326786
+                  "risk": 0.3018371838158763,
+                  "effect_T": -0.391836906472562,
+                  "effect_U": 1.1485239909921388,
+                  "total": 1.0585242683354532
+                },
+                {
+                  "input": "RequestedAmount",
+                  "value": 6000.0,
+                  "risk": 0.050800482581699974,
+                  "effect_T": -0.04182158715710079,
+                  "effect_U": 0.37630039731426335,
+                  "total": 0.3852792927388625
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
                   "value": 0.0,
-                  "risk": 0.014457950097117395,
-                  "effect_T": 0.10877646858684241,
-                  "effect_U": 0.5869851666822299,
-                  "total": 0.7102195853661897
+                  "risk": 0.015315329969215237,
+                  "effect_T": 0.08859168589785485,
+                  "effect_U": 0.2772504169937357,
+                  "total": 0.3811574328608058
                 },
                 {
                   "input": "LoanGoal",
-                  "value": "Car",
-                  "risk": 0.11089398399102632,
-                  "effect_T": -0.007154488139062111,
-                  "effect_U": 0.3413599054831368,
-                  "total": 0.44509940133510106
+                  "value": "Existing loan takeover",
+                  "risk": 0.10084482441869455,
+                  "effect_T": 0.012385330658841738,
+                  "effect_U": 0.15707900640047098,
+                  "total": 0.27030916147800726
                 },
                 {
-                  "input": "RequestedAmount",
-                  "value": 15000.0,
-                  "risk": -0.06410021820259172,
-                  "effect_T": 0.004221998600157299,
-                  "effect_U": -0.3605540181754484,
-                  "total": -0.42043223777788286
+                  "input": "open_cases_min",
+                  "value": 2281.0,
+                  "risk": -0.00587774097842905,
+                  "effect_T": -0.217971075878083,
+                  "effect_U": 0.0008686177685183655,
+                  "total": -0.22298019908799369
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_1",
+                  "risk": 0.06792411302165989,
+                  "effect_T": 0.007210144868619422,
+                  "effect_U": 0.13771733898934582,
+                  "total": 0.21285159687962513
+                },
+                {
+                  "input": "timesincecasestart_mean",
+                  "value": 0.0011333333333333334,
+                  "risk": -0.015468154681951733,
+                  "effect_T": -0.001426376865164007,
+                  "effect_U": -0.1820764495040261,
+                  "total": -0.19897098105114183
                 },
                 {
                   "input": "ApplicationType",
                   "value": "New credit",
-                  "risk": 0.04024282985141539,
-                  "effect_T": -0.05981367695750965,
-                  "effect_U": 0.3726792151889796,
-                  "total": 0.35310836808288537
+                  "risk": 0.04604725970551191,
+                  "effect_T": -0.04543527849970956,
+                  "effect_U": 0.19299578893692784,
+                  "total": 0.1936077701427302
+                },
+                {
+                  "input": "(other attributes)",
+                  "risk": 0.1407594719231134,
+                  "effect_T": -0.522535516134911,
+                  "effect_U": 0.41628782013291743,
+                  "total": 0.03451177592111979
+                }
+              ],
+              "completeness": {
+                "timing_sum": 2.170403130352497,
+                "composed_sum": 2.1704031303524967
+              },
+              "anchored_flows": [
+                {
+                  "input": "RequestedAmount",
+                  "value": 6000.0,
+                  "risk": 0.07439534407083884,
+                  "effect_T": 0.06124609861997439,
+                  "effect_U": 0.5510773935496571,
+                  "total": 0.6867188362404704
+                },
+                {
+                  "input": "Activity",
+                  "value": "W_Handle leads",
+                  "risk": 0.08853292856069218,
+                  "effect_T": 0.11493106452165774,
+                  "effect_U": 0.33687762110441377,
+                  "total": 0.5403416141867637
+                },
+                {
+                  "input": "FirstWithdrawalAmount_max",
+                  "value": 0.0,
+                  "risk": 0.014142234231463498,
+                  "effect_T": 0.08180590137111511,
+                  "effect_U": 0.2560140947519689,
+                  "total": 0.3519622303545475
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 2281.0,
+                  "risk": -0.00843647328727535,
+                  "effect_T": -0.31285950942595,
+                  "effect_U": -0.001246749495741899,
+                  "total": -0.32254273220896723
+                },
+                {
+                  "input": "timesincecasestart_mean",
+                  "value": 0.0011333333333333334,
+                  "risk": -0.020104581563615997,
+                  "effect_T": -0.00185391926934922,
+                  "effect_U": -0.23665207034284844,
+                  "total": -0.25861057117581365
+                },
+                {
+                  "input": "LoanGoal",
+                  "value": "Existing loan takeover",
+                  "risk": 0.08840810380414539,
+                  "effect_T": 0.01085790574625227,
+                  "effect_U": 0.13770718709021307,
+                  "total": 0.2369731966406107
                 },
                 {
                   "input": "NumberOfTerms_sum",
                   "value": 0.0,
-                  "risk": 0.08961734768540425,
-                  "effect_T": -0.014285728817381074,
-                  "effect_U": 0.2220837377857312,
-                  "total": 0.2974153566537544
-                },
-                {
-                  "input": "OfferedAmount_max",
-                  "value": 0.0,
-                  "risk": 0.003851270989357245,
-                  "effect_T": -0.0505103668382472,
-                  "effect_U": 0.3296880526005029,
-                  "total": 0.28302895675161294
-                },
-                {
-                  "input": "NumberOfTerms_max",
-                  "value": 0.0,
-                  "risk": 0.014744579091456744,
-                  "effect_T": -0.16087390302519636,
-                  "effect_U": -0.10029895653725972,
-                  "total": -0.24642828047099935
-                },
-                {
-                  "input": "(other attributes)",
-                  "risk": 0.16877505309522733,
-                  "effect_T": -0.511732175553054,
-                  "effect_U": 0.9034947144567383,
-                  "total": 0.5605375919989118
-                }
-              ],
-              "completeness": {
-                "timing_sum": 4.337627663859166,
-                "composed_sum": 4.337627663859165
-              },
-              "anchored_flows": [
-                {
-                  "input": "Activity",
-                  "value": "W_Handle leads",
-                  "risk": 0.2115197780653582,
-                  "effect_T": 0.28295815191216045,
-                  "effect_U": 1.3218518830260215,
-                  "total": 1.8163298130035401
-                },
-                {
-                  "input": "FirstWithdrawalAmount_max",
-                  "value": 0.0,
-                  "risk": 0.015024011385488464,
-                  "effect_T": 0.11303531216695685,
-                  "effect_U": 0.6099669571487151,
-                  "total": 0.7380262807011604
-                },
-                {
-                  "input": "NumberOfTerms_max",
-                  "value": 0.0,
-                  "risk": -0.022068728197902714,
-                  "effect_T": -0.24078560791578718,
-                  "effect_U": -0.150120962872149,
-                  "total": -0.4129752989858389
-                },
-                {
-                  "input": "OfferedAmount_mean",
-                  "value": 0.0,
-                  "risk": -0.048879476138970784,
-                  "effect_T": -0.1302332643937422,
-                  "effect_U": -0.18162267513458247,
-                  "total": -0.36073541566729544
+                  "risk": 0.06775383515090554,
+                  "effect_T": 0.007710989912196333,
+                  "effect_U": 0.07732483398998535,
+                  "total": 0.15278965905308722
                 },
                 {
                   "input": "ApplicationType",
                   "value": "New credit",
-                  "risk": 0.02406615696499084,
-                  "effect_T": 0.035769982966594345,
-                  "effect_U": 0.2228709194518072,
-                  "total": 0.28270705938339236
-                },
-                {
-                  "input": "OfferedAmount_max",
-                  "value": 0.0,
-                  "risk": 0.002798277368584865,
-                  "effect_T": 0.03670009635597618,
-                  "effect_U": 0.23954653381552188,
-                  "total": 0.27904490754008293
-                },
-                {
-                  "input": "FirstWithdrawalAmount_std",
-                  "value": 0.0,
-                  "risk": 0.13326350342380347,
-                  "effect_T": 0.0054782673066723206,
-                  "effect_U": 0.056455680384178725,
-                  "total": 0.19519745111465453
-                },
-                {
-                  "input": "open_cases_min",
-                  "value": 2247.0,
-                  "risk": 0.0017563308371546752,
-                  "effect_T": 0.18754000001247026,
-                  "effect_U": 0.001972624321483362,
-                  "total": 0.19126895517110826
+                  "risk": 0.02394189622106787,
+                  "effect_T": 0.02362370159640902,
+                  "effect_U": 0.10034658260625968,
+                  "total": 0.14791218042373658
                 },
                 {
                   "input": "(other attributes)",
-                  "risk": 0.09121026352647885,
-                  "effect_T": -0.057930002502918035,
-                  "effect_U": 0.2677166606070154,
-                  "total": 0.3009969216305762
+                  "risk": 0.08607393908351357,
+                  "effect_T": -0.16273112996131428,
+                  "effect_U": 0.1020589688381608,
+                  "total": 0.02540177796035995
                 }
               ],
               "anchored_top": [
                 [
+                  "RequestedAmount",
+                  0.6867188362404704
+                ],
+                [
                   "Activity",
-                  1.8163298130035401
+                  0.5403416141867637
                 ],
                 [
                   "FirstWithdrawalAmount_max",
-                  0.7380262807011604
+                  0.3519622303545475
                 ],
                 [
-                  "NumberOfTerms_max",
-                  -0.4129752989858389
+                  "open_cases_min",
+                  -0.32254273220896723
                 ],
                 [
-                  "available_resources",
-                  -0.4020698517560959
+                  "timesincecasestart_mean",
+                  -0.25861057117581365
                 ],
                 [
-                  "OfferedAmount_mean",
-                  -0.36073541566729544
+                  "LoanGoal",
+                  0.2369731966406107
+                ],
+                [
+                  "NumberOfTerms_sum",
+                  0.15278965905308722
                 ],
                 [
                   "ApplicationType",
-                  0.28270705938339236
-                ],
-                [
-                  "OfferedAmount_max",
-                  0.27904490754008293
-                ],
-                [
-                  "FirstWithdrawalAmount_std",
-                  0.19519745111465453
+                  0.14791218042373658
                 ]
               ],
               "direct_top": [
                 [
-                  "Activity",
-                  1.8163298130035401
-                ],
-                [
-                  "FirstWithdrawalAmount_max",
-                  0.7380262807011604
-                ],
-                [
-                  "NumberOfTerms_max",
-                  -0.4129752989858389
-                ],
-                [
-                  "available_resources",
-                  -0.4020698517560959
-                ],
-                [
-                  "OfferedAmount_mean",
-                  -0.36073541566729544
-                ],
-                [
-                  "ApplicationType",
-                  0.28270705938339236
-                ],
-                [
-                  "OfferedAmount_max",
-                  0.27904490754008293
-                ],
-                [
-                  "FirstWithdrawalAmount_std",
-                  0.19519745111465453
-                ]
-              ],
-              "direct_vs_propagated": {
-                "spearman": 0.7988883462684195,
-                "same_top": true
-              }
-            },
-            "paper_card_wait": {
-              "case_id": "Application_291332257",
-              "prefix_nr": 24,
-              "action": "wait",
-              "dq": -1.996292233467102,
-              "r": 0.21767109695281475,
-              "pT": 0.13245053589344025,
-              "pU": 0.25786975026130676,
-              "state": {
-                "relative_position": 0.4363636374473572,
-                "reliability": 0.7823289036750793,
-                "deviation": 1.0,
-                "available_resources": 2.0,
-                "Proba_if_Treated": 0.13245053589344025,
-                "Proba_if_Untreated": 0.25786975026130676
-              },
-              "timing_phi": {
-                "relative_position": -0.8566548824310303,
-                "reliability": 0.32884687185287476,
-                "deviation": -0.20238861441612244,
-                "available_resources": 0.0633782148361206,
-                "Proba_if_Treated": -0.9053861498832703,
-                "Proba_if_Untreated": 0.6464501023292542
-              },
-              "native_phi": {
-                "relative_position": -0.8566548824310303,
-                "available_resources": 0.0633782148361206
-              },
-              "composed_top": [
-                [
-                  "relative_position",
-                  -0.8566548824310303
+                  "RequestedAmount",
+                  0.6867188362404704
                 ],
                 [
                   "Activity",
-                  0.2683778754614434
-                ],
-                [
-                  "timesincelastevent_max",
-                  -0.2500345005960408
-                ],
-                [
-                  "timesincelastevent_std",
-                  0.24475487447870314
-                ],
-                [
-                  "timesincelastevent_mean",
-                  -0.2267202376972346
+                  0.5403416141867637
                 ],
                 [
                   "FirstWithdrawalAmount_max",
-                  0.22266749919983564
+                  0.3519622303545475
                 ],
                 [
-                  "FirstWithdrawalAmount_mean",
-                  -0.1693088120301971
+                  "open_cases_min",
+                  -0.32254273220896723
                 ],
                 [
                   "timesincecasestart_mean",
-                  -0.1644711459856899
+                  -0.25861057117581365
+                ],
+                [
+                  "LoanGoal",
+                  0.2369731966406107
+                ],
+                [
+                  "NumberOfTerms_sum",
+                  0.15278965905308722
+                ],
+                [
+                  "ApplicationType",
+                  0.14791218042373658
+                ]
+              ],
+              "direct_vs_propagated": {
+                "spearman": 0.8455175042293204,
+                "same_top": false
+              }
+            },
+            "paper_card_wait": {
+              "case_id": "Application_362042856",
+              "prefix_nr": 7,
+              "action": "wait",
+              "dq": -0.8785020112991333,
+              "r": 0.2872288900444549,
+              "pT": 0.24187332391738892,
+              "pU": 0.4541778266429901,
+              "state": {
+                "relative_position": 0.12727272510528564,
+                "reliability": 0.7127711176872253,
+                "deviation": 1.0,
+                "available_resources": 2.0,
+                "Proba_if_Treated": 0.24187332391738892,
+                "Proba_if_Untreated": 0.4541778266429901
+              },
+              "timing_phi": {
+                "relative_position": 0.10652899742126465,
+                "reliability": 0.08663880079984665,
+                "deviation": 0.11274406313896179,
+                "available_resources": -0.06261410564184189,
+                "Proba_if_Treated": -0.113313227891922,
+                "Proba_if_Untreated": -0.21264182031154633
+              },
+              "native_phi": {
+                "relative_position": 0.10652899742126465,
+                "available_resources": -0.06261410564184189
+              },
+              "composed_top": [
+                [
+                  "Activity",
+                  0.2653598413137353
+                ],
+                [
+                  "FirstWithdrawalAmount_max",
+                  -0.11429692857438487
+                ],
+                [
+                  "LoanGoal",
+                  0.1093501999454572
+                ],
+                [
+                  "relative_position",
+                  0.10652899742126465
+                ],
+                [
+                  "NumberOfTerms_sum",
+                  -0.07968566397786869
+                ],
+                [
+                  "RequestedAmount",
+                  -0.07800813908641745
+                ],
+                [
+                  "timesincelastevent_max",
+                  0.06606114586502432
+                ],
+                [
+                  "available_resources",
+                  -0.06261410564184189
                 ]
               ],
               "per_channel_top": {
                 "risk": [
                   [
+                    "org:resource",
+                    0.2057077871029945
+                  ],
+                  [
                     "Activity",
-                    0.08555722944116928
+                    0.17061648988309902
                   ],
                   [
-                    "timesincecasestart_max",
-                    -0.026812253939599844
+                    "LoanGoal",
+                    0.1468167684243802
                   ],
                   [
-                    "timesincecasestart_mean",
-                    -0.025942449539114378
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    -0.024655932365850147
-                  ],
-                  [
-                    "timesincelastevent_sum",
-                    0.019443119144738945
-                  ],
-                  [
-                    "MonthlyCost_mean",
-                    0.01421070293172123
-                  ],
-                  [
-                    "lifecycle:transition",
-                    -0.013871872733847733
+                    "RequestedAmount",
+                    -0.0625926988307129
                   ],
                   [
                     "NumberOfTerms_sum",
-                    0.013834099684054909
+                    -0.055098626677535546
+                  ],
+                  [
+                    "timesincelastevent_sum",
+                    -0.055095909768429985
+                  ],
+                  [
+                    "weekday_sum",
+                    -0.05023267542095727
+                  ],
+                  [
+                    "timesincelastevent_mean",
+                    0.04452328860607954
                   ]
                 ],
                 "effect_T": [
                   [
+                    "org:resource",
+                    -0.2690812199685563
+                  ],
+                  [
                     "Activity",
-                    -0.6177446743413179
+                    0.0639669786711259
                   ],
                   [
-                    "timesincelastevent_sum",
-                    0.31733653316431437
+                    "NumberOfTerms_mean",
+                    0.06025303270435444
                   ],
                   [
-                    "timesincelastevent_std",
-                    0.243907555310849
+                    "open_cases_min",
+                    -0.054540773484233
+                  ],
+                  [
+                    "open_cases_max",
+                    0.05223723152473668
+                  ],
+                  [
+                    "OfferedAmount_max",
+                    -0.0412854258814529
+                  ],
+                  [
+                    "FirstWithdrawalAmount_max",
+                    -0.034234039088508354
                   ],
                   [
                     "timesincelastevent_max",
-                    -0.2374174562796836
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    0.2069663960006162
-                  ],
-                  [
-                    "FirstWithdrawalAmount_mean",
-                    -0.19969839027459627
-                  ],
-                  [
-                    "open_cases_sum",
-                    -0.1441040317527871
-                  ],
-                  [
-                    "open_cases_std",
-                    -0.10882565114688755
+                    0.032190835556538504
                   ]
                 ],
                 "effect_U": [
                   [
-                    "Activity",
-                    0.800565320361592
-                  ],
-                  [
-                    "timesincelastevent_mean",
-                    -0.40903070133200065
-                  ],
-                  [
-                    "timesincelastevent_sum",
-                    -0.19096924400475898
-                  ],
-                  [
-                    "LoanGoal",
-                    0.17316336578714228
-                  ],
-                  [
                     "FirstWithdrawalAmount_max",
-                    0.15501419471051736
-                  ],
-                  [
-                    "timesincecasestart_mean",
-                    -0.1402882099878544
-                  ],
-                  [
-                    "OfferedAmount_mean",
-                    0.09823674520979893
+                    -0.0668730947179832
                   ],
                   [
                     "ApplicationType",
-                    -0.056529192321545005
+                    -0.04168813120702687
+                  ],
+                  [
+                    "LoanGoal",
+                    -0.03930646061830683
+                  ],
+                  [
+                    "Activity",
+                    0.030776372759510385
+                  ],
+                  [
+                    "NumberOfTerms_sum",
+                    -0.029119376303133597
+                  ],
+                  [
+                    "OfferedAmount_max",
+                    0.02693518098936485
+                  ],
+                  [
+                    "OfferedAmount_sum",
+                    -0.021024149303858864
+                  ],
+                  [
+                    "hour_min",
+                    -0.014731992859468938
                   ]
                 ]
               },
               "flows": [
                 {
                   "input": "Activity",
-                  "value": "W_Validate application",
-                  "risk": 0.08555722944116928,
-                  "effect_T": -0.6177446743413179,
-                  "effect_U": 0.800565320361592,
-                  "total": 0.2683778754614434
-                },
-                {
-                  "input": "timesincelastevent_max",
-                  "value": 36139.821866666665,
-                  "risk": 0.0010359665458619161,
-                  "effect_T": -0.2374174562796836,
-                  "effect_U": -0.01365301086221913,
-                  "total": -0.2500345005960408
-                },
-                {
-                  "input": "timesincelastevent_std",
-                  "value": 7419.156607435852,
-                  "risk": 0.0008473191678541189,
-                  "effect_T": 0.243907555310849,
-                  "effect_U": 0.0,
-                  "total": 0.24475487447870314
-                },
-                {
-                  "input": "timesincelastevent_mean",
-                  "value": 1905.351665972222,
-                  "risk": -0.024655932365850147,
-                  "effect_T": 0.2069663960006162,
-                  "effect_U": -0.40903070133200065,
-                  "total": -0.2267202376972346
+                  "value": "W_Complete application",
+                  "risk": 0.17061648988309902,
+                  "effect_T": 0.0639669786711259,
+                  "effect_U": 0.030776372759510385,
+                  "total": 0.2653598413137353
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "value": 9900.0,
-                  "risk": 0.0030859820628923885,
-                  "effect_T": 0.0645673224264259,
-                  "effect_U": 0.15501419471051736,
-                  "total": 0.22266749919983564
+                  "value": 0.0,
+                  "risk": -0.013189794767893307,
+                  "effect_T": -0.034234039088508354,
+                  "effect_U": -0.0668730947179832,
+                  "total": -0.11429692857438487
                 },
                 {
-                  "input": "FirstWithdrawalAmount_mean",
-                  "value": 6600.0,
-                  "risk": 0.0017145396904054535,
-                  "effect_T": -0.19969839027459627,
-                  "effect_U": 0.028675038553993726,
-                  "total": -0.1693088120301971
+                  "input": "LoanGoal",
+                  "value": "Unknown",
+                  "risk": 0.1468167684243802,
+                  "effect_T": 0.0018398921393838136,
+                  "effect_U": -0.03930646061830683,
+                  "total": 0.1093501999454572
                 },
                 {
-                  "input": "timesincecasestart_mean",
-                  "value": 13883.6643875,
-                  "risk": -0.025942449539114378,
-                  "effect_T": 0.0017595135412788688,
-                  "effect_U": -0.1402882099878544,
-                  "total": -0.1644711459856899
+                  "input": "NumberOfTerms_sum",
+                  "value": 112.0,
+                  "risk": -0.055098626677535546,
+                  "effect_T": 0.00453233900280046,
+                  "effect_U": -0.029119376303133597,
+                  "total": -0.07968566397786869
                 },
                 {
-                  "input": "timesincelastevent_sum",
-                  "value": 45728.43998333333,
-                  "risk": 0.019443119144738945,
-                  "effect_T": 0.31733653316431437,
-                  "effect_U": -0.19096924400475898,
-                  "total": 0.14581040830429434
+                  "input": "RequestedAmount",
+                  "value": 0.0,
+                  "risk": -0.0625926988307129,
+                  "effect_T": -0.022755687862091943,
+                  "effect_U": 0.007340247606387399,
+                  "total": -0.07800813908641745
+                },
+                {
+                  "input": "timesincelastevent_max",
+                  "value": 2.11725,
+                  "risk": 0.03301771859027263,
+                  "effect_T": 0.032190835556538504,
+                  "effect_U": 0.0008525917182131772,
+                  "total": 0.06606114586502432
+                },
+                {
+                  "input": "ApplicationType",
+                  "value": "New credit",
+                  "risk": -0.038701357079512166,
+                  "effect_T": 0.01897669096487348,
+                  "effect_U": -0.04168813120702687,
+                  "total": -0.06141279732166556
+                },
+                {
+                  "input": "org:resource",
+                  "value": "User_30",
+                  "risk": 0.2057077871029945,
+                  "effect_T": -0.2690812199685563,
+                  "effect_U": 0.0073440934593584,
+                  "total": -0.05602933940620337
                 },
                 {
                   "input": "(other attributes)",
-                  "risk": 0.06537248328879475,
-                  "effect_T": -0.6850629494311569,
-                  "effect_U": 0.41613671488998394,
-                  "total": -0.20355375125237807
+                  "risk": -0.18719342270628397,
+                  "effect_T": 0.09125098269251238,
+                  "effect_U": -0.08196806300856511,
+                  "total": -0.17791050302233677
                 }
               ],
               "completeness": {
-                "timing_sum": -0.9257544577121735,
-                "composed_sum": -0.9257544577121736
+                "timing_sum": -0.08265729248523712,
+                "composed_sum": -0.08265729248523715
               },
               "anchored_flows": [
                 {
                   "input": "Activity",
-                  "value": "W_Validate application",
-                  "risk": 0.08171603168263845,
-                  "effect_T": 0.590010262253373,
-                  "effect_U": 0.7646229489896325,
-                  "total": 1.436349242925644
+                  "value": "W_Complete application",
+                  "risk": 0.4962362784540029,
+                  "effect_T": 0.18604728922424324,
+                  "effect_U": 0.0895127586609988,
+                  "total": 0.7717963263392449
+                },
+                {
+                  "input": "open_cases_min",
+                  "value": 2112.0,
+                  "risk": -0.00785249843151074,
+                  "effect_T": -0.09563246541727759,
+                  "effect_U": -0.0003025387976579101,
+                  "total": -0.10378750264644623
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "value": 9900.0,
-                  "risk": 0.004963309499122941,
-                  "effect_T": 0.10384623053565312,
-                  "effect_U": 0.24931558558201286,
-                  "total": 0.3581251256167889
+                  "value": 0.0,
+                  "risk": -0.010938749260931904,
+                  "effect_T": -0.028391462973304988,
+                  "effect_U": -0.05546015145005971,
+                  "total": -0.09479036368429661
                 },
                 {
-                  "input": "LoanGoal",
-                  "value": "Home improvement",
-                  "risk": 0.00907264014439816,
-                  "effect_T": 0.06329709427056968,
-                  "effect_U": 0.2276601037167728,
-                  "total": 0.30002983813174067
+                  "input": "MonthlyCost_max",
+                  "value": 300.0,
+                  "risk": -0.0643655902714634,
+                  "effect_T": -0.0019093375121046047,
+                  "effect_U": -0.0038052087241815563,
+                  "total": -0.07008013650774955
                 },
                 {
-                  "input": "timesincelastevent_mean",
-                  "value": 1905.351665972222,
-                  "risk": -0.010734538116639913,
-                  "effect_T": -0.09010767201038275,
-                  "effect_U": -0.17808110393771848,
-                  "total": -0.27892331406474113
+                  "input": "RequestedAmount",
+                  "value": 0.0,
+                  "risk": -0.04715596831190739,
+                  "effect_T": -0.017143636810463464,
+                  "effect_U": -0.005529981770949241,
+                  "total": -0.06982958689332008
                 },
                 {
-                  "input": "timesincelastevent_std",
-                  "value": 7419.156607435852,
-                  "risk": 0.0007878469764676057,
-                  "effect_T": 0.22678801245098448,
-                  "effect_U": 0.0,
-                  "total": 0.2275758594274521
+                  "input": "org:resource",
+                  "value": "User_30",
+                  "risk": 0.02544001588747141,
+                  "effect_T": 0.03327744956778358,
+                  "effect_U": 0.0009082488170056872,
+                  "total": 0.05962571427226067
                 },
                 {
-                  "input": "timesincelastevent_max",
-                  "value": 36139.821866666665,
-                  "risk": -0.0008745586488941677,
-                  "effect_T": -0.20042682904890438,
-                  "effect_U": -0.011525814979928209,
-                  "total": -0.21282720267772676
+                  "input": "lifecycle:transition",
+                  "value": "start",
+                  "risk": -0.018415314027462295,
+                  "effect_T": -0.0,
+                  "effect_U": -0.02929337837418528,
+                  "total": -0.047708692401647566
                 },
                 {
-                  "input": "timesincecasestart_mean",
-                  "value": 13883.6643875,
-                  "risk": -0.03196954318226346,
-                  "effect_T": -0.0021682934779493606,
-                  "effect_U": -0.17288074437254017,
-                  "total": -0.207018581032753
-                },
-                {
-                  "input": "open_cases_std",
-                  "value": 71.98307721816454,
-                  "risk": -4.193183941163256e-05,
-                  "effect_T": -0.19986383415987372,
-                  "effect_U": -0.00532531495002113,
-                  "total": -0.20523108094930648
+                  "input": "NumberOfTerms_max",
+                  "value": 56.0,
+                  "risk": -0.024847882811619242,
+                  "effect_T": -0.007402283790242549,
+                  "effect_U": -0.013952054538403676,
+                  "total": -0.04620222114026547
                 },
                 {
                   "input": "(other attributes)",
-                  "risk": 0.08564898894448379,
-                  "effect_T": -0.43236635115435523,
-                  "effect_U": 0.3183337398913651,
-                  "total": -0.028383622318506108
+                  "risk": -0.15630833020093998,
+                  "effect_T": 0.04871348230561109,
+                  "effect_U": -0.056851626530165754,
+                  "total": -0.16444647442549465
                 }
               ],
               "anchored_top": [
                 [
                   "Activity",
-                  1.436349242925644
+                  0.7717963263392449
                 ],
                 [
                   "available_resources",
-                  0.791462693316862
+                  0.14713721442967653
                 ],
                 [
-                  "relative_position",
-                  -0.6073166251182556
+                  "open_cases_min",
+                  -0.10378750264644623
                 ],
                 [
                   "FirstWithdrawalAmount_max",
-                  0.3581251256167889
+                  -0.09479036368429661
                 ],
                 [
-                  "LoanGoal",
-                  0.30002983813174067
+                  "MonthlyCost_max",
+                  -0.07008013650774955
                 ],
                 [
-                  "timesincelastevent_mean",
-                  -0.27892331406474113
+                  "RequestedAmount",
+                  -0.06982958689332008
                 ],
                 [
-                  "timesincelastevent_std",
-                  0.2275758594274521
+                  "relative_position",
+                  0.061784693598747255
                 ],
                 [
-                  "timesincelastevent_max",
-                  -0.21282720267772676
+                  "org:resource",
+                  0.05962571427226067
                 ]
               ],
               "direct_top": [
                 [
                   "Activity",
-                  1.436349242925644
+                  0.7717963263392449
                 ],
                 [
                   "available_resources",
-                  0.791462693316862
+                  0.14713721442967653
                 ],
                 [
-                  "relative_position",
-                  -0.6073166251182556
+                  "open_cases_min",
+                  -0.10378750264644623
                 ],
                 [
                   "FirstWithdrawalAmount_max",
-                  0.3581251256167889
+                  -0.09479036368429661
                 ],
                 [
-                  "LoanGoal",
-                  0.30002983813174067
+                  "MonthlyCost_max",
+                  -0.07008013650774955
                 ],
                 [
-                  "timesincelastevent_mean",
-                  -0.27892331406474113
+                  "RequestedAmount",
+                  -0.06982958689332008
                 ],
                 [
-                  "timesincelastevent_std",
-                  0.2275758594274521
+                  "relative_position",
+                  0.061784693598747255
                 ],
                 [
-                  "timesincelastevent_max",
-                  -0.21282720267772676
+                  "org:resource",
+                  0.05962571427226067
                 ]
               ],
               "direct_vs_propagated": {
-                "spearman": 0.798561900912153,
-                "same_top": false
+                "spearman": 0.6756912479595001,
+                "same_top": true
               }
             }
           },
           "anchored": {
             "act": {
-              "n": 3097,
+              "n": 3217,
               "top": [
                 {
-                  "input": "available_resources",
-                  "share": 0.1730550938207138,
-                  "mean_abs": 1.225357054352151,
-                  "mean_signed": 0.9128163694661782,
+                  "input": "Activity",
+                  "share": 0.13355015088368277,
+                  "mean_abs": 0.525765415299236,
+                  "mean_signed": 0.2846327519165291,
                   "channel": {
-                    "native": 1.225357054352151
+                    "risk": 0.09773195598104749,
+                    "effect_T": 0.11128634177290375,
+                    "effect_U": 0.3167471175452866
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "available_resources",
+                  "share": 0.10431040717995634,
+                  "mean_abs": 0.4106532578818889,
+                  "mean_signed": 0.2876063911736424,
+                  "channel": {
+                    "native": 0.4106532578818889
                   },
                   "cancellation": null
                 },
                 {
-                  "input": "Activity",
-                  "share": 0.12653154657249718,
-                  "mean_abs": 0.8959362002445658,
-                  "mean_signed": 0.5391793421959198,
+                  "input": "lifecycle:transition",
+                  "share": 0.066878127482559,
+                  "mean_abs": 0.26328840692159056,
+                  "mean_signed": 0.012764835458296335,
                   "channel": {
-                    "risk": 0.1400714508124455,
-                    "effect_T": 0.18936997388168175,
-                    "effect_U": 0.5664947755504401
+                    "risk": 0.040810557833982755,
+                    "effect_T": 0.0003425359502394293,
+                    "effect_U": 0.2221353131373679
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "FirstWithdrawalAmount_max",
-                  "share": 0.06743221897210505,
-                  "mean_abs": 0.477469592970731,
-                  "mean_signed": 0.13959241709315565,
+                  "share": 0.06223393772104361,
+                  "mean_abs": 0.24500498048938624,
+                  "mean_signed": 0.06642823473275064,
                   "channel": {
-                    "risk": 0.02436069210155097,
-                    "effect_T": 0.10428066884513214,
-                    "effect_U": 0.3488282320240477
-                  },
-                  "cancellation": 0.0
-                },
-                {
-                  "input": "lifecycle:transition",
-                  "share": 0.05274662574328044,
-                  "mean_abs": 0.37348481642939757,
-                  "mean_signed": 0.026279019777463677,
-                  "channel": {
-                    "risk": 0.04836559473775181,
-                    "effect_T": 0.0005087551172495044,
-                    "effect_U": 0.32461046657439546
-                  },
-                  "cancellation": 0.0
-                },
-                {
-                  "input": "RequestedAmount",
-                  "share": 0.042855091110997716,
-                  "mean_abs": 0.3034454926947646,
-                  "mean_signed": 0.10430623663545453,
-                  "channel": {
-                    "risk": 0.04061698861762549,
-                    "effect_T": 0.08338200925904056,
-                    "effect_U": 0.17944649481809846
+                    "risk": 0.01275719346040747,
+                    "effect_T": 0.05037539500056227,
+                    "effect_U": 0.18187239202841568
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "LoanGoal",
-                  "share": 0.04195999423156951,
-                  "mean_abs": 0.29710754995456273,
-                  "mean_signed": 0.1546531510618592,
+                  "share": 0.05322747092424436,
+                  "mean_abs": 0.20954797258287927,
+                  "mean_signed": 0.09960758771227986,
                   "channel": {
-                    "risk": 0.08016969194234098,
-                    "effect_T": 0.027623329642904634,
-                    "effect_U": 0.18931452836931778
+                    "risk": 0.06399507064891569,
+                    "effect_T": 0.01886249996111946,
+                    "effect_U": 0.12669040197284395
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "RequestedAmount",
+                  "share": 0.04427709838324339,
+                  "mean_abs": 0.17431179871886898,
+                  "mean_signed": 0.04562397885556371,
+                  "channel": {
+                    "risk": 0.023547265869697534,
+                    "effect_T": 0.044462495217459416,
+                    "effect_U": 0.10630203763171163
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.03464360039596614,
-                  "mean_abs": 0.24530211273256924,
-                  "mean_signed": 0.039052988893662495,
+                  "share": 0.03725970044753616,
+                  "mean_abs": 0.1466854342739457,
+                  "mean_signed": 0.01949659356792979,
                   "channel": {
-                    "risk": 0.013234847349448464,
-                    "effect_T": 0.2249473840381497,
-                    "effect_U": 0.0071198813449709865
+                    "risk": 0.008391887595364024,
+                    "effect_T": 0.13404894756145597,
+                    "effect_U": 0.004244599117125944
                   },
                   "cancellation": 0.0
                 },
                 {
-                  "input": "relative_position",
-                  "share": 0.03264785679642324,
-                  "mean_abs": 0.2311707835449315,
-                  "mean_signed": -0.030798874673435703,
+                  "input": "NumberOfTerms_sum",
+                  "share": 0.026520178671248423,
+                  "mean_abs": 0.10440566828743643,
+                  "mean_signed": 0.05630076996829242,
                   "channel": {
-                    "native": 0.2311707835449315
+                    "risk": 0.03971659026645241,
+                    "effect_T": 0.007829204699892406,
+                    "effect_U": 0.05685987332109163
                   },
-                  "cancellation": null
+                  "cancellation": 0.0
                 }
               ],
               "cancellation_by_arm_direction": null,
               "channel_share": {
-                "risk": 0.1503079067884222,
-                "effect_T": 0.22281570594562738,
-                "effect_U": 0.4211734366488133,
-                "native": 0.20570295061713711,
+                "risk": 0.1981169778857643,
+                "effect_T": 0.23199526997226966,
+                "effect_U": 0.44650979392064916,
+                "native": 0.12337795822131685,
                 "cancellation": 0.0
               },
               "cancellation_overall": 0.0,
               "cancellation_per_state_mean": 0.0,
-              "prefix_share_top5": 0.3315254766304499
+              "prefix_share_top5": 0.36016678539477315
             },
             "wait": {
-              "n": 4756,
+              "n": 4636,
               "top": [
                 {
                   "input": "Activity",
-                  "share": 0.14168790941701223,
-                  "mean_abs": 0.922656093072951,
-                  "mean_signed": 0.26160317685300777,
+                  "share": 0.15058954219774226,
+                  "mean_abs": 0.47232313859875114,
+                  "mean_signed": 0.21353139591441878,
                   "channel": {
-                    "risk": 0.20919286106243676,
-                    "effect_T": 0.2634021436590359,
-                    "effect_U": 0.45006108835147673
+                    "risk": 0.1290229130756787,
+                    "effect_T": 0.12180155753871019,
+                    "effect_U": 0.22149866798436174
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "FirstWithdrawalAmount_max",
+                  "share": 0.0685541325177033,
+                  "mean_abs": 0.21501959938332152,
+                  "mean_signed": 0.07208553692609204,
+                  "channel": {
+                    "risk": 0.01640287239639065,
+                    "effect_T": 0.06290164087302728,
+                    "effect_U": 0.1357150861139036
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "available_resources",
-                  "share": 0.08899539262346726,
-                  "mean_abs": 0.5795282151971857,
-                  "mean_signed": 0.4185272758309843,
+                  "share": 0.06663729285273386,
+                  "mean_abs": 0.20900744400031296,
+                  "mean_signed": 0.1417110423594022,
                   "channel": {
-                    "native": 0.5795282151971857
+                    "native": 0.20900744400031296
                   },
                   "cancellation": null
-                },
-                {
-                  "input": "FirstWithdrawalAmount_max",
-                  "share": 0.07756680352608518,
-                  "mean_abs": 0.5051064991219495,
-                  "mean_signed": 0.12268440727842775,
-                  "channel": {
-                    "risk": 0.04267804142164243,
-                    "effect_T": 0.1475105652224627,
-                    "effect_U": 0.31491789247784274
-                  },
-                  "cancellation": 0.0
-                },
-                {
-                  "input": "relative_position",
-                  "share": 0.07170152953411399,
-                  "mean_abs": 0.4669124795439829,
-                  "mean_signed": -0.060607819107870865,
-                  "channel": {
-                    "native": 0.4669124795439829
-                  },
-                  "cancellation": null
-                },
-                {
-                  "input": "LoanGoal",
-                  "share": 0.049443674957414314,
-                  "mean_abs": 0.321971776922127,
-                  "mean_signed": 0.05287705351022554,
-                  "channel": {
-                    "risk": 0.08976175333796899,
-                    "effect_T": 0.05358958603236881,
-                    "effect_U": 0.17862043755178847
-                  },
-                  "cancellation": 0.0
                 },
                 {
                   "input": "lifecycle:transition",
-                  "share": 0.0422036637858379,
-                  "mean_abs": 0.27482561992922017,
-                  "mean_signed": 0.0728845286770178,
+                  "share": 0.058442807257456986,
+                  "mean_abs": 0.18330549219757047,
+                  "mean_signed": 0.032684493288530375,
                   "channel": {
-                    "risk": 0.05774580358023636,
-                    "effect_T": 0.00024591487969911473,
-                    "effect_U": 0.21683390146928525
+                    "risk": 0.033505678777802674,
+                    "effect_T": 0.00012498252592343663,
+                    "effect_U": 0.14967483089384373
+                  },
+                  "cancellation": 0.0
+                },
+                {
+                  "input": "LoanGoal",
+                  "share": 0.055001512090022533,
+                  "mean_abs": 0.1725118918545068,
+                  "mean_signed": 0.04705316607120774,
+                  "channel": {
+                    "risk": 0.036753467776325585,
+                    "effect_T": 0.03565718337161578,
+                    "effect_U": 0.10010124070656516
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "open_cases_min",
-                  "share": 0.03845274068014201,
-                  "mean_abs": 0.25040002093239505,
-                  "mean_signed": 0.017089542718840174,
+                  "share": 0.03893917313385875,
+                  "mean_abs": 0.1221324681688293,
+                  "mean_signed": 0.01341832430972585,
                   "channel": {
-                    "risk": 0.01861297468191512,
-                    "effect_T": 0.22622507142394782,
-                    "effect_U": 0.0055619748265309
+                    "risk": 0.010539232826042176,
+                    "effect_T": 0.10875971693981636,
+                    "effect_U": 0.002833518402970821
                   },
                   "cancellation": 0.0
                 },
                 {
                   "input": "RequestedAmount",
-                  "share": 0.036375882556188545,
-                  "mean_abs": 0.2368757490986288,
-                  "mean_signed": 0.015243792313752622,
+                  "share": 0.038141244159604716,
+                  "mean_abs": 0.11962976903050761,
+                  "mean_signed": 0.014643447805253099,
                   "channel": {
-                    "risk": 0.05684240035890907,
-                    "effect_T": 0.0762975749328462,
-                    "effect_U": 0.1037357738068737
+                    "risk": 0.022810095264507203,
+                    "effect_T": 0.03879047142567042,
+                    "effect_U": 0.05802920234033032
                   },
                   "cancellation": 0.0
+                },
+                {
+                  "input": "relative_position",
+                  "share": 0.035152714580502474,
+                  "mean_abs": 0.11025626506737558,
+                  "mean_signed": -0.009117106672390858,
+                  "channel": {
+                    "native": 0.11025626506737558
+                  },
+                  "cancellation": null
                 }
               ],
               "cancellation_by_arm_direction": null,
               "channel_share": {
-                "risk": 0.20295050026926217,
-                "effect_T": 0.2680302550947092,
-                "effect_U": 0.3683223224784472,
-                "native": 0.16069692215758144,
+                "risk": 0.22696494217360325,
+                "effect_T": 0.27714242188114,
+                "effect_U": 0.39410262851202016,
+                "native": 0.10179000743323652,
                 "cancellation": 0.0
               },
               "cancellation_overall": 0.0,
               "cancellation_per_state_mean": 0.0,
-              "prefix_share_top5": 0.3493547923664916
+              "prefix_share_top5": 0.3715271671967838
             }
           }
         }
       },
       "direct": {
         "n_perm": 20,
-        "seconds": 112.37861089700164,
+        "seconds": 84.93420250499912,
         "agreement_vs_cancellation": {
-          "spearman_rho_vs_cancellation": 0.16163920549836128,
-          "median_cancellation": 0.3203773581202608,
-          "agreement_low_cancellation": 0.7380169147407429,
-          "agreement_high_cancellation": 0.7588510665251991,
+          "spearman_rho_vs_cancellation": 0.06386696910406256,
+          "median_cancellation": 0.3176992747070857,
+          "agreement_low_cancellation": 0.6911880657808598,
+          "agreement_high_cancellation": 0.7014361937859291,
           "n_low": 3927,
           "n_high": 3926
         },
         "reference": "pool background",
-        "F_reference_mean": -0.9553551533911377,
-        "completeness_gap": 1.8096892425511035,
-        "completeness_gap_mean": 0.35179854726307014,
-        "completeness_gap_signed_mean": -0.006138283820523053,
-        "margin_abs_mean": 1.6151537779694503,
+        "F_reference_mean": -0.17594584845006467,
+        "completeness_gap": 0.9998863110691316,
+        "completeness_gap_mean": 0.18968474203210972,
+        "completeness_gap_signed_mean": -0.003032840790385246,
+        "margin_abs_mean": 0.8084199721193778,
         "agreement_with_propagated": {
           "all": {
-            "spearman_mean": 0.7484326641238799,
-            "spearman_median": 0.7640831358115244,
-            "jaccard_top5_mean": 0.5191019911508897,
-            "global_spearman": 0.9521567787555848,
-            "top1_agreement": 0.5661530625238762
+            "spearman_mean": 0.6963114772857498,
+            "spearman_median": 0.7099537223434506,
+            "jaccard_top5_mean": 0.44204519959008687,
+            "global_spearman": 0.9631544513578637,
+            "top1_agreement": 0.4528205781230103
           },
           "act": {
-            "spearman_mean": 0.7609994332782005,
-            "spearman_median": 0.7744790124422124,
-            "jaccard_top5_mean": 0.578862801174716,
-            "global_spearman": 0.9656827828295446,
-            "top1_agreement": 0.8479173393606716
+            "spearman_mean": 0.7189811658820678,
+            "spearman_median": 0.7297340420239233,
+            "jaccard_top5_mean": 0.5051734091211866,
+            "global_spearman": 0.9685482143538859,
+            "top1_agreement": 0.7015853279452906
           },
           "wait": {
-            "spearman_mean": 0.740249467304929,
-            "spearman_median": 0.7577329696053006,
-            "jaccard_top5_mean": 0.4801870986690162,
-            "global_spearman": 0.9385497857428925,
-            "top1_agreement": 0.3826745164003364
+            "spearman_mean": 0.6805805911307984,
+            "spearman_median": 0.6919804587155951,
+            "jaccard_top5_mean": 0.3982394510867332,
+            "global_spearman": 0.9442412564367471,
+            "top1_agreement": 0.2801984469370147
           }
         },
         "global_top": {
           "act": [
             [
-              "available_resources",
-              1.225357054352151
-            ],
-            [
               "Activity",
-              0.8959362002445658
+              0.525765415299236
             ],
             [
-              "FirstWithdrawalAmount_max",
-              0.477469592970731
+              "available_resources",
+              0.4106532578818889
             ],
             [
               "lifecycle:transition",
-              0.37348481642939757
+              0.26328840692159056
             ],
             [
-              "RequestedAmount",
-              0.3034454926947646
+              "FirstWithdrawalAmount_max",
+              0.24500498048938624
             ],
             [
               "LoanGoal",
-              0.29710754995456273
+              0.20954797258287927
+            ],
+            [
+              "RequestedAmount",
+              0.17431179871886898
             ],
             [
               "open_cases_min",
-              0.24530211273256924
+              0.1466854342739457
             ],
             [
-              "relative_position",
-              0.2311707835449315
+              "NumberOfTerms_sum",
+              0.10440566828743643
             ]
           ],
           "wait": [
             [
               "Activity",
-              0.922656093072951
-            ],
-            [
-              "available_resources",
-              0.5795282151971857
+              0.47232313859875114
             ],
             [
               "FirstWithdrawalAmount_max",
-              0.5051064991219495
+              0.21501959938332152
             ],
             [
-              "relative_position",
-              0.4669124795439829
-            ],
-            [
-              "LoanGoal",
-              0.321971776922127
+              "available_resources",
+              0.20900744400031296
             ],
             [
               "lifecycle:transition",
-              0.27482561992922017
+              0.18330549219757047
+            ],
+            [
+              "LoanGoal",
+              0.1725118918545068
             ],
             [
               "open_cases_min",
-              0.25040002093239505
+              0.1221324681688293
             ],
             [
               "RequestedAmount",
-              0.2368757490986288
+              0.11962976903050761
+            ],
+            [
+              "relative_position",
+              0.11025626506737558
             ]
           ]
         },
         "native_share_direct": {
-          "act": 0.20570295061713711,
-          "wait": 0.16069692215758144
+          "act": 0.12337795822131685,
+          "wait": 0.10179000743323652
         }
       },
       "deletion_e2e": {
         "act": {
           "1": {
             "k": 1,
-            "abs_random": 0.1303192187566761,
-            "flip_random": 0.031643525992896354,
+            "abs_random": 0.07605724069036551,
+            "flip_random": 0.022070251787379546,
             "propagated": {
-              "abs_guided": 1.445835317236341,
+              "abs_guided": 0.5104639435162085,
               "abs_anti": 0.0,
-              "gap": 1.315516098479665,
-              "gap_se": 0.028423951596194204,
-              "z": 46.281956751425255,
-              "flip_guided": 0.44817565385857283
+              "gap": 0.4344067028258431,
+              "gap_se": 0.0108045491235799,
+              "z": 40.20590751702834,
+              "flip_guided": 0.40627914205781784
             },
             "direct": {
-              "abs_guided": 1.605917585020705,
+              "abs_guided": 0.6470621969402623,
               "abs_anti": 0.0,
-              "gap": 1.475598366264029,
-              "gap_se": 0.028484212876027374,
-              "z": 51.80407732122761,
-              "flip_guided": 0.49047465288989345
+              "gap": 0.5710049562498969,
+              "gap_se": 0.01241547766208148,
+              "z": 45.991380419766045,
+              "flip_guided": 0.3941560460055953
             }
           },
           "3": {
             "k": 3,
-            "abs_random": 0.33047272642736986,
-            "flip_random": 0.0729738456570875,
+            "abs_random": 0.19297705466465614,
+            "flip_random": 0.07118433322971712,
             "propagated": {
-              "abs_guided": 2.262951218517672,
+              "abs_guided": 1.2518247894457557,
               "abs_anti": 0.0,
-              "gap": 1.9324784920903024,
-              "gap_se": 0.02221315138373475,
-              "z": 86.99704326984109,
-              "flip_guided": 0.6906683887633194
+              "gap": 1.0588477347810998,
+              "gap_se": 0.011678110192934403,
+              "z": 90.66944199770727,
+              "flip_guided": 0.6276033571650607
             },
             "direct": {
-              "abs_guided": 2.1742720403249924,
+              "abs_guided": 1.132320849111441,
               "abs_anti": 0.0,
-              "gap": 1.8437993138976225,
-              "gap_se": 0.02315503435267124,
-              "z": 79.62844217006811,
-              "flip_guided": 0.6503067484662577
+              "gap": 0.9393437944467848,
+              "gap_se": 0.013144905208699762,
+              "z": 71.46067465173456,
+              "flip_guided": 0.4995337270749145
             }
           }
         },
         "wait": {
           "1": {
             "k": 1,
-            "abs_random": 0.11384851159999337,
-            "flip_random": 0.01808242220353238,
+            "abs_random": 0.05271396575665553,
+            "flip_random": 0.019413287316652286,
             "propagated": {
-              "abs_guided": 0.8410246524831736,
+              "abs_guided": 0.43179939431520026,
               "abs_anti": 0.0,
-              "gap": 0.7271761408831802,
-              "gap_se": 0.014936520809286955,
-              "z": 48.68443931273808,
-              "flip_guided": 0.059083263246425564
+              "gap": 0.3790854285585447,
+              "gap_se": 0.009372897518689853,
+              "z": 40.44484939717269,
+              "flip_guided": 0.08045729076790337
             },
             "direct": {
-              "abs_guided": 1.3863592786249166,
+              "abs_guided": 0.7758948560502795,
               "abs_anti": 0.0,
-              "gap": 1.2725107670249232,
-              "gap_se": 0.021095073241205728,
-              "z": 60.322652236128974,
-              "flip_guided": 0.218040370058873
+              "gap": 0.723180890293624,
+              "gap_se": 0.013641677824519664,
+              "z": 53.01260589762446,
+              "flip_guided": 0.2672562553925798
             }
           },
           "3": {
             "k": 3,
-            "abs_random": 0.284344720812535,
-            "flip_random": 0.043313708999158956,
+            "abs_random": 0.13083240783169087,
+            "flip_random": 0.05133735979292493,
             "propagated": {
-              "abs_guided": 1.4684283490982213,
+              "abs_guided": 0.7503197809715045,
               "abs_anti": 0.0,
-              "gap": 1.1840836282856861,
-              "gap_se": 0.020272098978958656,
-              "z": 58.4095228380002,
-              "flip_guided": 0.20164003364171573
+              "gap": 0.6194873731398136,
+              "gap_se": 0.013796528881484001,
+              "z": 44.901683493100435,
+              "flip_guided": 0.20125107851596202
             },
             "direct": {
-              "abs_guided": 1.9079807639444917,
+              "abs_guided": 0.9817167607861683,
               "abs_anti": 0.0,
-              "gap": 1.6236360431319568,
-              "gap_se": 0.02476479350770111,
-              "z": 65.56226857401636,
-              "flip_guided": 0.3086627417998318
+              "gap": 0.8508843529544775,
+              "gap_se": 0.015084394150829347,
+              "z": 56.40825507782794,
+              "flip_guided": 0.34771354616048317
             }
           }
         }
@@ -5541,62 +5533,62 @@
       "channel_test": {
         "act": {
           "k": 5,
-          "n_pairs": 15485,
+          "n_pairs": 16085,
           "channels": {
             "risk": {
-              "n": 5022,
-              "sign_agreement": 0.6258462763839108,
-              "spearman": 0.21638590736852512
+              "n": 5187,
+              "sign_agreement": 0.5467514941199152,
+              "spearman": 0.1822992055133826
             },
             "effect_T": {
-              "n": 6814,
-              "sign_agreement": 0.8385676548282947,
-              "spearman": 0.5863552119466378
+              "n": 6757,
+              "sign_agreement": 0.84223767944354,
+              "spearman": 0.6633754036039391
             },
             "effect_U": {
-              "n": 7834,
-              "sign_agreement": 0.8899668113352055,
-              "spearman": 0.8239123762694881
+              "n": 7841,
+              "sign_agreement": 0.8667261828848362,
+              "spearman": 0.7717618423231188
             }
           },
           "cancellation": {
-            "spearman_traced_vs_measured": 0.25395474171386995,
-            "measured_lost_arms_together": 0.3216639992799033,
-            "measured_lost_arms_apart": 0.14081258480403014,
-            "measured_opposed_arms_together": 0.8479477611940298,
-            "measured_opposed_arms_apart": 0.4252702989188043,
-            "n_together": 5360,
-            "n_apart": 4717
+            "spearman_traced_vs_measured": 0.30830305495605437,
+            "measured_lost_arms_together": 0.23192790373980432,
+            "measured_lost_arms_apart": 0.06358936149702754,
+            "measured_opposed_arms_together": 0.7711470533556423,
+            "measured_opposed_arms_apart": 0.4280318091451292,
+            "n_together": 5379,
+            "n_apart": 5030
           }
         },
         "wait": {
           "k": 5,
-          "n_pairs": 23780,
+          "n_pairs": 23180,
           "channels": {
             "risk": {
-              "n": 10290,
-              "sign_agreement": 0.682312925170068,
-              "spearman": 0.39620627260445235
+              "n": 9705,
+              "sign_agreement": 0.5530139103554869,
+              "spearman": 0.13210605277238455
             },
             "effect_T": {
-              "n": 12708,
-              "sign_agreement": 0.833018570978911,
-              "spearman": 0.558813847171344
+              "n": 11402,
+              "sign_agreement": 0.7816172601298018,
+              "spearman": 0.6112848318363071
             },
             "effect_U": {
-              "n": 12387,
-              "sign_agreement": 0.8615483975135222,
-              "spearman": 0.7186219348862597
+              "n": 11831,
+              "sign_agreement": 0.7651931366748372,
+              "spearman": 0.6921133195504731
             }
           },
           "cancellation": {
-            "spearman_traced_vs_measured": 0.34029973982251516,
-            "measured_lost_arms_together": 0.26677668080361283,
-            "measured_lost_arms_apart": 0.20386001343211602,
-            "measured_opposed_arms_together": 0.8859750240153699,
-            "measured_opposed_arms_apart": 0.5555840492370817,
-            "n_together": 10410,
-            "n_apart": 7799
+            "spearman_traced_vs_measured": 0.21356662283511427,
+            "measured_lost_arms_together": 0.22340621899369084,
+            "measured_lost_arms_apart": 0.1423259058163293,
+            "measured_opposed_arms_together": 0.7931871019913069,
+            "measured_opposed_arms_apart": 0.5684092046023012,
+            "n_together": 9893,
+            "n_apart": 7996
           }
         }
       },
@@ -5729,7 +5721,7 @@
         }
       },
       "figures": [],
-      "seconds": 194.44688494800357
+      "seconds": 149.92723469700286
     }
   ]
 }

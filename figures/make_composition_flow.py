@@ -18,6 +18,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
 from matplotlib.patches import PathPatch  # noqa: E402
 from matplotlib.path import Path as MPath  # noqa: E402
 
@@ -181,13 +182,14 @@ def main(argv=None):
                 bbox=dict(fc="white", ec="none", pad=0.6, alpha=0.85))
     y0, h = right_pos
     ax.add_patch(plt.Rectangle((X2, y0), W, h, fc=NODE_FC, ec=INK, lw=0.8, zorder=2))
-    mlabel = f"margin = {card['dq']:.2f}\nact now" if acts else f"wait margin = {-card['dq']:.2f}\nwait"
+    p_act = 1.0 / (1.0 + np.exp(-card["dq"]))  # margin = log pi(act) - log pi(wait)
+    mlabel = f"act now\n(policy: act {p_act:.0%},\nwait {1 - p_act:.0%})" if acts else f"wait\n(policy: wait {1 - p_act:.0%},\nact {p_act:.0%})"
     ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=11.8, color=INK, fontweight="bold")
 
     # headers
     ax.text(X0 + W / 2, 1.17, "prefix attributes", ha="center", va="center", fontsize=11.1, color=MUTED)
     ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=11.1, color=MUTED)
-    ax.text(X2 + W / 2, 1.17, "timing level", ha="center", va="center", fontsize=11.1, color=MUTED)
+    ax.text(X2 + W / 2, 1.17, "decision", ha="center", va="center", fontsize=11.1, color=MUTED)
     side = "toward acting now" if acts else "toward waiting"
     y_low = min([p[0] for p in mid_pos.values()] + [p[0] for p in left_pos] + [right_pos[0]])
     y_cap = y_low - 0.08

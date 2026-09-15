@@ -107,14 +107,6 @@ def main():
             steps = sorted({c["timesteps"] for c in ps[LOG]["candidates"]})
             out += [macro("SWEEPENTS", ", ".join(f"{e:g}" for e in ents[:-1]) + f" and {ents[-1]:g}"),
                     macro("SWEEPSTEPS", " and ".join(f"{t // 1000:,}k" for t in steps)), macro("NCANDIDATES", str(len(ps[LOG]["candidates"])))]
-    half_path = paths.variant_artifact(LOG, pools.DEFAULT_VARIANT + "_300k", "_manifest.json")
-    if half_path.exists():
-        half = json.loads(half_path.read_text())
-        m = re.search(r"\((\d+\.\d+)%, precision (\d\.\d+), gain (\d+\.\d+)", half.get("note", ""))
-        out.append(macro("HALFSTEPS", f"{half['total_timesteps']:,}"))
-        if m:
-            out += [macro("HALFINTERVENERATE", m.group(1) + r"\%"), macro("HALFPRECISION", m.group(2)), macro("HALFGAIN", m.group(3))]
-
     # --- Section 6.0 pool ------------------------------------------------------
     n_act, n_wait = fid["n_intervene_states"], fid["n_wait_states"]
     ref = dict(zip(fid["feature_names"], fid["reference"]))

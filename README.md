@@ -289,12 +289,13 @@ perfectly separating feature is not dropped.
 
 ## Data
 
-The scripts read three inputs that are too large for this repository:
+The scripts read inputs that are too large for this repository:
 
 | Input | Default location | Source |
 |---|---|---|
 | `ready_to_use_adaptive_bpic2012.csv` | `data/` | Zenodo archive (see paper's Data Availability) |
 | `ready_to_use_adaptive_bpic2017.csv` | `data/` | Shoush & Dumas's repository, `rl/data/` (https://github.com/mshoush/RL-prescriptive-monitoring) |
+| `retrained_state_<log>_train.csv`, `_val.csv`, `.csv` (BPIC2012, BPIC2017, Sepsis) | `data/` | Zenodo archive (`retrained_states.tar.gz`, with SHA-256 sums), or regenerate with `build_retrained_state.py` from the prepared logs (~40 min; the training states are cross-fitted, see `crossfit.py`) |
 | `simbank_time_contact_hq_with_resources.pkl` | `simbank_resources/data/` | Zenodo archive, or regenerate with `simbank_resources/build_resources.py --n-servers 5` from SimBank's as-generated `loan_log_[_time_contact_HQ_]_100000_train_normal` (placed in `data/` or pointed to with `TIMING_SIMBANK_RAW`) |
 
 Set the matching `TIMING_*` variable from `paths.py` to use a file kept

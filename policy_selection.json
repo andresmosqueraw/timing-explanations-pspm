@@ -3,6 +3,7 @@
     "candidates": [
       {
         "checkpoint": "ppo_bpic2012_ent0.1",
+        "run": "ppo_bpic2012_ent0.1",
         "ent_coef": 0.1,
         "timesteps": 600000,
         "val_mean_reward": 46.136638452237,
@@ -11,6 +12,7 @@
       },
       {
         "checkpoint": "ppo_bpic2012_ent0.1_300k",
+        "run": "ppo_bpic2012_ent0.1",
         "ent_coef": 0.1,
         "timesteps": 300000,
         "val_mean_reward": 46.46553808948005,
@@ -19,6 +21,7 @@
       },
       {
         "checkpoint": "ppo_bpic2012_ent0.3",
+        "run": "ppo_bpic2012_ent0.3",
         "ent_coef": 0.3,
         "timesteps": 600000,
         "val_mean_reward": 46.02902055622733,
@@ -27,6 +30,7 @@
       },
       {
         "checkpoint": "ppo_bpic2012_ent0.3_300k",
+        "run": "ppo_bpic2012_ent0.3",
         "ent_coef": 0.3,
         "timesteps": 300000,
         "val_mean_reward": 44.99637243047158,
@@ -35,6 +39,7 @@
       },
       {
         "checkpoint": "ppo_bpic2012_ent0.5",
+        "run": "ppo_bpic2012_ent0.5",
         "ent_coef": 0.5,
         "timesteps": 600000,
         "val_mean_reward": 50.667472793228534,
@@ -43,15 +48,53 @@
       },
       {
         "checkpoint": "ppo_bpic2012_ent0.5_300k",
+        "run": "ppo_bpic2012_ent0.5",
         "ent_coef": 0.5,
         "timesteps": 300000,
         "val_mean_reward": 46.69286577992745,
         "val_intervene_rate": 0.5178718258766626,
         "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.7",
+        "run": "ppo_bpic2012_ent0.7",
+        "ent_coef": 0.7,
+        "timesteps": 600000,
+        "val_mean_reward": 49.32164449818622,
+        "val_intervene_rate": 0.5040386940749698,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.7_300k",
+        "run": "ppo_bpic2012_ent0.7",
+        "ent_coef": 0.7,
+        "timesteps": 300000,
+        "val_mean_reward": 46.42200725513906,
+        "val_intervene_rate": 0.539540507859734,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent1.0",
+        "run": "ppo_bpic2012_ent1.0",
+        "ent_coef": 1.0,
+        "timesteps": 600000,
+        "val_mean_reward": 48.22490931076179,
+        "val_intervene_rate": 0.5691898428053205,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent1.0_300k",
+        "run": "ppo_bpic2012_ent1.0",
+        "ent_coef": 1.0,
+        "timesteps": 300000,
+        "val_mean_reward": 47.001209189842804,
+        "val_intervene_rate": 0.5705441354292624,
+        "n_val": 20675
       }
     ],
     "chosen": {
       "checkpoint": "ppo_bpic2012_ent0.5",
+      "run": "ppo_bpic2012_ent0.5",
       "ent_coef": 0.5,
       "timesteps": 600000,
       "val_mean_reward": 50.667472793228534,
@@ -64,6 +107,7 @@
     "candidates": [
       {
         "checkpoint": "ppo_bpic2017_ent0.1",
+        "run": "ppo_bpic2017_ent0.1",
         "ent_coef": 0.1,
         "timesteps": 600000,
         "val_mean_reward": 36.705,
@@ -72,6 +116,7 @@
       },
       {
         "checkpoint": "ppo_bpic2017_ent0.1_300k",
+        "run": "ppo_bpic2017_ent0.1",
         "ent_coef": 0.1,
         "timesteps": 300000,
         "val_mean_reward": 33.84916666666667,
@@ -80,6 +125,7 @@
       },
       {
         "checkpoint": "ppo_bpic2017_ent0.3",
+        "run": "ppo_bpic2017_ent0.3",
         "ent_coef": 0.3,
         "timesteps": 600000,
         "val_mean_reward": 38.01583333333333,
@@ -88,6 +134,7 @@
       },
       {
         "checkpoint": "ppo_bpic2017_ent0.3_300k",
+        "run": "ppo_bpic2017_ent0.3",
         "ent_coef": 0.3,
         "timesteps": 300000,
         "val_mean_reward": 42.844166666666666,
@@ -96,6 +143,7 @@
       },
       {
         "checkpoint": "ppo_bpic2017_ent0.5",
+        "run": "ppo_bpic2017_ent0.5",
         "ent_coef": 0.5,
         "timesteps": 600000,
         "val_mean_reward": 46.1525,
@@ -104,19 +152,57 @@
       },
       {
         "checkpoint": "ppo_bpic2017_ent0.5_300k",
+        "run": "ppo_bpic2017_ent0.5",
         "ent_coef": 0.5,
         "timesteps": 300000,
         "val_mean_reward": 32.446666666666665,
         "val_intervene_rate": 0.15953333333333333,
         "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.7",
+        "run": "ppo_bpic2017_ent0.7",
+        "ent_coef": 0.7,
+        "timesteps": 600000,
+        "val_mean_reward": 46.1975,
+        "val_intervene_rate": 0.19856666666666667,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.7_300k",
+        "run": "ppo_bpic2017_ent0.7",
+        "ent_coef": 0.7,
+        "timesteps": 300000,
+        "val_mean_reward": 2.0608333333333335,
+        "val_intervene_rate": 0.4983,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent1.0",
+        "run": "ppo_bpic2017_ent1.0",
+        "ent_coef": 1.0,
+        "timesteps": 600000,
+        "val_mean_reward": 47.83083333333333,
+        "val_intervene_rate": 0.23043333333333332,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent1.0_300k",
+        "run": "ppo_bpic2017_ent1.0",
+        "ent_coef": 1.0,
+        "timesteps": 300000,
+        "val_mean_reward": -11.745833333333334,
+        "val_intervene_rate": 0.6377666666666667,
+        "n_val": 30000
       }
     ],
     "chosen": {
-      "checkpoint": "ppo_bpic2017_ent0.5",
-      "ent_coef": 0.5,
+      "checkpoint": "ppo_bpic2017_ent1.0",
+      "run": "ppo_bpic2017_ent1.0",
+      "ent_coef": 1.0,
       "timesteps": 600000,
-      "val_mean_reward": 46.1525,
-      "val_intervene_rate": 0.21116666666666667,
+      "val_mean_reward": 47.83083333333333,
+      "val_intervene_rate": 0.23043333333333332,
       "n_val": 30000
     },
     "checkpoint": "models/variants/ppo_bpic2017_cate_retrained.zip"

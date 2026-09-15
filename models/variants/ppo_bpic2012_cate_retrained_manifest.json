@@ -50,6 +50,7 @@
   "selected_on": "validation split, mean reward per decision point",
   "selection": {
     "checkpoint": "ppo_bpic2012_ent0.5",
+    "run": "ppo_bpic2012_ent0.5",
     "ent_coef": 0.5,
     "timesteps": 600000,
     "val_mean_reward": 50.667472793228534,

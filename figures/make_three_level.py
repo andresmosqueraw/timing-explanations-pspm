@@ -133,7 +133,9 @@ cate = ec["pU"] - ec["pT"]
 positive_rule = ec["pT"] < 0.5 <= ec["pU"]
 risk_answer = f"{'Yes' if rc['r'] >= 0.5 else 'Not much'}: {rc['r']:.0%} chance the loan is not accepted"
 effect_answer = (f"{'Yes' if cate > 0 else 'No'}: rejection {ec['pU']:.0%} without it, {ec['pT']:.0%} with it")
-timing_answer = f"{'Act now' if acts else 'Wait'}: margin for acting {rc['dq']:+.2f}"
+# the margin is log pi(act) - log pi(wait); with two actions pi(act) = sigmoid(margin)
+p_act = 1.0 / (1.0 + np.exp(-rc["dq"]))
+timing_answer = f"{'Act now' if acts else 'Wait'}: policy picks act {p_act:.0%}, wait {1 - p_act:.0%}"
 
 risk_items = [(label(a, v), c, "risk") for a, v, c in rc["risk_top"]]
 eff_items = [(label(a, v), c, "effect") for a, v, c, _, _ in ec["effect_top"]]

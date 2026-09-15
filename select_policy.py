@@ -62,7 +62,7 @@ def main(argv=None):
             base = SWEEP / f"ppo_{log.lower()}_ent{m.group(1)}"
             manifest = json.loads(base.with_name(base.name + "_manifest.json").read_text())
             steps = int(m.group(2)) * 1000 if m.group(2) else int(manifest["total_timesteps"])
-            row = {"checkpoint": z.name, "ent_coef": float(m.group(1)), "timesteps": steps, **val_reward(log, z)}
+            row = {"checkpoint": z.name, "run": base.name, "ent_coef": float(m.group(1)), "timesteps": steps, **val_reward(log, z)}
             rows.append(row)
             print(f"{log}: {row}", flush=True)
         if not rows:
@@ -71,7 +71,7 @@ def main(argv=None):
         best = max(rows, key=lambda r: r["val_mean_reward"])
         dst = paths.variant_model(log, pools.DEFAULT_VARIANT)
         shutil.copyfile(SWEEP / best["checkpoint"], dst)
-        base = SWEEP / f"ppo_{log.lower()}_ent{best['ent_coef']:g}"
+        base = SWEEP / best["run"]
         manifest = json.loads(base.with_name(base.name + "_manifest.json").read_text())
         manifest.update({"total_timesteps": best["timesteps"], "selected_on": "validation split, mean reward per decision point",
                          "selection": best, "trained_on": "training split, out-of-fold state (crossfit.py)"})

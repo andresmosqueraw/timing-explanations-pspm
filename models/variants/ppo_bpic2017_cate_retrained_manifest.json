@@ -6,7 +6,7 @@
     "seed": 42,
     "resources": 3,
     "csv": "data/retrained_state_bpic2017_train.csv",
-    "out": "models/variants/sweep_oof/ppo_bpic2017_ent0.5",
+    "out": "models/variants/sweep_oof/ppo_bpic2017_ent1.0",
     "extra_features": [
       "Proba_if_Treated",
       "Proba_if_Untreated"
@@ -14,7 +14,7 @@
     "random_start": false,
     "episode": "case",
     "random_resources": true,
-    "ent_coef": 0.5,
+    "ent_coef": 1.0,
     "reward_scale": 0.01,
     "learning_rate": 0.0003,
     "save_at": [
@@ -23,10 +23,10 @@
     "threads": 1,
     "n_steps": 512
   },
-  "n_episodes": 103012,
-  "mean_episode_reward_last_50": 3.65,
-  "elapsed_seconds": 4529.844481945038,
-  "timestamp": "2026-09-15T01:20:59Z",
+  "n_episodes": 206192,
+  "mean_episode_reward_last_50": 1.405,
+  "elapsed_seconds": 2858.471795797348,
+  "timestamp": "2026-09-15T04:12:08Z",
   "csv_path": "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/data/retrained_state_bpic2017_train.csv",
   "csv_mtime": "2026-09-15T00:03:54Z",
   "env": "PPMEnvFast",
@@ -43,17 +43,18 @@
   "random_start": false,
   "random_resources": true,
   "episode": "case",
-  "ent_coef": 0.5,
+  "ent_coef": 1.0,
   "reward_scale": 0.01,
   "learning_rate": 0.0003,
   "n_steps": 512,
   "selected_on": "validation split, mean reward per decision point",
   "selection": {
-    "checkpoint": "ppo_bpic2017_ent0.5",
-    "ent_coef": 0.5,
+    "checkpoint": "ppo_bpic2017_ent1.0",
+    "run": "ppo_bpic2017_ent1.0",
+    "ent_coef": 1.0,
     "timesteps": 600000,
-    "val_mean_reward": 46.1525,
-    "val_intervene_rate": 0.21116666666666667,
+    "val_mean_reward": 47.83083333333333,
+    "val_intervene_rate": 0.23043333333333332,
     "n_val": 30000
   },
   "trained_on": "training split, out-of-fold state (crossfit.py)"
