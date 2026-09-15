@@ -93,6 +93,20 @@ def main():
             macro("PPOSEED", str(manifest["seed"])), macro("PPOENTCOEF", str(manifest["ent_coef"])), macro("PPOREWARDSCALE", str(manifest["reward_scale"])),
             macro("PPOLR", str(manifest["learning_rate"])), macro("PPONSTEPS", str(manifest["n_steps"])), macro("PPOEPISODES", f"{manifest['n_episodes']:,}"),
             macro("PPORESOURCES", str(manifest["args"]["resources"]))]
+    # train / validation / test protocol: cross-fitting and the agent chosen on validation
+    m12_path = paths.variant_artifact("BPIC2012", pools.DEFAULT_VARIANT, "_manifest.json")
+    if m12_path.exists():
+        m12 = json.loads(m12_path.read_text())
+        out += [macro("PPOSTEPSBPIC", f"{m12['total_timesteps']:,}"), macro("PPOENTCOEFBPIC", str(m12["ent_coef"]))]
+    if paths.CROSSFIT_JSON.exists():
+        out.append(macro("NFOLDS", str(json.loads(paths.CROSSFIT_JSON.read_text())[LOG]["n_folds"])))
+    if paths.POLICY_SELECTION_JSON.exists():
+        ps = json.loads(paths.POLICY_SELECTION_JSON.read_text())
+        if LOG in ps:
+            ents = sorted({c["ent_coef"] for c in ps[LOG]["candidates"]})
+            steps = sorted({c["timesteps"] for c in ps[LOG]["candidates"]})
+            out += [macro("SWEEPENTS", ", ".join(f"{e:g}" for e in ents[:-1]) + f" and {ents[-1]:g}"),
+                    macro("SWEEPSTEPS", " and ".join(f"{t // 1000:,}k" for t in steps)), macro("NCANDIDATES", str(len(ps[LOG]["candidates"])))]
     half_path = paths.variant_artifact(LOG, pools.DEFAULT_VARIANT + "_300k", "_manifest.json")
     if half_path.exists():
         half = json.loads(half_path.read_text())
@@ -279,6 +293,8 @@ def main():
             for nm in ("propagated", "direct"):
                 out.append(macro(f"ZE{nm.upper()}{side.upper()}K{k}", num(r[nm]["z"], 0)))
     out.append(macro("DELETIONROWS", "\n".join(rows)))
+    zs17 = [comp["deletion_e2e"][sd][k]["propagated"]["z"] for sd in ("act", "wait") for k in ("1", "3")]
+    out += [macro("ZEPROPMIN", num(min(zs17), 0)), macro("ZEPROPMAX", num(max(zs17), 0))]
     if comp12 and "deletion_e2e" in comp12:
         rows12 = [f"{side} & top-{k} & {num(r['abs_random'])} & {num(r['propagated']['abs_guided'])} & {num(r['propagated']['z'], 0)} & "
                   f"{num(r['direct']['abs_guided'])} & {num(r['direct']['z'], 0)} \\\\ \\hline"

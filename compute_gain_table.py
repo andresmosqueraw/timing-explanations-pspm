@@ -5,6 +5,12 @@ have paid under (a) the action recorded in the log and (b) the action the
 retrained checkpoint chooses there, with the row's own counterfactual
 ite = y1 - y0 (BPIC) or the documented uncertainty proxy (SimBank).
 
+Splits: the ``bpic2012`` / ``bpic2017`` / ``sepsis`` rows are the *test*
+cases, used once at the end (the agent trains on the out-of-fold training
+state and is chosen on validation, see crossfit.py and select_policy.py);
+the ``*_val`` rows repeat the score on the validation cases the choice was
+made on.
+
 Pools (see pools.py): every decision point, available_resources held at the
 training value (3) on the BPIC logs; BPIC2017 is a seed-42 sample of 30,000
 of its >1M decision points. SimBank evaluates every event, the convention
@@ -136,7 +142,7 @@ if __name__ == "__main__":
                                     pools.treatment_col("BPIC2012", args.variant), variant=args.variant)
     results["bpic2017"] = bpic_gain("BPIC2017", paths.bpic_csv("BPIC2017", args.variant), paths.variant_model("BPIC2017", args.variant),
                                     pools.treatment_col("BPIC2017", args.variant), sample=30000, variant=args.variant)
-    # Out of sample: the validation cases, which the agent never trained on.
+    # The validation cases the agent was chosen on (select_policy.py).
     if args.variant == pools.DEFAULT_VARIANT:
         for lg, key, sample in (("BPIC2012", "bpic2012_val", None), ("BPIC2017", "bpic2017_val", 30000)):
             if paths.retrained_csv(lg, "val").exists():

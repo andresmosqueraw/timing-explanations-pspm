@@ -33,11 +33,22 @@ RETRAINED_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_CSV", DATA / "
 # The validation split scored the same way: cases the agent never trained on,
 # used only to report the policy's gain out of sample (compute_gain_table.py).
 RETRAINED_VAL_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_VAL_CSV", DATA / "retrained_state_bpic2012_val.csv"),
-                     "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_VAL_CSV", DATA / "retrained_state_bpic2017_val.csv")}
+                     "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_VAL_CSV", DATA / "retrained_state_bpic2017_val.csv"),
+                     "Sepsis": _env_path("TIMING_SEPSIS_STATE_VAL_CSV", DATA / "retrained_state_sepsis_val.csv")}
+# The training split scored out of fold (crossfit.py): the only state the
+# agents train on. Its val / test counterparts are never used for training.
+RETRAINED_TRAIN_CSV = {"BPIC2012": _env_path("TIMING_BPIC2012_RETRAINED_TRAIN_CSV", DATA / "retrained_state_bpic2012_train.csv"),
+                       "BPIC2017": _env_path("TIMING_BPIC2017_RETRAINED_TRAIN_CSV", DATA / "retrained_state_bpic2017_train.csv"),
+                       "Sepsis": _env_path("TIMING_SEPSIS_STATE_TRAIN_CSV", DATA / "retrained_state_sepsis_train.csv")}
+# Cross-fitting record (folds, fold sizes, settings), committed.
+CROSSFIT_JSON = REPO / "crossfit_manifest.json"
+# The agents' hyper-parameter selection on the validation split, committed.
+POLICY_SELECTION_JSON = REPO / "policy_selection.json"
 
 
 def retrained_csv(log: str, split: str = "test"):
-    return {"test": RETRAINED_CSV, "val": RETRAINED_VAL_CSV}[split][log]
+    test = {**RETRAINED_CSV, "Sepsis": SEPSIS_STATE_CSV}
+    return {"train": RETRAINED_TRAIN_CSV, "val": RETRAINED_VAL_CSV, "test": test}[split][log]
 
 
 def bpic_csv(log: str, variant: str = "cate_retrained"):

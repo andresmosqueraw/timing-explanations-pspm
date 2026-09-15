@@ -16,12 +16,15 @@ Per log, recomputed from the raw events rather than from the code it audits:
      mapping scored on the test split);
   4. treatment: the propensity's overlap on the test decision points (the
      effect estimator's positivity);
-  5. state: the RL CSV holds exactly the test decision points, carries no
-     case length, and its relative_position uses the fixed training horizon;
-  6. out-of-sample state: the validation RL CSV (where the policy's gain is
-     reported) holds exactly the validation decision points, shares no case
-     with the test split the agent trains on or with the training split, and
-     starts after the training split ends.
+  5. protocol (train / validation / test, crossfit.py): the agent's training
+     state holds exactly the training decision points, scored out of fold
+     (every case in one fold), and shares no case with validation or test;
+     the paper's checkpoint was trained on that state and chosen on the
+     validation split; the test state (final gain and every explanation)
+     holds exactly the test decision points; the validation state holds
+     exactly the validation decision points; the three splits share no case
+     and validation and test start after training ends; every state carries
+     no case length and uses the training horizon.
 
 Writes leakage_audit.json; exits non-zero when a hard check fails.
 
@@ -39,14 +42,15 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
+import crossfit
 import effect_model as em
 import paths
+import pools
 import risk_model as rm
 
 LOGS = ("BPIC2012", "BPIC2017", "Sepsis")
 FORBIDDEN = {"time_to_event_m", "NumberOfOffers", "CreditScore", "Accepted", "Selected", "case_length"}
-STATE_CSV = {"BPIC2012": paths.retrained_csv("BPIC2012"), "BPIC2017": paths.retrained_csv("BPIC2017"), "Sepsis": paths.SEPSIS_STATE_CSV}
-VAL_STATE_CSV = {"BPIC2012": paths.retrained_csv("BPIC2012", "val"), "BPIC2017": paths.retrained_csv("BPIC2017", "val")}
+
 NEAR_CERTAIN = 0.01   # a condition whose outcome rate is below this or above 1 - this
 MIN_SUPPORT = 200     # ... on at least this many test prefixes, is a leak
 AUC_FLAG = 0.90       # a single feature separating the outcome better than this is flagged
@@ -159,27 +163,37 @@ def audit(log: str) -> dict:
     out["warnings"] = [] if out["propensity"]["share_in_overlap"] >= 0.5 else [
         f"weak positivity: only {out['propensity']['share_in_overlap']:.1%} of test decision points have a propensity in {list(OVERLAP_BAND)}"]
 
-    # 5. the RL state
-    p = STATE_CSV[log]
-    if p.exists():
+    # 5. the train / validation / test protocol
+    _, mva = rm.encode_prefixes(va, conf)
+    horizon = rm.progress_horizon(tr, conf)
+    split_meta = {"train": mtr, "val": mva, "test": mte}
+    split_cases = {k: set(m["case_id"].astype(str)) for k, m in split_meta.items()}
+    chk["splits_share_no_case"] = not (split_cases["train"] & split_cases["val"]) and not (split_cases["train"] & split_cases["test"]) \
+        and not (split_cases["val"] & split_cases["test"])
+    chk["val_and_test_start_after_training"] = bool(min(va[conf["ts_col"]].min(), te[conf["ts_col"]].min()) >= tr[conf["ts_col"]].max())
+    for split in ("train", "val", "test"):
+        p = paths.retrained_csv(log, split)
+        if not p.exists():
+            chk[f"{split}_state_exists"] = False
+            continue
         st = pd.read_csv(p, sep=";", dtype={"case_id": str}, keep_default_na=False, na_values=[])
-        chk["state_has_no_case_length"] = "case_length" not in st.columns
-        k = st[["case_id", "prefix_nr"]].merge(mte[["case_id", "prefix_nr"]], on=["case_id", "prefix_nr"])
-        chk["state_rows_are_test_decision_points"] = bool(len(k) == len(st) == len(mte))
-        chk["state_horizon_from_training"] = bool(np.allclose(st["progress_horizon"], rm.progress_horizon(tr, conf)))
+        m = split_meta[split].assign(case_id=split_meta[split]["case_id"].astype(str))
+        k = st[["case_id", "prefix_nr"]].merge(m[["case_id", "prefix_nr"]], on=["case_id", "prefix_nr"])
+        chk[f"{split}_state_rows_are_{split}_decision_points"] = bool(len(k) == len(st) == len(m))
+        chk[f"{split}_state_has_no_case_length"] = "case_length" not in st.columns
+        chk[f"{split}_state_horizon_from_training"] = bool(np.allclose(st["progress_horizon"], horizon))
+        if split == "train":
+            chk["train_state_out_of_fold"] = bool("fold" in st.columns and st["fold"].between(0, crossfit.N_FOLDS - 1).all()
+                                                  and st.groupby("case_id")["fold"].nunique().max() == 1)
+        else:
+            chk[f"{split}_state_scored_by_final_models"] = bool("fold" not in st.columns or (st["fold"] == -1).all())
+    mani_path = paths.variant_artifact(log, pools.DEFAULT_VARIANT, "_manifest.json")
+    if mani_path.exists():
+        mani = json.loads(mani_path.read_text())
+        from pathlib import Path as _P
+        chk["agent_trained_on_training_state"] = _P(mani["csv_path"]).resolve() == paths.retrained_csv(log, "train").resolve()
+        chk["agent_chosen_on_validation"] = str(mani.get("selected_on", "")).startswith("validation")
 
-    # 6. the out-of-sample (validation) state
-    pv = VAL_STATE_CSV.get(log)
-    if pv is not None and pv.exists():
-        sv = pd.read_csv(pv, sep=";", dtype={"case_id": str}, keep_default_na=False, na_values=[], usecols=["case_id", "prefix_nr", "progress_horizon"])
-        _, mva = rm.encode_prefixes(va, conf)
-        mva = mva.assign(case_id=mva["case_id"].astype(str))
-        kv = sv[["case_id", "prefix_nr"]].merge(mva[["case_id", "prefix_nr"]], on=["case_id", "prefix_nr"])
-        chk["val_state_rows_are_val_decision_points"] = bool(len(kv) == len(sv) == len(mva))
-        vcases = set(sv["case_id"])
-        chk["val_cases_disjoint_from_test_and_train"] = not (vcases & set(mte["case_id"].astype(str))) and not (vcases & set(tr[conf["case_col"]].astype(str)))
-        chk["val_starts_after_training"] = bool(va[conf["ts_col"]].min() >= tr[conf["ts_col"]].max())
-        chk["val_horizon_from_training"] = bool(np.allclose(sv["progress_horizon"], rm.progress_horizon(tr, conf)))
     ok = all(chk.values())
     print(f"\n=== {log}: {'PASS' if ok else 'FAIL'}")
     for name, v in chk.items():

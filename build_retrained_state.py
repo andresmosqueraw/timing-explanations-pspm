@@ -25,17 +25,19 @@ derivations follow the released files exactly (verified on both CSVs):
                                                    for treating where treatment causes the bad outcome)
     treatment   = the case's recorded treatment flag (historical action)
 
-The split is the same temporal test split both retrained models were
-evaluated on (risk_model.temporal_split), i.e. out-of-sample scores, as in
-the released pipeline; on BPIC2012 it is row-for-row the shipped CSV's case
-set. Writes paths.retrained_csv(log) (git-ignored like the shipped CSVs).
+Splits and roles (the train / validation / test protocol, crossfit.py):
 
-The validation split (the other half of the later cases) is scored the same
-way into paths.retrained_csv(log, "val"). The agent never trains on it and
-the effect estimator never sees it; the risk model uses it only to pick its
-number of trees. compute_gain_table.py scores the policy there out of sample.
+    train  scored out of fold (5 folds by case)  -> paths.retrained_csv(log, "train"): the agent trains here only
+    val    scored by the final models            -> paths.retrained_csv(log, "val"): choosing the agent
+    test   scored by the final models            -> paths.retrained_csv(log): final gain and every explanation
 
-Usage: python build_retrained_state.py [--logs BPIC2012 BPIC2017] [--splits test val]
+The risk and effect models are fit on the training split (the risk model
+stops early on the validation split); the test split is used only at the
+end. Each row carries its ``fold`` (-1 outside train); the fold record goes
+to crossfit_manifest.json. On BPIC2012 the test CSV is row-for-row the
+shipped CSV's case set. The CSVs are git-ignored like the shipped ones.
+
+Usage: python build_retrained_state.py [--logs BPIC2012 BPIC2017 Sepsis] [--splits train val test]
 """
 
 from __future__ import annotations
@@ -47,23 +49,17 @@ import numpy as np
 import pandas as pd
 
 import compose as cp
-import effect_model as em
+import crossfit
 import paths
 import risk_model as rm
 
-LOGS = ("BPIC2012", "BPIC2017")
+LOGS = ("BPIC2012", "BPIC2017", "Sepsis")
 
 
-def build(log: str, split: str = "test") -> pd.DataFrame:
-    df, conf = rm.load_events(log)
-    tr, te, va = rm.temporal_split(df, conf)
-    X, meta = rm.encode_prefixes({"test": te, "val": va}[split], conf)
+def build(log: str, split: str = "test") -> tuple[pd.DataFrame, dict]:
+    X, meta, r, pT, pU, fold, tr, info = crossfit.score_split(log, split)
+    _, conf = rm.load_events(log)
     horizon = rm.progress_horizon(tr, conf)
-    clf, rfeats = rm.load_model(log)
-    arms, efeats = em.load_model(log)
-    r = clf.predict_proba(X[rfeats["feature_names"]])[:, 1]
-    Xd = em.one_hot(X[efeats["raw_columns"]], efeats["cat_cols"], efeats["columns"])
-    pT, pU = arms["treated"].predict_proba(Xd)[:, 1], arms["untreated"].predict_proba(Xd)[:, 1]
     reliability, deviation = cp.risk_features_from_r(log, r)
     out = pd.DataFrame({
         "case_id": meta["case_id"].to_numpy(), "prefix_nr": meta["prefix_nr"].to_numpy(), "progress_horizon": horizon,
@@ -71,9 +67,9 @@ def build(log: str, split: str = "test") -> pd.DataFrame:
         "predicted": (r > 0.5).astype(int), "predicted_proba_0": 1.0 - r, "predicted_proba_1": r,
         "reliability": reliability, "deviation": deviation,
         "Proba_if_Treated": pT, "Proba_if_Untreated": pU, "y1": cp.desired_outcome(pT), "y0": cp.desired_outcome(pU),
-        "treatment": meta["t"].to_numpy(),
+        "treatment": meta["t"].to_numpy(), "fold": fold,
     })
-    return out.sort_values(["orig_timestamp", "prefix_nr"], kind="mergesort").reset_index(drop=True)
+    return out.sort_values(["orig_timestamp", "prefix_nr"], kind="mergesort").reset_index(drop=True), info
 
 
 def compare_with_shipped(log: str, new: pd.DataFrame) -> dict:
@@ -91,21 +87,25 @@ def compare_with_shipped(log: str, new: pd.DataFrame) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--logs", nargs="+", default=list(LOGS), choices=list(LOGS))
-    ap.add_argument("--splits", nargs="+", default=["test", "val"], choices=["test", "val"])
+    ap.add_argument("--splits", nargs="+", default=["train", "val", "test"], choices=["train", "val", "test"])
     a = ap.parse_args()
     vs_path = paths.REPO / "retrained_state_vs_shipped.json"
     vs = json.loads(vs_path.read_text()) if vs_path.exists() else {}
+    cf = json.loads(paths.CROSSFIT_JSON.read_text()) if paths.CROSSFIT_JSON.exists() else {}
     for lg in a.logs:
         for split in a.splits:
-            out = build(lg, split)
+            out, info = build(lg, split)
             p = paths.retrained_csv(lg, split)
             p.parent.mkdir(parents=True, exist_ok=True)
             out.to_csv(p, sep=";", index=False)
             ite = out.y1 - out.y0
             print(f"{lg} [{split}]: {len(out)} prefixes of {out.case_id.nunique()} cases -> {p}")
             print(f"  r mean {out.predicted_proba_1.mean():.3f}, predicted deviant {out.predicted.mean():.3f}, actual deviant {out.actual.mean():.3f}; "
-                  f"p_T mean {out.Proba_if_Treated.mean():.3f}, p_U mean {out.Proba_if_Untreated.mean():.3f}, ite>0 share {(ite > 0).mean():.3f}, treated cases {out.treatment.mean():.3f}")
-            if split == "test":
+                  f"p_T mean {out.Proba_if_Treated.mean():.3f}, p_U mean {out.Proba_if_Untreated.mean():.3f}, ite>0 share {(ite > 0).mean():.3f}, treated {out.treatment.mean():.3f}", flush=True)
+            if split == "train":
+                cf[lg] = {**info, "n_prefixes": int(len(out)), "n_cases": int(out.case_id.nunique())}
+                paths.CROSSFIT_JSON.write_text(json.dumps(cf, indent=2))
+            if split == "test" and lg != "Sepsis":
                 vs[lg] = compare_with_shipped(lg, out)
                 print("  vs shipped:", vs[lg])
     vs_path.write_text(json.dumps(vs, indent=2))

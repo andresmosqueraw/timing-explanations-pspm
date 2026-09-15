@@ -22,3 +22,4 @@ models/variants/sweep/
 
 # local snapshots taken before large regenerations
 archive/
+models/variants/sweep_oof/

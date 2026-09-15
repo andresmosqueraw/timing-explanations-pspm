@@ -87,25 +87,28 @@ fig.text(0.024, 0.918, f"Case {rc['case_id']} (BPIC2017 test split), right after
 
 y_tl = 0.835
 x = 0.024
-for t, a in trace:
+# long prefixes: the first event, how many are skipped, and the last one
+shown = trace if len(trace) <= 3 else [trace[0], ("", f"... {len(trace) - 2} more events ..."), trace[-1]]
+for t, a in shown:
     w = 0.012 + 0.0068 * max(len(a), 8)
-    box(x, y_tl - 0.032, w, 0.064, fc="white", ec=LINE)
-    fig.text(x + w / 2, y_tl + 0.012, a, fontsize=9.6, color=INK, ha="center", va="center")
-    fig.text(x + w / 2, y_tl - 0.016, t, fontsize=8.4, color=MUTED, ha="center", va="center")
+    box(x, y_tl - 0.032, w, 0.064, fc="white" if t else "#f8fafc", ec=LINE)
+    fig.text(x + w / 2, y_tl + (0.012 if t else 0.0), a, fontsize=9.6, color=INK if t else MUTED, ha="center", va="center", style="normal" if t else "italic")
+    if t:
+        fig.text(x + w / 2, y_tl - 0.016, t, fontsize=8.4, color=MUTED, ha="center", va="center")
     arrow(x + w + 0.003, x + w + 0.02, y_tl)
     x += w + 0.023
 # the decision point itself
-w_dp = 0.28
+w_dp = 0.245
 box(x, y_tl - 0.058, w_dp, 0.116, fc="#fef3c7", ec="#f59e0b", lw=1.4)
 fig.text(x + w_dp / 2, y_tl + 0.034, "Decision point: act now or wait?", fontsize=10.4, fontweight="bold", color=INK, ha="center", va="center")
 res = int(round(st["available_resources"]))
 fig.text(x + w_dp / 2, y_tl + 0.0, f"{res} of {pools.N_RESOURCES} staff free; {label('relative_position', st['relative_position'])}", fontsize=9.3, color=INK, ha="center", va="center")
 fig.text(x + w_dp / 2, y_tl - 0.032, f"risk {rc['r']:.0%}; rejection {ec['pU']:.0%} without, {ec['pT']:.0%} with another offer",
-         fontsize=8.4, color=MUTED, ha="center", va="center")
+         fontsize=7.4, color=MUTED, ha="center", va="center")
 x_dec = x + w_dp
 # the decision, and the unknown rest of the case
 arrow(x_dec + 0.004, x_dec + 0.03, y_tl, color="#f59e0b")
-w_d = 0.12
+w_d = 0.108
 box(x_dec + 0.033, y_tl - 0.032, w_d, 0.064, fc=POS if acts else NEG, ec=POS if acts else NEG)
 fig.text(x_dec + 0.033 + w_d / 2, y_tl + 0.009, "policy: ACT NOW" if acts else "policy: WAIT", fontsize=10.4, fontweight="bold", color="white", ha="center", va="center")
 fig.text(x_dec + 0.033 + w_d / 2, y_tl - 0.016, "(make a further offer)" if acts else "(no offer yet)", fontsize=8.6, color="white", ha="center", va="center")
@@ -115,7 +118,7 @@ fig.text(x_rest + 0.04, y_tl, "rest of the case:\nnot yet known", fontsize=9.2, 
 
 fig.text(0.024, 0.762,
          f"One decision point, not an average: it is 1 of the {n_side:,} decisions to {'act' if acts else 'wait'} in the BPIC2017 test pool, "
-         f"whose averages Tables 2 and 3 report.", fontsize=9.6, color=INK, va="center", style="italic")
+         f"whose averages Tables 2 and 4 report.", fontsize=9.6, color=INK, va="center", style="italic")
 
 # --- three panels: question -> answer -----------------------------------------
 COL_W, GAP, X0 = 0.318, 0.011, 0.012

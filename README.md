@@ -99,9 +99,8 @@ sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
   `fidelity_results.json`.
 - `compute_gain_table.py` — mean reward per decision point under the
   historically recorded action versus the retrained policy, across all
-  three logs, plus the BPIC policies on their validation cases
-  (`bpic2012_val`, `bpic2017_val`: cases the agent never trained on, out of
-  sample); writes `gain_table_results.json`.
+  three logs on the test cases, plus the validation rows the agents were
+  chosen on (`bpic2012_val`, `bpic2017_val`); writes `gain_table_results.json`.
 - `figures/make_figures.py` — the paper's figures (MDP timeline diagram,
   training-curve plot, two explanation cards).
 - `run_xai_suite.py`, `xai_methods.py`, `xai_metrics.py`, `xai_plots.py`,
@@ -148,11 +147,11 @@ sign is also corrected (`compose.desired_outcome`). Pre-fix artefacts are in
   policy (same recipe, no effect features), the composition with a live risk
   channel (`compose_results_risk_retrained.json`).
 - `build_retrained_state.py` — the coherent-pipeline RL CSVs
-  (`data/retrained_state_<log>.csv`) the `cate_retrained` policies are
-  trained and explained on, and the validation-split CSVs
-  (`data/retrained_state_<log>_val.csv`) where their gain is scored out of
-  sample (`leakage_audit.py` checks that these cases are disjoint from the
-  test and training splits).
+  per split: the training split scored out of fold by `crossfit.py`
+  (`data/retrained_state_<log>_train.csv`, the only state the agents train
+  on), the validation split (`_val.csv`, where `select_policy.py` chooses
+  each agent) and the test split (`.csv`, used once at the end for the gain
+  and every explanation). `leakage_audit.py` checks the protocol.
 - `figures/make_composition_flow.py` — the paper's flow figure: the propagated
   card of one decision, prefix attributes → state coordinates by level →
   margin.
@@ -180,7 +179,8 @@ python risk_model.py               # retrain the outcome (risk) predictors -> mo
 python run_risk_suite.py           # risk explanations + metrics + two-level cards -> risk_results.json
 python effect_model.py             # retrain the causal-effect estimators -> models/effect/ (BPIC2017 takes ~75 min)
 python run_effect_suite.py         # effect explanations + deletion test + three-level cards -> effect_results.json
-python build_retrained_state.py    # coherent-pipeline RL CSVs -> data/retrained_state_<log>.csv and _val.csv (needs the prepared logs)
+python build_retrained_state.py    # RL CSVs per split (train out of fold, val, test) -> data/retrained_state_<log>[_train|_val].csv (needs the prepared logs)
+python select_policy.py            # choose each agent on validation among models/variants/sweep_oof/ -> policy_selection.json
 python run_compose_suite.py        # composition study -> compose_results.json, figures/out/compose/
 TIMING_PAPER_FIGURES=<paper>/figures python figures/make_three_level.py        # the paper's three-level card (fig5)
 TIMING_PAPER_FIGURES=<paper>/figures python figures/make_composition_flow.py   # the paper's composition flow figure (fig6)

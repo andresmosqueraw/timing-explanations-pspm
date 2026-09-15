@@ -45,25 +45,11 @@ LOG = "Sepsis"
 
 
 def build() -> pd.DataFrame:
-    df, conf = rm.load_events(LOG)
-    tr, te, _va = rm.temporal_split(df, conf)
-    X, meta = rm.encode_prefixes(te, conf)
-    horizon = rm.progress_horizon(tr, conf)
-    clf, rfeats = rm.load_model(LOG)
-    arms, efeats = em.load_model(LOG)
-    r = clf.predict_proba(X[rfeats["feature_names"]])[:, 1]
-    Xd = em.one_hot(X[efeats["raw_columns"]], efeats["cat_cols"], efeats["columns"])
-    pT, pU = arms["treated"].predict_proba(Xd)[:, 1], arms["untreated"].predict_proba(Xd)[:, 1]
-    reliability, deviation = cp.risk_features_from_r(LOG, r)
-    out = pd.DataFrame({
-        "case_id": meta["case_id"].to_numpy(), "prefix_nr": meta["prefix_nr"].to_numpy(), "progress_horizon": horizon,
-        "orig_timestamp": meta["timestamp"].to_numpy(), "actual": meta["y"].to_numpy(),
-        "predicted": (r > 0.5).astype(int), "predicted_proba_0": 1.0 - r, "predicted_proba_1": r,
-        "reliability": reliability, "deviation": deviation,
-        "Proba_if_Treated": pT, "Proba_if_Untreated": pU, "y1": cp.desired_outcome(pT), "y0": cp.desired_outcome(pU),
-        "treatment": meta["t"].to_numpy(),
-    })
-    return out.sort_values(["orig_timestamp", "prefix_nr"], kind="mergesort").reset_index(drop=True)
+    """The test-split state, through build_retrained_state (which also writes
+    the out-of-fold training state and the validation state for Sepsis)."""
+    import build_retrained_state as brs
+
+    return brs.build(LOG, "test")[0]
 
 
 def verify_coherence(out: pd.DataFrame) -> dict:
@@ -99,10 +85,13 @@ def verify_coherence(out: pd.DataFrame) -> dict:
 
 
 if __name__ == "__main__":
-    out = build()
+    import subprocess
+    import sys
+
+    # train (out of fold), val and test states for Sepsis, then the coherence check on test
+    subprocess.run([sys.executable, "build_retrained_state.py", "--logs", LOG], check=True)
+    out = pd.read_csv(paths.SEPSIS_STATE_CSV, sep=";", dtype={"case_id": str}, keep_default_na=False, na_values=[])
     p = paths.SEPSIS_STATE_CSV
-    p.parent.mkdir(parents=True, exist_ok=True)
-    out.to_csv(p, sep=";", index=False)
     ite = out.y1 - out.y0
     print(f"Sepsis: {len(out)} prefixes of {out.case_id.nunique()} cases -> {p}")
     print(f"  r mean {out.predicted_proba_1.mean():.3f}, predicted deviant {out.predicted.mean():.3f}, actual deviant {out.actual.mean():.3f}; "

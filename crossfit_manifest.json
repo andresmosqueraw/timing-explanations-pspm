@@ -1,0 +1,164 @@
+{
+  "BPIC2012": {
+    "n_folds": 5,
+    "fold_seed": 0,
+    "propensity_params": {
+      "C": 0.1,
+      "penalty": "l1"
+    },
+    "risk_seed": 2,
+    "risk_iterations": 1000,
+    "folds": [
+      {
+        "fold": 0,
+        "n_fit": 31852,
+        "n_scored": 7860,
+        "risk_best_iteration": 222,
+        "cases_scored": 469,
+        "seconds": 91.70748591423035
+      },
+      {
+        "fold": 1,
+        "n_fit": 31744,
+        "n_scored": 7968,
+        "risk_best_iteration": 195,
+        "cases_scored": 469,
+        "seconds": 34.58828616142273
+      },
+      {
+        "fold": 2,
+        "n_fit": 31649,
+        "n_scored": 8063,
+        "risk_best_iteration": 214,
+        "cases_scored": 469,
+        "seconds": 101.33824563026428
+      },
+      {
+        "fold": 3,
+        "n_fit": 31808,
+        "n_scored": 7904,
+        "risk_best_iteration": 206,
+        "cases_scored": 469,
+        "seconds": 69.83693385124207
+      },
+      {
+        "fold": 4,
+        "n_fit": 31795,
+        "n_scored": 7917,
+        "risk_best_iteration": 204,
+        "cases_scored": 468,
+        "seconds": 89.23146080970764
+      }
+    ],
+    "n_prefixes": 39712,
+    "n_cases": 2344
+  },
+  "BPIC2017": {
+    "n_folds": 5,
+    "fold_seed": 0,
+    "propensity_params": {
+      "C": 10,
+      "penalty": "l2"
+    },
+    "risk_seed": 2,
+    "risk_iterations": 1000,
+    "folds": [
+      {
+        "fold": 0,
+        "n_fit": 347929,
+        "n_scored": 87504,
+        "risk_best_iteration": 127,
+        "cases_scored": 3141,
+        "seconds": 345.49515986442566
+      },
+      {
+        "fold": 1,
+        "n_fit": 348594,
+        "n_scored": 86839,
+        "risk_best_iteration": 104,
+        "cases_scored": 3141,
+        "seconds": 340.9098870754242
+      },
+      {
+        "fold": 2,
+        "n_fit": 348571,
+        "n_scored": 86862,
+        "risk_best_iteration": 119,
+        "cases_scored": 3141,
+        "seconds": 436.561781167984
+      },
+      {
+        "fold": 3,
+        "n_fit": 349117,
+        "n_scored": 86316,
+        "risk_best_iteration": 116,
+        "cases_scored": 3141,
+        "seconds": 416.3755986690521
+      },
+      {
+        "fold": 4,
+        "n_fit": 347521,
+        "n_scored": 87912,
+        "risk_best_iteration": 108,
+        "cases_scored": 3141,
+        "seconds": 328.7902171611786
+      }
+    ],
+    "n_prefixes": 435433,
+    "n_cases": 15705
+  },
+  "Sepsis": {
+    "n_folds": 5,
+    "fold_seed": 0,
+    "propensity_params": {
+      "C": 0.1,
+      "penalty": "l1"
+    },
+    "risk_seed": 2,
+    "risk_iterations": 1000,
+    "folds": [
+      {
+        "fold": 0,
+        "n_fit": 2858,
+        "n_scored": 663,
+        "risk_best_iteration": 282,
+        "cases_scored": 105,
+        "seconds": 20.114683628082275
+      },
+      {
+        "fold": 1,
+        "n_fit": 2843,
+        "n_scored": 678,
+        "risk_best_iteration": 293,
+        "cases_scored": 105,
+        "seconds": 18.62349224090576
+      },
+      {
+        "fold": 2,
+        "n_fit": 2793,
+        "n_scored": 728,
+        "risk_best_iteration": 291,
+        "cases_scored": 105,
+        "seconds": 17.140029668807983
+      },
+      {
+        "fold": 3,
+        "n_fit": 2759,
+        "n_scored": 762,
+        "risk_best_iteration": 4,
+        "cases_scored": 105,
+        "seconds": 18.718873977661133
+      },
+      {
+        "fold": 4,
+        "n_fit": 2831,
+        "n_scored": 690,
+        "risk_best_iteration": 114,
+        "cases_scored": 105,
+        "seconds": 19.080498218536377
+      }
+    ],
+    "n_prefixes": 3521,
+    "n_cases": 525
+  }
+}

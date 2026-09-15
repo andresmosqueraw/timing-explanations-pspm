@@ -156,6 +156,26 @@ def always_wait_reward(df: pd.DataFrame) -> float:
     return float(np.mean([SepsisEnv._reward(False, x) for x in ite]))
 
 
+class _SaveAt:
+    """Save the model when training passes each of ``steps`` (one run gives
+    every checkpoint of the validation sweep)."""
+
+    def __new__(cls, steps, base):
+        from stable_baselines3.common.callbacks import BaseCallback
+
+        class SaveAt(BaseCallback):
+            def __init__(self):
+                super().__init__()
+                self.todo = sorted(int(s) for s in steps)
+
+            def _on_step(self) -> bool:
+                while self.todo and self.num_timesteps >= self.todo[0]:
+                    self.model.save(f"{base}_{self.todo.pop(0) // 1000}k")
+                return True
+
+        return SaveAt()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--timesteps", type=int, default=600_000)
@@ -167,7 +187,13 @@ def main():
     ap.add_argument("--ent-coef", type=float, default=0.3)
     ap.add_argument("--n-steps", type=int, default=512)
     ap.add_argument("--learning-rate", type=float, default=3e-4)
+    ap.add_argument("--save-at", nargs="*", type=int, default=[], help="also save checkpoints <out>_<k>k at these timesteps")
+    ap.add_argument("--threads", type=int, default=0, help="torch threads (0 = torch default)")
     args = ap.parse_args()
+    if args.threads:
+        import torch
+
+        torch.set_num_threads(args.threads)
 
     csv_path = Path(args.csv)
     if not csv_path.exists():
@@ -190,7 +216,7 @@ def main():
         ent_coef=args.ent_coef, seed=args.seed, verbose=1,
     )
     t0 = time.time()
-    model.learn(total_timesteps=args.timesteps)
+    model.learn(total_timesteps=args.timesteps, callback=_SaveAt(args.save_at, save_path) if args.save_at else None)
     elapsed = time.time() - t0
 
     model.save(str(save_path))

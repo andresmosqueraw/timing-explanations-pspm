@@ -1,0 +1,185 @@
+{
+  "BPIC2012": {
+    "candidates": [
+      {
+        "checkpoint": "ppo_bpic2012_ent0.1",
+        "ent_coef": 0.1,
+        "timesteps": 600000,
+        "val_mean_reward": 46.136638452237,
+        "val_intervene_rate": 0.4230713422007255,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.1_300k",
+        "ent_coef": 0.1,
+        "timesteps": 300000,
+        "val_mean_reward": 46.46553808948005,
+        "val_intervene_rate": 0.4814993954050786,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.3",
+        "ent_coef": 0.3,
+        "timesteps": 600000,
+        "val_mean_reward": 46.02902055622733,
+        "val_intervene_rate": 0.457944377267231,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.3_300k",
+        "ent_coef": 0.3,
+        "timesteps": 300000,
+        "val_mean_reward": 44.99637243047158,
+        "val_intervene_rate": 0.4479806529625151,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.5",
+        "ent_coef": 0.5,
+        "timesteps": 600000,
+        "val_mean_reward": 50.667472793228534,
+        "val_intervene_rate": 0.49605804111245466,
+        "n_val": 20675
+      },
+      {
+        "checkpoint": "ppo_bpic2012_ent0.5_300k",
+        "ent_coef": 0.5,
+        "timesteps": 300000,
+        "val_mean_reward": 46.69286577992745,
+        "val_intervene_rate": 0.5178718258766626,
+        "n_val": 20675
+      }
+    ],
+    "chosen": {
+      "checkpoint": "ppo_bpic2012_ent0.5",
+      "ent_coef": 0.5,
+      "timesteps": 600000,
+      "val_mean_reward": 50.667472793228534,
+      "val_intervene_rate": 0.49605804111245466,
+      "n_val": 20675
+    },
+    "checkpoint": "models/variants/ppo_bpic2012_cate_retrained.zip"
+  },
+  "BPIC2017": {
+    "candidates": [
+      {
+        "checkpoint": "ppo_bpic2017_ent0.1",
+        "ent_coef": 0.1,
+        "timesteps": 600000,
+        "val_mean_reward": 36.705,
+        "val_intervene_rate": 0.11786666666666666,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.1_300k",
+        "ent_coef": 0.1,
+        "timesteps": 300000,
+        "val_mean_reward": 33.84916666666667,
+        "val_intervene_rate": 0.09583333333333334,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.3",
+        "ent_coef": 0.3,
+        "timesteps": 600000,
+        "val_mean_reward": 38.01583333333333,
+        "val_intervene_rate": 0.1249,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.3_300k",
+        "ent_coef": 0.3,
+        "timesteps": 300000,
+        "val_mean_reward": 42.844166666666666,
+        "val_intervene_rate": 0.17563333333333334,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.5",
+        "ent_coef": 0.5,
+        "timesteps": 600000,
+        "val_mean_reward": 46.1525,
+        "val_intervene_rate": 0.21116666666666667,
+        "n_val": 30000
+      },
+      {
+        "checkpoint": "ppo_bpic2017_ent0.5_300k",
+        "ent_coef": 0.5,
+        "timesteps": 300000,
+        "val_mean_reward": 32.446666666666665,
+        "val_intervene_rate": 0.15953333333333333,
+        "n_val": 30000
+      }
+    ],
+    "chosen": {
+      "checkpoint": "ppo_bpic2017_ent0.5",
+      "ent_coef": 0.5,
+      "timesteps": 600000,
+      "val_mean_reward": 46.1525,
+      "val_intervene_rate": 0.21116666666666667,
+      "n_val": 30000
+    },
+    "checkpoint": "models/variants/ppo_bpic2017_cate_retrained.zip"
+  },
+  "Sepsis": {
+    "candidates": [
+      {
+        "checkpoint": "ppo_sepsis_ent0.1",
+        "ent_coef": 0.1,
+        "timesteps": 600000,
+        "val_mean_reward": 7.09806157354618,
+        "val_intervene_rate": 0.1847206385404789,
+        "n_val": 1754
+      },
+      {
+        "checkpoint": "ppo_sepsis_ent0.1_300k",
+        "ent_coef": 0.1,
+        "timesteps": 300000,
+        "val_mean_reward": 7.140820980615736,
+        "val_intervene_rate": 0.18985176738882553,
+        "n_val": 1754
+      },
+      {
+        "checkpoint": "ppo_sepsis_ent0.3",
+        "ent_coef": 0.3,
+        "timesteps": 600000,
+        "val_mean_reward": 7.6824401368301025,
+        "val_intervene_rate": 0.1887115165336374,
+        "n_val": 1754
+      },
+      {
+        "checkpoint": "ppo_sepsis_ent0.3_300k",
+        "ent_coef": 0.3,
+        "timesteps": 300000,
+        "val_mean_reward": 7.34036488027366,
+        "val_intervene_rate": 0.18187001140250855,
+        "n_val": 1754
+      },
+      {
+        "checkpoint": "ppo_sepsis_ent0.5",
+        "ent_coef": 0.5,
+        "timesteps": 600000,
+        "val_mean_reward": 7.611174458380844,
+        "val_intervene_rate": 0.18700114025085518,
+        "n_val": 1754
+      },
+      {
+        "checkpoint": "ppo_sepsis_ent0.5_300k",
+        "ent_coef": 0.5,
+        "timesteps": 300000,
+        "val_mean_reward": 7.440136830102623,
+        "val_intervene_rate": 0.19384264538198404,
+        "n_val": 1754
+      }
+    ],
+    "chosen": {
+      "checkpoint": "ppo_sepsis_ent0.3",
+      "ent_coef": 0.3,
+      "timesteps": 600000,
+      "val_mean_reward": 7.6824401368301025,
+      "val_intervene_rate": 0.1887115165336374,
+      "n_val": 1754
+    },
+    "checkpoint": "models/variants/ppo_sepsis_cate.zip"
+  }
+}

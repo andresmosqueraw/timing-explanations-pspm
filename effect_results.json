@@ -3,6 +3,7 @@
     "logs": [
       "BPIC2012",
       "BPIC2017",
+      "SimBank",
       "Sepsis"
     ],
     "variant": "cate_retrained",
@@ -126,143 +127,143 @@
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "208778",
-          "prefix_nr": 2,
+          "case_id": "200674",
+          "prefix_nr": 7,
           "action": "intervene",
-          "dq": 2.2547812461853027,
-          "r": 0.43355568978831965,
-          "pT": 0.181120827794075,
-          "pU": 0.7161633372306824,
+          "dq": 2.8201732635498047,
+          "r": 0.6357885310494262,
+          "pT": 0.39921215176582336,
+          "pU": 0.7520513534545898,
           "state": {
-            "relative_position": 0.07407407462596893,
-            "reliability": 1.0,
-            "deviation": 1.0,
-            "available_resources": 3.0,
-            "Proba_if_Treated": 0.181120827794075,
-            "Proba_if_Untreated": 0.7161633372306824
-          },
-          "effect_top": [
-            [
-              "open_cases_max",
-              810.0,
-              1.418132483959198,
-              -0.6973442435264587,
-              0.7207882404327393
-            ],
-            [
-              "hour_mean",
-              11.0,
-              0.25422061793506145,
-              -0.27296698093414307,
-              -0.01874636299908161
-            ],
-            [
-              "timesincemidnight_min",
-              679.0,
-              0.16692721843719482,
-              -0.1208646148443222,
-              0.04606260359287262
-            ],
-            [
-              "weekday_mean",
-              0.0,
-              0.15919030830264091,
-              -0.052292872220277786,
-              0.10689743608236313
-            ],
-            [
-              "timesincemidnight_max",
-              679.0,
-              0.12039906159043312,
-              -0.17992301285266876,
-              -0.05952395126223564
-            ],
-            [
-              "timesincelastevent_mean",
-              0.0025,
-              -0.07566872332245111,
-              -0.0066199516877532005,
-              -0.08228867501020432
-            ]
-          ],
-          "effect_share_top6": 0.7685285598394155,
-          "timing_phi": {
-            "relative_position": 0.25966939330101013,
-            "reliability": -0.0996084064245224,
-            "deviation": -0.2913103997707367,
-            "available_resources": -0.11128067225217819,
-            "Proba_if_Treated": 1.9658797979354858,
-            "Proba_if_Untreated": 0.3549874722957611
-          }
-        },
-        "paper_card_wait": {
-          "case_id": "196036",
-          "prefix_nr": 12,
-          "action": "wait",
-          "dq": -3.2102952003479004,
-          "r": 0.5614695033104199,
-          "pT": 0.5943080186843872,
-          "pU": 0.5454132556915283,
-          "state": {
-            "relative_position": 0.4444444477558136,
+            "relative_position": 0.25925925374031067,
             "reliability": 0.0,
             "deviation": 0.0,
-            "available_resources": 3.0,
-            "Proba_if_Treated": 0.5943080186843872,
-            "Proba_if_Untreated": 0.5454132556915283
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.39921215176582336,
+            "Proba_if_Untreated": 0.7520513534545898
           },
           "effect_top": [
             [
-              "month_mean",
-              12.0,
-              -0.2731182351708412,
-              0.3614814579486847,
-              0.08836322277784348
-            ],
-            [
               "open_cases_max",
-              617.0,
-              -0.21077957563102245,
-              0.24102817475795746,
-              0.030248599126935005
-            ],
-            [
-              "timesincemidnight_std",
-              159.7875483448587,
-              0.17544538527727127,
-              -0.07070458680391312,
-              0.10474079847335815
+              828.0,
+              1.3733075857162476,
+              -0.7515877485275269,
+              0.6217198371887207
             ],
             [
               "open_cases_min",
-              591.0,
-              -0.12950631976127625,
-              0.057389996945858,
-              -0.07211632281541824
+              811.0,
+              -0.4206191524863243,
+              0.3961983621120453,
+              -0.024420790374279022
             ],
             [
               "AMOUNT_REQ",
-              7500.0,
-              -0.08206634595990181,
-              -0.03225754573941231,
-              -0.11432389169931412
+              25000.0,
+              0.2842436619102955,
+              -0.3286671042442322,
+              -0.04442344233393669
+            ],
+            [
+              "hour_mean",
+              14.571428571428571,
+              -0.13216298911720514,
+              0.12406735122203827,
+              -0.008095637895166874
+            ],
+            [
+              "timesincemidnight_std",
+              217.59048473593484,
+              0.1168866753578186,
+              -0.012470856308937073,
+              0.10441581904888153
+            ],
+            [
+              "timesincemidnight_max",
+              1154.0,
+              -0.0769592672586441,
+              0.1703406274318695,
+              0.0933813601732254
+            ]
+          ],
+          "effect_share_top6": 0.8126172973763485,
+          "timing_phi": {
+            "relative_position": 0.17906677722930908,
+            "reliability": -0.025476869195699692,
+            "deviation": -0.335206538438797,
+            "available_resources": 0.05800385773181915,
+            "Proba_if_Treated": 0.8255575299263,
+            "Proba_if_Untreated": 1.4306572675704956
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "210722",
+          "prefix_nr": 9,
+          "action": "wait",
+          "dq": -1.9429497718811035,
+          "r": 0.5469805189716384,
+          "pT": 0.623479425907135,
+          "pU": 0.5960547924041748,
+          "state": {
+            "relative_position": 0.3333333432674408,
+            "reliability": 0.0,
+            "deviation": 0.0,
+            "available_resources": 1.0,
+            "Proba_if_Treated": 0.623479425907135,
+            "Proba_if_Untreated": 0.5960547924041748
+          },
+          "effect_top": [
+            [
+              "timesincemidnight_std",
+              322.42690816851984,
+              -0.3764890730381012,
+              0.47506171464920044,
+              0.09857264161109924
+            ],
+            [
+              "hour_std",
+              5.5,
+              -0.11194891668856144,
+              0.00811847485601902,
+              -0.10383044183254242
+            ],
+            [
+              "AMOUNT_REQ",
+              6000.0,
+              0.10574539005756378,
+              -0.08932080119848251,
+              0.01642458885908127
+            ],
+            [
+              "timesincelastevent_max",
+              2228.313833333333,
+              0.08242365531623363,
+              -0.054693177342414856,
+              0.02773047797381878
             ],
             [
               "Activity",
               "W_Completeren aanvraag",
-              0.06071961880661547,
-              0.13096031546592712,
-              0.1916799342725426
+              0.06234545912593603,
+              0.12124492973089218,
+              0.1835903888568282
+            ],
+            [
+              "open_cases_mean",
+              699.7777777777778,
+              0.051052793860435486,
+              0.0411871001124382,
+              0.09223989397287369
             ]
           ],
-          "effect_share_top6": 0.6819568838165295,
+          "effect_share_top6": 0.6282699628240148,
           "timing_phi": {
-            "relative_position": -0.014024768024682999,
-            "reliability": -0.04859697446227074,
-            "deviation": -0.06231316179037094,
-            "available_resources": -0.6944399476051331,
-            "Proba_if_Treated": 3.4801383018493652,
-            "Proba_if_Untreated": 0.7350861430168152
+            "relative_position": 0.00610235845670104,
+            "reliability": 0.008348936215043068,
+            "deviation": 0.44596219062805176,
+            "available_resources": -0.33883631229400635,
+            "Proba_if_Treated": 2.2968084812164307,
+            "Proba_if_Untreated": 0.20564623177051544
           }
         }
       },
@@ -274,7 +275,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2012/BPIC2012_effect_family_share.png"
       ],
-      "seconds": 24.442290502993274
+      "seconds": 15.301042423998297
     },
     {
       "log": "BPIC2017",
@@ -390,143 +391,143 @@
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "Application_1122151985",
-          "prefix_nr": 2,
+          "case_id": "Application_243887576",
+          "prefix_nr": 8,
           "action": "intervene",
-          "dq": 1.181131362915039,
-          "r": 0.5143241760804811,
-          "pT": 0.39443808794021606,
-          "pU": 0.5343621373176575,
+          "dq": 1.4393671751022339,
+          "r": 0.5673454648012725,
+          "pT": 0.40788254141807556,
+          "pU": 0.5656343102455139,
           "state": {
-            "relative_position": 0.036363635212183,
-            "reliability": 0.5143241882324219,
+            "relative_position": 0.145454540848732,
+            "reliability": 0.5673454403877258,
             "deviation": 0.0,
             "available_resources": 3.0,
-            "Proba_if_Treated": 0.39443808794021606,
-            "Proba_if_Untreated": 0.5343621373176575
+            "Proba_if_Treated": 0.40788254141807556,
+            "Proba_if_Untreated": 0.5656343102455139
           },
           "effect_top": [
             [
-              "open_cases_max",
-              2013.0,
-              -0.09275402687489986,
-              0.07322024554014206,
-              -0.019533781334757805
+              "Activity",
+              "W_Handle leads",
+              0.11176360258832574,
+              0.33674914902076125,
+              0.448512751609087
             ],
             [
               "month_mean",
-              11.0,
-              0.0909889992326498,
-              -0.10496502369642258,
-              -0.013976024463772774
+              10.0,
+              0.10711072199046612,
+              -0.1211140900850296,
+              -0.014003368094563484
             ],
             [
               "FirstWithdrawalAmount_max",
               0.0,
-              0.08890072163194418,
-              -0.012174761854112148,
-              0.07672595977783203
+              0.09931751247495413,
+              -0.012191026471555233,
+              0.0871264860033989
             ],
             [
-              "RequestedAmount",
-              7000.0,
-              0.07803318463265896,
-              0.005367780104279518,
-              0.08340096473693848
+              "open_cases_max",
+              2260.0,
+              -0.09269043803215027,
+              0.06588466465473175,
+              -0.026805773377418518
             ],
             [
               "NumberOfTerms_max",
               0.0,
-              -0.07780309487134218,
-              0.06603986769914627,
-              -0.011763227172195911
+              -0.08237288426607847,
+              0.07063315808773041,
+              -0.011739726178348064
             ],
             [
-              "open_cases_mean",
-              2013.0,
-              0.06537796213524416,
-              -0.06450799107551575,
-              0.0008699710597284138
+              "RequestedAmount",
+              15000.0,
+              -0.07239276170730591,
+              -0.018899470567703247,
+              -0.09129223227500916
             ]
           ],
-          "effect_share_top6": 0.4072498510645305,
+          "effect_share_top6": 0.4870692564216733,
           "timing_phi": {
-            "relative_position": 1.9818207025527954,
-            "reliability": 1.8153735399246216,
-            "deviation": 0.14104339480400085,
-            "available_resources": -0.5107287168502808,
-            "Proba_if_Treated": -1.241132378578186,
-            "Proba_if_Untreated": 5.548675537109375
+            "relative_position": 0.0013982352102175355,
+            "reliability": 0.8904615044593811,
+            "deviation": -0.14235050976276398,
+            "available_resources": 0.16859853267669678,
+            "Proba_if_Treated": -1.1858376264572144,
+            "Proba_if_Untreated": 4.605358123779297
           }
         },
         "paper_card_wait": {
-          "case_id": "Application_1981121598",
-          "prefix_nr": 41,
+          "case_id": "Application_291332257",
+          "prefix_nr": 24,
           "action": "wait",
-          "dq": -4.827552795410156,
-          "r": 0.5329844510370705,
-          "pT": 0.10493312031030655,
-          "pU": 0.3780214190483093,
+          "dq": -1.996292233467102,
+          "r": 0.21767109695281475,
+          "pT": 0.13245053589344025,
+          "pU": 0.25786975026130676,
           "state": {
-            "relative_position": 0.7454545497894287,
-            "reliability": 0.5329844355583191,
-            "deviation": 0.0,
-            "available_resources": 1.0,
-            "Proba_if_Treated": 0.10493312031030655,
-            "Proba_if_Untreated": 0.3780214190483093
+            "relative_position": 0.4363636374473572,
+            "reliability": 0.7823289036750793,
+            "deviation": 1.0,
+            "available_resources": 2.0,
+            "Proba_if_Treated": 0.13245053589344025,
+            "Proba_if_Untreated": 0.25786975026130676
           },
           "effect_top": [
             [
-              "RequestedAmount",
-              35000.0,
-              0.31948317773640156,
-              -0.3105199635028839,
-              0.008963214233517647
-            ],
-            [
-              "open_cases_sum",
-              89741.0,
-              0.29880135506391525,
-              -0.37878185510635376,
-              -0.07998050004243851
+              "timesincelastevent_max",
+              36139.821866666665,
+              0.2854260173626244,
+              -0.27797773480415344,
+              0.007448282558470964
             ],
             [
               "FirstWithdrawalAmount_max",
-              1000.0,
-              -0.2408251939341426,
-              -0.01164711732417345,
-              -0.25247231125831604
+              9900.0,
+              -0.23471424728631973,
+              0.107276551425457,
+              -0.12743769586086273
+            ],
+            [
+              "FirstWithdrawalAmount_mean",
+              6600.0,
+              0.20507794246077538,
+              -0.22790075838565826,
+              -0.02282281592488289
+            ],
+            [
+              "timesincelastevent_std",
+              7419.156607435852,
+              -0.17969508469104767,
+              0.17969508469104767,
+              0.0
+            ],
+            [
+              "timesincelastevent_mean",
+              1905.351665972222,
+              0.11365550756454468,
+              0.20521113276481628,
+              0.31886664032936096
             ],
             [
               "Activity",
-              "W_Handle leads",
-              0.22508003935217857,
-              0.25557082891464233,
-              0.4806508682668209
-            ],
-            [
-              "open_cases_max",
-              2331.0,
-              0.21054351702332497,
-              -0.24346379935741425,
-              -0.03292028233408928
-            ],
-            [
-              "month_sum",
-              410.0,
-              0.14631964266300201,
-              -0.14631964266300201,
-              0.0
+              "W_Validate application",
+              0.10649909963831306,
+              -0.7203785753808916,
+              -0.6138794757425785
             ]
           ],
-          "effect_share_top6": 0.5817279387091802,
+          "effect_share_top6": 0.4737066835662234,
           "timing_phi": {
-            "relative_position": 0.34406450390815735,
-            "reliability": -0.4486347734928131,
-            "deviation": 1.2698676586151123,
-            "available_resources": -1.661191463470459,
-            "Proba_if_Treated": -1.5500825643539429,
-            "Proba_if_Untreated": 0.27220791578292847
+            "relative_position": -0.8566548824310303,
+            "reliability": 0.32884687185287476,
+            "deviation": -0.20238861441612244,
+            "available_resources": 0.0633782148361206,
+            "Proba_if_Treated": -0.9053861498832703,
+            "Proba_if_Untreated": 0.6464500427246094
           }
         }
       },
@@ -538,7 +539,269 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/BPIC2017/BPIC2017_effect_family_share.png"
       ],
-      "seconds": 44.1213120649918
+      "seconds": 45.23255502200482
+    },
+    {
+      "log": "SimBank",
+      "n_matched": 10000,
+      "manifest": {
+        "log": "SimBank",
+        "seed": 0,
+        "n_train": 186629,
+        "n_test": 93428,
+        "n_features": 49,
+        "treated_share_train": 0.37306099266459125,
+        "propensity_best": {
+          "C": 10,
+          "penalty": "l1"
+        },
+        "auc_treated_arm_on_treated_test": 0.9516237792317408,
+        "auc_untreated_arm_on_untreated_test": null,
+        "mean_pT": 0.28151416778564453,
+        "mean_pU": 1.0,
+        "share_cate_positive_rule": 0.0,
+        "settings": "CausalLift two-model estimator: XGBClassifier(max_depth=3, n_estimators=100, lr=0.1) per arm with IPW from a LogisticRegression propensity (grid C in {0.1,1,10}, l1/l2), as in Shoush & Dumas causal/causallift_adapted.py",
+        "elapsed_seconds": 182.69002532958984,
+        "timestamp": "2026-09-07T04:51:19Z",
+        "prefix_restriction": "prefixes before the case's contact/skip decision and <= 4 (the events both arms share)",
+        "untreated_arm_constant": 1.0
+      },
+      "effect": {
+        "mean_pT": 0.2746692895889282,
+        "mean_pU": 1.0,
+        "mean_cate": 0.725330721522442,
+        "share_positive_rule": 0.747,
+        "expected_value_logodds": {
+          "treated": -0.8729284405708313,
+          "untreated": 13.815509557935018
+        },
+        "global_share_top10": [
+          [
+            "amount",
+            0.6606876111918789
+          ],
+          [
+            "est_quality_max",
+            0.17035281532935106
+          ],
+          [
+            "est_quality_mean",
+            0.05952912030860655
+          ],
+          [
+            "est_quality_sum",
+            0.032721596090965914
+          ],
+          [
+            "est_quality_min",
+            0.0270241562911065
+          ],
+          [
+            "cum_cost_mean",
+            0.021750068708688997
+          ],
+          [
+            "unc_quality_min",
+            0.02128351769508585
+          ],
+          [
+            "unc_quality_mean",
+            0.005320190811425298
+          ],
+          [
+            "est_quality_std",
+            0.0013309235728910715
+          ],
+          [
+            "activity",
+            0.0
+          ]
+        ],
+        "family_share": {
+          "event": 0.33931238880812126,
+          "case": 0.6606876111918789,
+          "control_flow": 0.0
+        }
+      },
+      "link_to_state": {
+        "corr_pT": 1.0,
+        "corr_pU": null,
+        "corr_cate": 0.9999999999999991,
+        "positive_rule_agreement": 1.0
+      },
+      "deletion_test": {
+        "1": {
+          "k": 1,
+          "abs_guided": 4.528018467796746,
+          "abs_random": 0.1304110483949177,
+          "abs_anti": 0.0,
+          "gap": 4.397607419401826,
+          "gap_se": 0.03576111091801164,
+          "z": 122.97177874267051,
+          "flip_positive_effect_rule": 0.4116
+        },
+        "3": {
+          "k": 3,
+          "abs_guided": 5.414067369742225,
+          "abs_random": 0.37937251545098577,
+          "abs_anti": 0.0,
+          "gap": 5.034694854291239,
+          "gap_se": 0.03687857204296892,
+          "z": 136.52087310823978,
+          "flip_positive_effect_rule": 0.7062
+        }
+      },
+      "cards": {
+        "paper_card_act": {
+          "case_id": "63698",
+          "prefix_nr": 11,
+          "action": "intervene",
+          "dq": 9.987335205078125,
+          "r": 0.9999999977041794,
+          "pT": 0.00018842268036678433,
+          "pU": 1.0,
+          "state": {
+            "relative_position": 1.0,
+            "reliability": 0.4000000059604645,
+            "deviation": 0.0,
+            "available_resources": 0.0,
+            "Proba_if_Treated": 0.00018842268036678433,
+            "Proba_if_Untreated": 1.0
+          },
+          "effect_top": [
+            [
+              "amount",
+              4439.0,
+              7.215353012084961,
+              -7.215353012084961,
+              0.0
+            ],
+            [
+              "est_quality_max",
+              4.0,
+              0.8399251103401184,
+              -0.8399251103401184,
+              0.0
+            ],
+            [
+              "est_quality_min",
+              0.0,
+              -0.28483670949935913,
+              0.28483670949935913,
+              0.0
+            ],
+            [
+              "cum_cost_mean",
+              70.0,
+              -0.13881127536296844,
+              0.13881127536296844,
+              0.0
+            ],
+            [
+              "est_quality_std",
+              1.793929156399945,
+              0.12794746458530426,
+              -0.12794746458530426,
+              0.0
+            ],
+            [
+              "unc_quality_min",
+              0.0,
+              -0.10920596122741699,
+              0.10920596122741699,
+              0.0
+            ]
+          ],
+          "effect_share_top6": 0.9832768440025821,
+          "timing_phi": {
+            "relative_position": -1.4861469268798828,
+            "reliability": 0.3760870397090912,
+            "deviation": 0.09476359188556671,
+            "available_resources": 0.19042910635471344,
+            "Proba_if_Treated": 4.632735729217529,
+            "Proba_if_Untreated": 0.0
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "90109",
+          "prefix_nr": 7,
+          "action": "wait",
+          "dq": -9.911802291870117,
+          "r": 0.9999999997722757,
+          "pT": 0.9905992150306702,
+          "pU": 1.0,
+          "state": {
+            "relative_position": 0.6363636255264282,
+            "reliability": 0.30000001192092896,
+            "deviation": 0.0,
+            "available_resources": 0.0,
+            "Proba_if_Treated": 0.9905992150306702,
+            "Proba_if_Untreated": 1.0
+          },
+          "effect_top": [
+            [
+              "est_quality_sum",
+              15.0,
+              -1.7017886638641357,
+              1.7017886638641357,
+              0.0
+            ],
+            [
+              "est_quality_max",
+              3.0,
+              -1.3163081407546997,
+              1.3163081407546997,
+              0.0
+            ],
+            [
+              "amount",
+              36257.0,
+              -1.2961583137512207,
+              1.2961583137512207,
+              0.0
+            ],
+            [
+              "est_quality_mean",
+              2.142857142857143,
+              -0.5171455144882202,
+              0.5171455144882202,
+              0.0
+            ],
+            [
+              "unc_quality_min",
+              0.0,
+              -0.31993022561073303,
+              0.31993022561073303,
+              0.0
+            ],
+            [
+              "est_quality_min",
+              1.0,
+              -0.22992348670959473,
+              0.22992348670959473,
+              0.0
+            ]
+          ],
+          "effect_share_top6": 0.9399394305856633,
+          "timing_phi": {
+            "relative_position": 0.27496734261512756,
+            "reliability": 0.7486521005630493,
+            "deviation": -0.21358917653560638,
+            "available_resources": -0.5311198830604553,
+            "Proba_if_Treated": 15.779586791992188,
+            "Proba_if_Untreated": -0.0
+          }
+        }
+      },
+      "figures": [
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_act_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_act_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_wait_three_level_card.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_paper_card_wait_three_level_card.png",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.pdf",
+        "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/SimBank/SimBank_effect_family_share.png"
+      ],
+      "seconds": 48.17371118799929
     },
     {
       "log": "Sepsis",
@@ -650,139 +913,139 @@
       },
       "cards": {
         "paper_card_act": {
-          "case_id": "OU",
-          "prefix_nr": 7,
+          "case_id": "PDA",
+          "prefix_nr": 4,
           "action": "intervene",
-          "dq": 2.998626708984375,
-          "r": 0.34967405202552443,
-          "pT": 0.2586444616317749,
-          "pU": 0.8420278429985046,
+          "dq": 5.076099395751953,
+          "r": 0.3564666317676299,
+          "pT": 0.2747437059879303,
+          "pU": 0.7271779179573059,
           "state": {
-            "relative_position": 0.699999988079071,
-            "reliability": 0.6503259539604187,
+            "relative_position": 0.4000000059604645,
+            "reliability": 0.6435333490371704,
             "deviation": 1.0,
-            "Proba_if_Treated": 0.2586444616317749,
-            "Proba_if_Untreated": 0.8420278429985046
+            "Proba_if_Treated": 0.2747437059879303,
+            "Proba_if_Untreated": 0.7271779179573059
           },
           "effect_top": [
             [
               "Infusion",
               "True",
-              1.4155870721442625,
-              0.006364460219629109,
+              1.4181046228623018,
+              0.0038469095015898347,
               1.4219515323638916
             ],
             [
-              "hour_max",
-              17.0,
-              0.9735794700682163,
-              0.014563020318746567,
-              0.9881424903869629
-            ],
-            [
               "Age",
-              90.0,
-              -0.7288657948374748,
-              0.060881488025188446,
-              -0.6679843068122864
+              85.0,
+              -1.021259531378746,
+              -0.06663991510868073,
+              -1.0878994464874268
             ],
             [
-              "hour_mean",
-              16.857142857142858,
-              0.7202218547463417,
-              -0.11359385401010513,
-              0.6066280007362366
+              "hour_max",
+              16.0,
+              0.9872442334890366,
+              0.02269710600376129,
+              1.0099413394927979
             ],
             [
               "hour_min",
-              16.0,
-              0.5357277393341064,
-              -0.08633852005004883,
-              0.4493892192840576
-            ],
-            [
-              "weekday_mean",
-              0.0,
-              0.4655330330133438,
-              -0.19322527945041656,
-              0.27230775356292725
-            ]
-          ],
-          "effect_share_top6": 0.7078997930777182,
-          "timing_phi": {
-            "relative_position": -0.6321614980697632,
-            "reliability": 0.037522878497838974,
-            "deviation": 0.0,
-            "Proba_if_Treated": 0.19502437114715576,
-            "Proba_if_Untreated": 5.166598320007324
-          }
-        },
-        "paper_card_wait": {
-          "case_id": "GNA",
-          "prefix_nr": 3,
-          "action": "wait",
-          "dq": -1.7607481479644775,
-          "r": 0.3405747207367673,
-          "pT": 0.3686409294605255,
-          "pU": 0.006025289185345173,
-          "state": {
-            "relative_position": 0.30000001192092896,
-            "reliability": 0.6594252586364746,
-            "deviation": 1.0,
-            "Proba_if_Treated": 0.3686409294605255,
-            "Proba_if_Untreated": 0.006025289185345173
-          },
-          "effect_top": [
-            [
-              "hour_max",
-              0.0,
-              -1.496173307299614,
-              -0.07957704365253448,
-              -1.5757503509521484
-            ],
-            [
-              "weekday_mean",
-              3.0,
-              -0.8359736390411854,
-              -0.022776644676923752,
-              -0.8587502837181091
+              15.0,
+              0.46758320182561874,
+              -0.0702662393450737,
+              0.39731696248054504
             ],
             [
               "hour_mean",
-              0.0,
-              -0.7562239393591881,
-              0.12421181052923203,
-              -0.632012128829956
+              15.25,
+              0.34510185569524765,
+              0.054751791059970856,
+              0.3998536467552185
             ],
             [
               "DiagnosticBlood",
               "True",
-              -0.6804261077195406,
-              -0.06116016022861004,
-              -0.7415862679481506
-            ],
-            [
-              "Infusion",
-              "True",
-              0.5841549253091216,
-              0.0018902802839875221,
-              0.5860452055931091
-            ],
-            [
-              "hour_min",
-              0.0,
-              -0.563824862241745,
-              0.25743964314460754,
-              -0.30638521909713745
+              -0.2877252814359963,
+              -0.022326748352497816,
+              -0.3100520297884941
             ]
           ],
-          "effect_share_top6": 0.7148175433356302,
+          "effect_share_top6": 0.7406217626573441,
           "timing_phi": {
-            "relative_position": -0.053314752876758575,
-            "reliability": 0.0030867322348058224,
+            "relative_position": -0.020296191796660423,
+            "reliability": 0.03499820828437805,
             "deviation": -0.0,
-            "Proba_if_Treated": 0.38019201159477234,
-            "Proba_if_Untreated": -0.38023310899734497
+            "Proba_if_Treated": 0.19426502287387848,
+            "Proba_if_Untreated": 6.789424896240234
+          }
+        },
+        "paper_card_wait": {
+          "case_id": "KQ",
+          "prefix_nr": 10,
+          "action": "wait",
+          "dq": -1.9824312925338745,
+          "r": 0.28712226739798014,
+          "pT": 0.19717228412628174,
+          "pU": 0.17834727466106415,
+          "state": {
+            "relative_position": 1.0,
+            "reliability": 0.7128777503967285,
+            "deviation": 1.0,
+            "Proba_if_Treated": 0.19717228412628174,
+            "Proba_if_Untreated": 0.17834727466106415
+          },
+          "effect_top": [
+            [
+              "timesincecasestart_mean",
+              40.849222222222224,
+              1.0420128253754228,
+              -1.0458182096481323,
+              -0.003805384272709489
+            ],
+            [
+              "weekday_mean",
+              4.2,
+              -0.8722217008471489,
+              0.10350578278303146,
+              -0.7687159180641174
+            ],
+            [
+              "SIRSCriteria2OrMore",
+              "False",
+              0.8290637680329382,
+              -0.8169539570808411,
+              0.012109810952097178
+            ],
+            [
+              "event_nr_max",
+              10.0,
+              -0.7667458653450012,
+              0.7667458653450012,
+              0.0
+            ],
+            [
+              "hour_max",
+              14.0,
+              -0.7188249845057726,
+              -0.008973656222224236,
+              -0.7277986407279968
+            ],
+            [
+              "hour_mean",
+              10.1,
+              -0.5353174209594727,
+              0.612687885761261,
+              0.07737046480178833
+            ]
+          ],
+          "effect_share_top6": 0.5986389840498547,
+          "timing_phi": {
+            "relative_position": 0.280375599861145,
+            "reliability": -0.007700664922595024,
+            "deviation": -0.0,
+            "Proba_if_Treated": -0.25853171944618225,
+            "Proba_if_Untreated": -0.002196535235270858
           }
         }
       },
@@ -794,7 +1057,7 @@
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/Sepsis/Sepsis_effect_family_share.pdf",
         "/home/andrew/Documents/docs/2-resolver-problema/process-mining/prescriptive-process-monitoring/timing-explanations-pspm/figures/out/effect/Sepsis/Sepsis_effect_family_share.png"
       ],
-      "seconds": 7.974269575992366
+      "seconds": 7.474430171001586
     }
   ]
 }
