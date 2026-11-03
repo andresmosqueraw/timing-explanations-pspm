@@ -27,7 +27,9 @@ LOG = "BPIC2017"
 NAMES = {"relative_position": r"\texttt{relative\_position}", "reliability": r"\texttt{reliability}", "deviation": r"\texttt{deviation}",
          "available_resources": r"\texttt{available\_resources}", "Proba_if_Treated": "Treated-arm probability",
          "Proba_if_Untreated": "Untreated-arm probability"}
-LEVEL_NAME = {"native": "Native", "risk": "Risk", "effect": "Effect"}
+# Table 1 has no Explanation column: each feature name carries its explanation in brackets, "native" for the features the timing model reads directly.
+LEVEL_NAME = {"native": "native", "risk": "risk", "effect": "effect"}
+TOTAL_NAME = {"native": "Native total", "risk": "Risk explanation total", "effect": "Effect explanation total"}
 CHAN_NAME = {"risk": "risk", "effect_T": "effect (treated arm)", "effect_U": "effect (untreated arm)", "native": "native"}
 
 
@@ -52,6 +54,7 @@ def macro(name: str, value) -> str:
 
 def main():
     out = []
+    raw = {}  # valores crudos por medida y escenario (log x decision), para las macros RANGE* del abstract
     # SimBank is excluded from these companion numbers: its `cate` checkpoint's
     # reliability/deviation come from the simulator's own est_quality/unc_quality
     # (train_ppo_simbank.py), not from a retrainable risk classifier r(x) as on
@@ -139,18 +142,20 @@ def main():
         for f in fs:
             i = feats.index(f)
             i12 = feats12.index(f) if f in feats12 else None
-            rows.append(f"{NAMES[f]} & {LEVEL_NAME[level]} & " + " & ".join(cell(s, i, i12) for s in ("act", "wait") if s in sh) + r" \\ \hline")
+            rows.append(f"{NAMES[f]} ({LEVEL_NAME[level]}) & " + " & ".join(cell(s, i, i12) for s in ("act", "wait") if s in sh) + r" \\ \hline")
             for s in sh:
                 tot[s] += sh[s][i]
             for s in sh12:
                 if i12 is not None:
                     tot12[s] += sh12[s][i12]
         tot_cell = lambda s: f"$\\mathbf{{{pct(tot[s])}}}$" + (f" [$\\mathbf{{{pct(tot12[s])}}}$]" if s in tot12 else "")
-        rows.append(r"\rowcolor{keyrow} \textbf{" + LEVEL_NAME[level] + " level total} & & " + " & ".join(tot_cell(s) for s in ("act", "wait") if s in sh) + r" \\ \hline")
+        rows.append(r"\rowcolor{keyrow} \textbf{" + TOTAL_NAME[level] + "} & " + " & ".join(tot_cell(s) for s in ("act", "wait") if s in sh) + r" \\ \hline")
         for s in sh:
             out.append(macro(f"SHARE{level.upper()}{s.upper()}", pct(tot[s])))
+            raw.setdefault(f"SHARE{level.upper()}", []).append(tot[s])
         for s in sh12:
             out.append(macro(f"SHARE{level.upper()}{s.upper()}BPIC", pct(tot12[s])))
+            raw.setdefault(f"SHARE{level.upper()}", []).append(tot12[s])
     out.append(macro("CARDROWS", "\n".join(rows)))
     for f in feats:
         i = feats.index(f)
@@ -181,28 +186,34 @@ def main():
     rd = comp["readings"]["rebuilt"]
     inputs = comp["inputs"]
     def inherit_rows(table: dict, n: int) -> str:
-        """Table 'inherit': share of the composed timing, share in the risk
-        explanation, how often the attribute moves both effect arms the same
-        way, how often its two effect channels oppose each other in the timing
-        decision, the channel split (risk / treated / untreated) and the
-        weight lost to cancelling -- the chain behind the cancellation."""
+        """Table 'inherit': share of the composed timing, how often the attribute
+        moves both effect arms the same way, the channel split (risk / treated /
+        untreated) and the weight lost to cancelling -- the chain behind the
+        cancellation.
+
+        Dropped from the paper's table (the text never cited either): the share in
+        the risk explanation, and how often the two effect channels oppose each
+        other, which is the frequency counterpart of the magnitude already given
+        by the last column."""
         rows = []
         pc = lambda x: "--" if x is None else f"{100 * x:.0f}\\%"
         for d in table["top"][:n]:
             ch = d["channel"]
             if "native" in ch:
-                rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & -- & -- & -- & native & -- \\\\ \\hline")
+                rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & -- & timing model only & -- \\\\ \\hline")
                 continue
             tot = sum(ch.values()) or 1.0
             split = " / ".join(f"{100 * ch[c] / tot:.0f}" for c in ("risk", "effect_T", "effect_U"))
-            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {pc(d.get('risk_share'))} & {pc(d.get('arms_same_direction'))} & "
-                        f"{pc(d.get('channels_opposed'))} & {split} & {pc(d.get('cancellation'))} \\\\ \\hline")
+            rows.append(f"\\texttt{{{tex(d['input'])}}} & ${pct(d['share'])}$ & {pc(d.get('arms_same_direction'))} & "
+                        f"{split} & {pc(d.get('cancellation'))} \\\\ \\hline")
         return "\n".join(rows)
 
     for side in ("act", "wait"):
         S = side.upper()
         t = rd["propagation"][side]  # BPIC2017's table, read by the Section 6.3 macros below
-        for c_log, suffix, n in ((comp, "", 6), (comp12, "BPIC", 5)):
+        # 3 inputs por bloque: el texto solo nombra el primero y el tercero de
+        # BPIC2017-act, y la tabla ocupaba media pagina con la cola del ranking.
+        for c_log, suffix, n in ((comp, "", 3), (comp12, "BPIC", 3)):
             if not c_log:
                 continue
             tb = c_log["readings"]["rebuilt"]["propagation"][side]  # not `t`: the macros below still read BPIC2017's table
@@ -215,6 +226,7 @@ def main():
                 out += [macro(f"CHANRISK{S}{suffix}", pct(cs_["risk"])), macro(f"CHANEFFECT{S}{suffix}", pct(cs_["effect_T"] + cs_["effect_U"])),
                         macro(f"CHANNATIVE{S}{suffix}", pct(cs_["native"]))]
         out.append(macro(f"CANCEL{side.upper()}", pct(t["cancellation_overall"], 0)))
+        raw.setdefault("CANCEL", []).append(t["cancellation_overall"])
         out.append(macro(f"TOPINPUTCANC{side.upper()}", pct(t["top"][0]["cancellation"], 0) if t["top"][0].get("cancellation") is not None else "--"))
         top_c = [(d["input"], d["cancellation"]) for d in t["top"] if d.get("cancellation") is not None]
         hi = max(top_c, key=lambda kv: kv[1]); lo = min(top_c, key=lambda kv: kv[1])
@@ -229,10 +241,12 @@ def main():
             macro("FALLBACKS", str(sum(rd["propagation"]["fallbacks"].values()))), macro("NPREFIXATTRS", str(len(inputs) - 2))]
 
     wd = comp["well_defined"]
+    raw.setdefault("WD", []).append(wd["share_all_defined"])
     out += [macro("WDRATIO", f"{wd['ratio']:.2f}"), macro("WDALL", pct(wd["share_all_defined"], 0)),
             macro("WDRISK", pct(wd["risk (r)"]["share_defined"], 0)), macro("WDPT", pct(wd["Proba_if_Treated"]["share_defined"], 0)), macro("WDPU", pct(wd["Proba_if_Untreated"]["share_defined"], 0))]
     if comp12 and "well_defined" in comp12:
         out.append(macro("WDALLBPIC", pct(comp12["well_defined"]["share_all_defined"], 0)))
+        raw.setdefault("WD", []).append(comp12["well_defined"]["share_all_defined"])
         out.append(macro("WDRISKBPIC", pct(comp12["well_defined"]["risk (r)"]["share_defined"], 0)))
     if comp12 and "readings" in comp12:
         rd12 = comp12["readings"]["rebuilt"]
@@ -242,6 +256,7 @@ def main():
                 cs12 = t12["channel_share"]
                 out += [macro(f"TOPFIVE{side.upper()}BPIC", pct(t12["prefix_share_top5"], 0)),
                         macro(f"CANCEL{side.upper()}BPIC", pct(t12["cancellation_overall"], 0))]
+                raw.setdefault("CANCEL", []).append(t12["cancellation_overall"])
     if comp_sep and "well_defined" in comp_sep:
         out.append(macro("WDALLSEPSIS", pct(comp_sep["well_defined"]["share_all_defined"], 0)))
     if comp_sep and "readings" in comp_sep:
@@ -254,6 +269,13 @@ def main():
                         macro(f"CHANRISK{side.upper()}SEPSIS", pct(cs_sep["risk"])),
                         macro(f"CANCEL{side.upper()}SEPSIS", pct(t_sep["cancellation_overall"], 0))]
     bl = comp["baseline"]
+    # Validacion de RQ2: cada explicacion inferior empuja en la misma direccion medida desde su propia
+    # referencia y desde el caso tipico del pool, asi que comparar direcciones entre riesgo y efecto es legitimo.
+    for blx in (bl, (comp12 or {}).get("baseline")):
+        if blx:
+            for kk in ("risk", "Proba_if_Treated", "Proba_if_Untreated"):
+                if blx.get(kk, {}).get("sign_agreement") is not None:
+                    raw.setdefault("BLSIGN", []).append(blx[kk]["sign_agreement"])
     out += [macro("NBACKGROUND", str(bl["n_background"])), macro("BLRISKGAP", num(bl["risk"]["baseline_gap"], 2)), macro("BLRISKSIGN", pct(bl["risk"]["sign_agreement"], 0)),
             macro("BLRISKCORR", num(bl["risk"]["corr"], 2)), macro("BLPTGAP", num(bl["Proba_if_Treated"]["baseline_gap"], 2)), macro("BLPTSIGN", pct(bl["Proba_if_Treated"]["sign_agreement"], 0)),
             macro("BLPUGAP", num(bl["Proba_if_Untreated"]["baseline_gap"], 2)), macro("BLPUSIGN", pct(bl["Proba_if_Untreated"]["sign_agreement"], 0))]
@@ -271,6 +293,7 @@ def main():
         prop_top = rd["propagation"][side]["top"][0]["input"]
         out += [macro(f"DIRECTTOP{side.upper()}", f"\\texttt{{{tex(gt[0])}}}"),
                 macro(f"DIRECTRANKOFPROPTOP{side.upper()}", f"${gt.index(prop_top) + 1}$" if prop_top in gt else f"beyond its top {len(gt)}")]
+    raw.setdefault("AGREE", []).append(ag["all"]["global_spearman"])
     out += [macro("NPERM", str(d["n_perm"])), macro("AGREESPEARMAN", num(ag["all"]["spearman_mean"], 2)), macro("AGREEGLOBAL", num(ag["all"]["global_spearman"], 2)),
             macro("AGREEJACCARD", num(ag["all"]["jaccard_top5_mean"], 2)), macro("AGREETOPONE", pct(ag["all"]["top1_agreement"], 0)),
             macro("DIRECTCOMPLETENESS", num(d["completeness_gap"], 1))]
@@ -298,6 +321,7 @@ def main():
         zs = [comp12["deletion_e2e"][s][k]["propagated"]["z"] for s in ("act", "wait") for k in ("1", "3") if s in comp12["deletion_e2e"]]
         out.append(macro("ZEPROPMINBPIC", num(min(zs), 0)))
         ag12 = comp12["direct"]["agreement_with_propagated"]
+        raw.setdefault("AGREE", []).append(ag12["all"]["global_spearman"])
         out += [macro("AGREESPEARMANBPIC", num(ag12["all"]["spearman_mean"], 2)),
                 macro("AGREEGLOBALBPIC", num(ag12["all"]["global_spearman"], 2)),
                 macro("AGREEJACCARDBPIC", num(ag12["all"]["jaccard_top5_mean"], 2)),
@@ -336,6 +360,8 @@ def main():
     out += [macro("RISKEFFECTRHO", num(re_["global_spearman"], 2)), macro("RISKEFFECTJACCARD", num(re_["jaccard_top10"], 2)),
             macro("RISKEFFECTSHARED", ", \\allowbreak ".join(f"\\texttt{{{tex(s)}}}" for s in re_["shared_top"])),
             macro("RISKEFFECTSIGN", pct(re_["sign_agreement_overall"], 0) if re_["sign_agreement_overall"] is not None else "--")]
+    if re_["sign_agreement_overall"] is not None:
+        raw.setdefault("RISKEFFECTSIGN", []).append(re_["sign_agreement_overall"])
     groups = re_["groups"]
     rows = []
     for name, dd in re_["per_attribute"].items():
@@ -396,6 +422,18 @@ def main():
                 macro(f"CARD{T}FLOWTOPT", f"{f0['effect_T']:+.2f}"), macro(f"CARD{T}FLOWTOPU", f"{f0['effect_U']:+.2f}"), macro(f"CARD{T}FLOWTOPTOTAL", f"{f0['total']:+.2f}")]
     out += [macro("MEANCATE", num(eff["effect"]["mean_cate"])), macro("MEANR", num(risk["risk"]["mean"])), macro("EFFECTDELETIONZ", num(eff["deletion_test"]["1"]["z"], 0)),
             macro("RISKDELETIONZ", num(risk["metrics"]["deletion_test"]["1"]["z"], 0)), macro("TIMINGDELETIONZ", num(fid["wait_side"]["k1"]["gap"] / fid["wait_side"]["k1"]["gap_se"], 0))]
+    # Validacion de RQ1: deletion test sobre la explicacion temporal (IG de la politica). Ocultar
+    # (llevar a la referencia) las k features de estado con mas |phi| mueve el margen; se compara con
+    # ocultar k al azar (x20). La completeness solo garantiza la suma, no el reparto que miden las cuotas.
+    for fd, sfx in ((fid, ""), (fid12, "BPIC")):
+        if not fd:
+            continue
+        for side, key in (("act", "intervene_side"), ("wait", "wait_side")):
+            for k in ("k1", "k2"):
+                g, r = fd[key][k]["abs_guided"], fd[key][k]["abs_random"]
+                raw.setdefault(f"TIMINGDELRATIO{k.upper()}", []).append(g / r)
+                out += [macro(f"TIMINGDELGUIDED{side.upper()}{k.upper()}{sfx}", num(g, 2)),
+                        macro(f"TIMINGDELRANDOM{side.upper()}{k.upper()}{sfx}", num(r, 2))]
 
     # --- Sepsis provenance (own risk/effect models, own PPO agent) --------------
     sepsis_risk_manifest = paths.RISK_MODELS / "Sepsis_manifest.json"
@@ -452,12 +490,18 @@ def main():
     f2 = lambda x: f"${x:.2f}$"
     fp = lambda x: f"${100 * x:.0f}\\%$"
     ct_rows = []
-    for chan, label in (("risk", "Risk channel"), ("effect_T", "Treated-arm channel"), ("effect_U", "Untreated-arm channel")):
+    for chan, label in (("risk", "Risk path"), ("effect_T", "Treated-arm path"), ("effect_U", "Untreated-arm path")):
         ct_rows.append(f"{label} & same sign & " + " & ".join(ct_cell(lambda d, c=chan: d["channels"][c]["sign_agreement"], fp)) + " \\\\ \\hline")
         ct_rows.append(f" & rank correlation & " + " & ".join(ct_cell(lambda d, c=chan: d["channels"][c]["spearman"], f2)) + " \\\\ \\hline")
     for key, label in (("measured_lost_arms_together", "Cancellation ratio, arms together"), ("measured_lost_arms_apart", "Cancellation ratio, arms apart"),
-                       ("measured_opposed_arms_together", "Channels opposed, arms together"), ("measured_opposed_arms_apart", "Channels opposed, arms apart")):
+                       ("measured_opposed_arms_together", "Paths opposed, arms together"), ("measured_opposed_arms_apart", "Paths opposed, arms apart")):
         ct_rows.append(f"Cancellation & {label.lower()} & " + " & ".join(ct_cell(lambda d, k=key: d["cancellation"][k], fp)) + " \\\\ \\hline")
+    for cx in (comp, comp12):
+        for side in ("act", "wait"):
+            if cx and side in cx.get("channel_test", {}):
+                for c in ("effect_T", "effect_U"):
+                    raw.setdefault("CTEFFECTSIGN", []).append(cx["channel_test"][side]["channels"][c]["sign_agreement"])
+                raw.setdefault("CTRISKSIGN", []).append(cx["channel_test"][side]["channels"]["risk"]["sign_agreement"])
     if comp.get("channel_test"):
         out.append(macro("CHANNELTESTROWS", "\n".join(ct_rows)))
         ct = comp["channel_test"]
@@ -490,6 +534,7 @@ def main():
     if comp12 and "risk_effect" in comp12:
         out += [macro("RISKEFFECTRHOBPIC", num(comp12["risk_effect"]["global_spearman"], 2)),
                 macro("RISKEFFECTSIGNBPIC", pct(comp12["risk_effect"]["sign_agreement_overall"], 0))]
+        raw.setdefault("RISKEFFECTSIGN", []).append(comp12["risk_effect"]["sign_agreement_overall"])
 
     audit_path = paths.REPO / "leakage_audit.json"
     if audit_path.exists():
@@ -501,6 +546,24 @@ def main():
                         macro(f"AUDITPASS{suffix}", "passes" if audit[lg]["pass"] else "fails")]
         band = audit["BPIC2017"]["propensity"]["overlap_band"]
         out += [macro("OVERLAPLO", f"{band[0]:g}"), macro("OVERLAPHI", f"{band[1]:g}")]
+
+    # Rangos para el abstract: min--max sobre BPIC2017 y BPIC2012 (y decisiones de actuar y esperar
+    # donde la medida las distingue), en vez de dar un solo log. Con dos logs la mediana es la media,
+    # y la media ocultaria que los logs difieren; el rango muestra el acuerdo y la dispersion.
+    for key, vals in raw.items():
+        lo, hi = min(vals), max(vals)
+        # las cuotas llevan un decimal, como la Tabla card, para que abstract y tabla coincidan a la vista
+        d = 1 if key.startswith("SHARE") else 0
+        # \text{--}: raya de rango valida tanto en texto como dentro de $...$ (un -- suelto en modo
+        # matematico sale como dos signos menos)
+        dash = "\\text{--}"
+        if key == "AGREE":
+            val = f"{lo:.2f}{dash}{hi:.2f}"
+        elif key.startswith("TIMINGDELRATIO"):  # cocientes (veces), no porcentajes
+            val = f"{lo:.1f}{dash}{hi:.1f}"
+        else:
+            val = f"{100 * lo:.{d}f}{dash}{100 * hi:.{d}f}\\%"
+        out.append(macro(f"RANGE{key}", val))
 
     target = paths.PAPER_FIGURES.parent / "numbers.tex"
     target.write_text("%% Generated by paper_numbers.py from the committed result JSONs -- do not edit by hand.\n" + "\n".join(out) + "\n")

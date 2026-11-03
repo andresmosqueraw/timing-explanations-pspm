@@ -26,16 +26,24 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE))
 import paths  # noqa: E402
+from plain import label  # noqa: E402
 
-POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#1f2937", "#6b7280", "#d1d5db"
+POS, NEG, INK, MUTED, LINE = "#c2410c", "#1d4ed8", "#000000", "#6b7280", "#d1d5db"
+# Ninguna letra va en gris: MUTED queda solo para las líneas guía, no para el texto.
 NODE_FC = "#f3f4f6"  # every node the same grey: colour is reserved for the ribbons (direction)
-MIN_NODE = 0.075  # minimum drawn height of a middle node, so its label fits centred beside it
-MID = [  # (node key, label, level)
-    ("risk", "reliability, deviation (risk)", "risk"),
-    ("effect_T", "Treated-arm probability (effect)", "effect"),
-    ("effect_U", "Untreated-arm probability (effect)", "effect"),
-    ("relative_position", "relative_position (native)", "native"),
-    ("available_resources", "available_resources (native)", "native"),
+MIN_NODE = 0.055  # minimum drawn height of a middle node, so its label fits centred beside it
+VSCALE = 0.60  # encoge TODAS las alturas por igual: las cajas bajan de alto sin tocar
+# la proporcionalidad, asi que "ribbon width = |contribution|" se mantiene
+MIN_RIBBON = 0.020  # grosor mínimo dibujado de una cinta, para que un canal pequeño se vea
+# (solo levanta la más fina; a cambio, esa cinta queda algo más gruesa que su |contribución|)
+MID = [  # (node key, label, level) -- etiquetas llanas y cortas, con las mismas palabras
+         # que el panel 3 de la figura del card ("rejection with offer: 44%")
+    # sin el tag "(risk)": el propio nombre del modelo ya dice el nivel
+    ("risk", "risk model", "risk"),
+    ("effect_T", "rejection with offer (effect)", "effect"),
+    ("effect_U", "rejection without offer (effect)", "effect"),
+    ("relative_position", "case progress", "native"),
+    ("available_resources", "free staff", "native"),
 ]
 
 
@@ -85,7 +93,8 @@ def main(argv=None):
     acts = card["action"] == "intervene"
     tphi = card["timing_phi"]
     flows = card["anchored_flows"] if a.source == "anchored" else card["flows"]
-    flows = _collapse_to_top(flows, keep=4)  # keep the figure legible: name only the largest inputs, group the rest
+    flows = _collapse_to_top(flows, keep=3)  # keep the figure legible: name only the largest inputs, group the rest
+    # 3 atributos con nombre, como las 3 filas por bloque de la Tabla 2; el resto va a "(other attributes)".
 
     # --- flows attribute -> middle node, and middle node -> margin ------------
     left = [(f["input"], f.get("value"), {"risk": f["risk"], "effect_T": f["effect_T"], "effect_U": f["effect_U"]}) for f in flows]
@@ -108,13 +117,13 @@ def main(argv=None):
             mid_in[k], mid_abs[k], mid_h[k] = v, abs(v), abs(v)
     left_h = [sum(abs(v) for v in c.values()) for _, _, c in left]
     total = sum(mid_h.values())
-    scale = 1.0 / total if total else 1.0
+    scale = VSCALE / total if total else 1.0
 
-    fig, ax = plt.subplots(figsize=(13.0, 4.0))
-    ax.set_xlim(0, 10); ax.set_ylim(-0.28, 1.26); ax.axis("off")
+    fig, ax = plt.subplots(figsize=(11.0, 2.62))  # alto ajustado al rango de ylim de abajo
+    ax.set_xlim(0, 10); ax.set_ylim(0.07, 1.26); ax.axis("off")
     TOPY = 0.9  # top of the usable span; headers sit above it
-    X0, X1, X2, W = 1.3, 5.15, 9.0, 0.34
-    gap_l, gap_m = 0.02, 0.045
+    X0, X1, X2, W = 1.3, 5.15, 9.0, 0.22  # W: ancho de las cajitas de nodo, solo cosmetico (el alto codifica la magnitud)
+    gap_l, gap_m = 0.055, 0.045  # gap_l: hueco entre las cajas de atributo, que se leían pegadas
 
     # left column layout (top to bottom in the order of the flows list)
     hl = [h * scale for h in left_h]
@@ -130,8 +139,10 @@ def main(argv=None):
     mid_pos = {}
     for (k, _, _), h in zip(MID, hm):
         mid_pos[k] = (y - h, h); y -= h + gap_m
-    # right node
-    right_h = sum(mid_abs.values()) * scale
+    # right node. Las cintas hacia la decisión llevan un grosor mínimo dibujado, así que
+    # el nodo se dimensiona con esos grosores y la pila sigue cuadrando exactamente.
+    rib_h = {k: max(mid_abs[k] * scale, MIN_RIBBON) if mid_abs[k] > 0 else 0.0 for k, _, _ in MID}
+    right_h = sum(rib_h.values())
     right_pos = (TOPY / 2 - right_h / 2, right_h)
 
     # ribbons attribute -> middle, stacked inside both nodes
@@ -149,17 +160,18 @@ def main(argv=None):
     # ribbons middle -> margin
     cursor_r = right_pos[0] + right_pos[1]
     for k, _, _ in MID:
-        h = mid_abs[k] * scale
+        h = rib_h[k]
         if h <= 0:
             continue
         color = POS if mid_in[k] > 0 else NEG
         y0 = mid_pos[k][0] + (mid_pos[k][1] - h) / 2  # outgoing ribbon centred in its node
-        ribbon(ax, X1 + W, y0, h, X2, cursor_r - h, h, color)
+        # una cinta fina se destiñe con la transparencia de las gruesas: se le sube la opacidad
+        ribbon(ax, X1 + W, y0, h, X2, cursor_r - h, h, color, alpha=0.32 if h > 0.06 else 0.5)
         cursor_r -= h
 
     # nodes and labels
     # left labels: centred on the node, spread to at least MINSEP_L apart (top-down), leader line when moved
-    MINSEP_L = 0.095
+    MINSEP_L = 0.165  # separación vertical mínima entre etiquetas de atributo; las juntas se leían pegadas
     lys = []
     for y0, h in left_pos:
         c = y0 + h / 2
@@ -169,33 +181,32 @@ def main(argv=None):
         lys = [y + shift for y in lys]
     for (name, val, c), (y0, h), ly in zip(left, left_pos, lys):
         ax.add_patch(plt.Rectangle((X0, y0), W, h, fc="#f3f4f6", ec=INK, lw=0.6, zorder=2))
-        # categorical aggregates are the running lexicographic maximum (risk_model.encode_prefixes), not the last value
-        lab = name if val is None else (f"{name} (max so far) = {fmt(val)}" if isinstance(val, str) and name != "(other attributes)" else f"{name} = {fmt(val)}")
+        # Lectura llana del atributo en el valor que toma aquí (figures/plain.py), no el
+        # nombre de columna. Los agregados categóricos son el máximo lexicográfico corrido
+        # (risk_model.encode_prefixes), no el último valor, y la lectura llana no lo nombra.
+        lab = label(name, val)
         if abs(ly - (y0 + h / 2)) > 1e-6:
             ax.plot([X0 - 0.06, X0], [ly, y0 + h / 2], color=MUTED, lw=0.5, zorder=2)
-        ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=10.2, color=INK)
+        ax.text(X0 - 0.08, ly, lab, ha="right", va="center", fontsize=11.8, color=INK)
     # middle labels: centred on their node (MIN_NODE keeps consecutive labels apart)
     for k, lab, lvl in MID:
         y0, h = mid_pos[k]
         ax.add_patch(plt.Rectangle((X1, y0), W, h, fc=NODE_FC, ec=INK, lw=0.6, zorder=2))
-        ax.text(X1 + W + 0.08, y0 + h / 2, lab, ha="left", va="center", fontsize=10.1, color=INK, zorder=3,
+        ax.text(X1 + W + 0.08, y0 + h / 2, lab, ha="left", va="center", fontsize=11.8, color=INK, zorder=3,
                 bbox=dict(fc="white", ec="none", pad=0.6, alpha=0.85))
     y0, h = right_pos
     ax.add_patch(plt.Rectangle((X2, y0), W, h, fc=NODE_FC, ec=INK, lw=0.8, zorder=2))
     p_act = 1.0 / (1.0 + np.exp(-card["dq"]))  # margin = log pi(act) - log pi(wait)
-    mlabel = f"act now\n(policy: act {p_act:.0%},\nwait {1 - p_act:.0%})" if acts else f"wait\n(policy: wait {1 - p_act:.0%},\nact {p_act:.0%})"
+    mlabel = f"act now\n(timing model: act {p_act:.0%},\nwait {1 - p_act:.0%})" if acts else f"wait\n(timing model: wait {1 - p_act:.0%},\nact {p_act:.0%})"
     ax.text(X2 + W + 0.08, TOPY / 2, mlabel, ha="left", va="center", fontsize=11.8, color=INK, fontweight="bold")
 
     # headers
-    ax.text(X0 + W / 2, 1.17, "prefix attributes", ha="center", va="center", fontsize=11.1, color=MUTED)
-    ax.text(X1 + W / 2, 1.17, "state coordinates, by level", ha="center", va="center", fontsize=11.1, color=MUTED)
-    ax.text(X2 + W / 2, 1.17, "decision", ha="center", va="center", fontsize=11.1, color=MUTED)
-    side = "toward acting now" if acts else "toward waiting"
+    ax.text(X0 + W / 2, 1.17, "case attributes", ha="center", va="center", fontsize=11.8, color=INK)
+    ax.text(X1 + W / 2, 1.17, "what the timing model reads, by explanation", ha="center", va="center", fontsize=11.8, color=INK)
+    ax.text(X2 + W / 2, 1.17, "decision", ha="center", va="center", fontsize=11.8, color=INK)
+    # La leyenda "ribbon width = ..." se movió al caption del paper.
     y_low = min([p[0] for p in mid_pos.values()] + [p[0] for p in left_pos] + [right_pos[0]])
-    y_cap = y_low - 0.08
-    ax.set_ylim(min(-0.28, y_cap - 0.05), 1.26)
-    ax.text((X0 + X2 + W) / 2, y_cap, f"ribbon width = |contribution|;  orange = {side},  blue = against it.",
-            ha="center", va="center", fontsize=9.9, color=MUTED)
+    ax.set_ylim(min(0.07, y_low - 0.05), 1.26)
 
     out = paths.PAPER_FIGURES
     out.mkdir(parents=True, exist_ok=True)
